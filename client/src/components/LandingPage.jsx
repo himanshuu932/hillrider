@@ -9,16 +9,16 @@ import Donate from './landing/Donate';
 
 
 
-const LandingPage = () => {
+const LandingPage = ({languageType}) => {
 
 
   return (
     <div className="landing-page">
-      <HeroSection />
-      <AboutUs/>
-      <Sectors/>
-      <Activities/>
-      <Donate/>
+      <HeroSection languageType={languageType}/>
+      <AboutUs languageType={languageType}/>
+      <Sectors languageType={languageType}/>
+      <Activities languageType={languageType}/>
+      <Donate languageType={languageType}/>
     </div>
   );
 };

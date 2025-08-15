@@ -18,7 +18,7 @@ const content = {
   }
 };
 
-const AboutUs = ({ languageType = 'hi' }) => {
+const AboutUs = ({ languageType}) => {
   const selectedContent = content[languageType] || content.en;
 
   return (
