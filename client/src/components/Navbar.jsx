@@ -3,7 +3,24 @@ import { Link } from "react-router-dom";
 import logo from "../assets/nobgmainlogo.png";
 import "../components/styles/navbar.css";
 
+{/*}
+  const [currentUser, setCurrentUser] = useState(null);
 
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const token = await user.getIdToken(); 
+                localStorage.setItem('firebaseToken', token);
+                setCurrentUser(true);
+            } else {
+                localStorage.removeItem('firebaseToken');
+                setCurrentUser(false);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+*/}
 const content = {
   en: {
     logo: "HILL RIDERS",
@@ -63,24 +80,25 @@ const Navbar = ({ languageType, setLanguageType }) => {
         <li><Link to="/donate">{selectedContent.donate}</Link></li>
         <li><Link to="/pressrelease">{selectedContent.pressrelease}</Link></li>
         <li><Link to="/volunteer">{selectedContent.volunteer}</Link></li>
-      </ul>
+          <li><Link to="/admin" class="hover:text-blue-400">admin</Link></li>
+    </ul>
 
-      {/* Language Switch Buttons */}
-      <div className="buttons">
-        <button
-          className={`btn ${languageType === "en" ? "active-btn" : ""}`}
-          onClick={() => setLanguageType("en")}
-        >
-          EN
-        </button>
-        <button
-          className={`btn ${languageType === "hi" ? "active-btn" : ""}`}
-          onClick={() => setLanguageType("hi")}
-        >
-          HI
-        </button>
-      </div>
-    </nav>
+      {/* Language Switch Buttons */ }
+  <div className="buttons">
+    <button
+      className={`btn ${languageType === "en" ? "active-btn" : ""}`}
+      onClick={() => setLanguageType("en")}
+    >
+      EN
+    </button>
+    <button
+      className={`btn ${languageType === "hi" ? "active-btn" : ""}`}
+      onClick={() => setLanguageType("hi")}
+    >
+      HI
+    </button>
+  </div>
+    </nav >
   );
 };
 

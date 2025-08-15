@@ -8,6 +8,7 @@ import AdminLogin from "./components/pages/AdminLogin";
 import Footer from './components/Footer';
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
+import AdminPanel from './components/pages/adminPage';
 
 function App() {
   const [languageType, setLanguageType] = useState("en");
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<LandingPage languageType={languageType} />} />
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/login" element={<AdminLogin />} />
+         <Route path="/admin" element={<AdminPanel/>} />
       </Routes>
       <Footer />
     </Router>
