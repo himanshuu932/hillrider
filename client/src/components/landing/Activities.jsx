@@ -2,7 +2,7 @@ import React from "react";
 import "./styles/Activities.css";
 import Carousel from "../Carousal";
 
-export default function Activities({ language = "en" }) {
+export default function Activities({ languageType = "en" }) {
   const activities = {
     en: [
       {
@@ -40,7 +40,7 @@ export default function Activities({ language = "en" }) {
     ]
   };
 
-  const carouselItems = activities[language].map((act) => ({
+  const carouselItems = activities[languageType].map((act) => ({
     src: act.img,
     alt: act.title,
     caption: `${act.title} - ${act.desc}`
@@ -48,7 +48,7 @@ export default function Activities({ language = "en" }) {
 
   return (
     <div className="activities-container">
-      <h2>{language === "en" ? "ACTIVITIES" : "गतिविधियां"}</h2>
+      <h2>{languageType === "en" ? "ACTIVITIES" : "गतिविधियां"}</h2>
       <Carousel images={carouselItems} />
     </div>
   );

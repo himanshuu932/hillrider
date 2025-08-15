@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/Donate.css";
 
-const Donate = ({ language = 'en' }) => {
+const Donate = ({ languageType = 'en' }) => {
   const content = {
     en: {
       heading: "DONATE",
@@ -25,10 +25,10 @@ const Donate = ({ language = 'en' }) => {
 
   return (
     <div className="donate-container">
-      <h2>{content[language].heading}</h2>
-      <p>{content[language].message}</p>
+      <h2>{content[languageType].heading}</h2>
+      <p>{content[languageType].message}</p>
       <button className="donate-btn" onClick={() => alert("Thank you for your interest in donating!")}>
-        {content[language].button}
+        {content[languageType].button}
       </button>
     </div>
   );
