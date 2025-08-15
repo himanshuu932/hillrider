@@ -5,6 +5,7 @@ import AdminRegister from "./components/pages/AdminRegister";
 import AdminLogin from "./components/pages/AdminLogin";
 
 function App() {
+  const [languageType, setLanguageType] = useState("en");
   return (
     // <div className="App">
     //  <LandingPage/>
