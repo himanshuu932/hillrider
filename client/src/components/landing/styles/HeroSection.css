@@ -1,5 +1,4 @@
 .hs-hero-slider {
-  margin-top: 3.5%;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -111,7 +110,6 @@
 @media (max-width: 768px) {
   .hs-hero-slider {
     height: auto;
-    margin-top: 16%;
     flex-direction: column;
   }
 

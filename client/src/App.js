@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminRegister from "./components/pages/AdminRegister";
 import AdminLogin from "./components/pages/AdminLogin";
 
-
+import Footer from './components/Footer';
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 
@@ -22,6 +22,7 @@ function App() {
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/login" element={<AdminLogin />} />
       </Routes>
+      <Footer />
     </Router>
    
   );
