@@ -3,12 +3,14 @@ import axios from "axios";
 import "./AdminLogin.css";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminLogin() {
+// Accept setIsAdmin as a prop to update the parent state
+export default function AdminLogin({ setIsAdmin }) { 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        email: "",
+        identifier: "", // Changed from 'email' to 'identifier' to match input
         password: ""
     });
+    const [error, setError] = useState("");
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,21 +18,26 @@ export default function AdminLogin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(""); // Clear previous errors
         try {
             const res = await axios.post(
                 "http://localhost:5000/api/admin/login",
                 formData,
-                { headers: 
-                    { 
-                        "Content-Type": "application/json",
-                    }
-                }
+                { headers: { "Content-Type": "application/json" } }
             );
-            alert("Login successful!");
-            console.log(res.data);
-            navigate("/");
+            
+            // On successful login:
+            // 1. Store the token to keep the user logged in
+            localStorage.setItem('adminToken', res.data.token); 
+            
+            // 2. Update the application's authentication state
+            setIsAdmin(true);
+            
+            // 3. Navigate to the admin panel
+            navigate("/admin");
+
         } catch (err) {
-            alert("Invalid credentials");
+            setError(err.response?.data?.message || "Invalid credentials");
             console.error(err);
         }
     };
@@ -40,7 +47,9 @@ export default function AdminLogin() {
             <form className="login-form" onSubmit={handleSubmit}>
                 <h2>Admin Login</h2>
 
-                 <input
+                {error && <p className="error-message">{error}</p>}
+
+                <input
                     type="text"
                     name="identifier"
                     placeholder="Email or Phone"
