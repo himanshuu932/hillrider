@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Edit, Save, X, Users, DollarSign, Download } from 'lucide-react';
+import { Search, Edit, Save, X, User, DollarSign, Download } from 'lucide-react';
 
 const mockRegistrations = [
   { id: 1, firstName: 'Rahul', lastName: 'Sharma', age: 14, class: '9th', phone: '9876543210', school: 'Delhi Public School', subject: 'Mathematics', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-15' },
@@ -119,7 +119,7 @@ const AdminPanel = () => {
         {activeTab === 'registrations' && (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <StatCard title="Total Registrations" value={stats.totalRegistrations} icon={Users} color="#ffffffff" />
+              <StatCard title="Total Registrations" value={stats.totalRegistrations} icon={User} color="#ffffffff" />
               <StatCard title="Paid" value={stats.paidCount} icon={DollarSign} color="#ffffffff" />
               <StatCard title="Pending" value={stats.pendingCount} icon={DollarSign} color="#f2f2f2ff" />
             </div>
