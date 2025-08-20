@@ -52,11 +52,7 @@ export default function DonationPage({languageType}) {
           </h1>
         </div>
       </div>
-      <div className="px-6 py-5 max-w-4xl mx-auto text-center">
-        <p className="text-lg md:text-xl leading-relaxed text-gray-700 max-w-2xl mx-auto">
-          {t.message}
-        </p>
-      </div>
+   
       <div className="max-w-4xl mx-auto mt-5 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 text-center mb-10">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8">
           {t.scan}
@@ -93,6 +89,11 @@ export default function DonationPage({languageType}) {
             </button>
           </div>
         </div>
+           <div className="px-6 py-5 max-w-4xl mx-auto text-center">
+        <p className="text-lg text-justify md:text-xl leading-relaxed text-gray-700 max-w-2xl mx-auto">
+          {t.message}
+        </p>
+      </div>
       </div>
     </div>
   );
