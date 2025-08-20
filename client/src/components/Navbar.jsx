@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/nobgmainlogo.png";
 import "../components/styles/navbar.css";
+import { HashLink } from "react-router-hash-link";
 
 const content = {
   en: {
@@ -67,9 +68,9 @@ const Navbar = ({ languageType, setLanguageType }) => {
           </Link>
         </li>
         <li className="navbar__item">
-          <Link to="/aboutus" className={getLinkClass("/aboutus")} onClick={() => setIsMenuOpen(false)}>
+          <HashLink smooth to="/#about" className={getLinkClass("/aboutus")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.aboutus}
-          </Link>
+          </HashLink>
         </li>
         <li className="navbar__item">
           <Link to="/olympiad" className={getLinkClass("/olympiad")} onClick={() => setIsMenuOpen(false)}>
@@ -77,9 +78,9 @@ const Navbar = ({ languageType, setLanguageType }) => {
           </Link>
         </li>
         <li className="navbar__item">
-          <Link to="/activity" className={getLinkClass("/activity")} onClick={() => setIsMenuOpen(false)}>
+          <HashLink smooth to="/#activities" className={getLinkClass("/activity")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.activity}
-          </Link>
+          </HashLink>
         </li>
         <li className="navbar__item">
           <Link to="/donate" className={getLinkClass("/donate")} onClick={() => setIsMenuOpen(false)}>
@@ -94,11 +95,6 @@ const Navbar = ({ languageType, setLanguageType }) => {
         <li className="navbar__item">
           <Link to="/volunteer" className={getLinkClass("/volunteer")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.volunteer}
-          </Link>
-        </li>
-        <li className="navbar__item">
-          <Link to="/admin" className={getLinkClass("/admin")} onClick={() => setIsMenuOpen(false)}>
-            {selectedContent.admin}
           </Link>
         </li>
       </ul>
