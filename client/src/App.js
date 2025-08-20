@@ -5,8 +5,8 @@ import DonationPage from './components/DonationPage';
 function App() {
   return (
     <div className="App">
-     <DonationPage/>
-     <Footer/>
+     <LandingPage/>
+     <Footer languageType="hi"/>
     </div>
   );
 }
