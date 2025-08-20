@@ -106,66 +106,32 @@ export default function Footer({ languageType }) {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap sm:space-x-8 lg:space-x-16 gap-8 sm:gap-0">
+        {/* Main container for links: Grid on mobile, Flex on larger screens */}
+        <div className="grid grid-cols-2 gap-y-6 sm:flex sm:flex-wrap lg:flex-nowrap sm:space-x-8 lg:space-x-16 sm:gap-0">
+          {/* Column 1 */}
           <div>
             <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.nav}</h4>
             <ul className="space-y-1 text-sm cursor-pointer">
-              <li>
-                <HashLink smooth to="/#hero">
-                  {t.home}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#about">
-                  {t.about}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#sectors">
-                  {t.sectors}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#activities">
-                  {t.activities}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#donate">
-                  {t.donateUs}
-                </HashLink>
-              </li>
+              <li><HashLink smooth to="/#hero">{t.home}</HashLink></li>
+              <li><HashLink smooth to="/#about">{t.about}</HashLink></li>
+              <li><HashLink smooth to="/#sectors">{t.sectors}</HashLink></li>
+              <li><HashLink smooth to="/#activities">{t.activities}</HashLink></li>
+              <li><HashLink smooth to="/#donate">{t.donateUs}</HashLink></li>
             </ul>
           </div>
 
+          {/* Column 2 */}
           <div>
-            <h4 className="font-bold mb-3 text-lg sm:text-xl">
-              {t.initiatives}
-            </h4>
+            <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.initiatives}</h4>
             <ul className="space-y-1 text-sm cursor-pointer">
-              <li>
-                <HashLink smooth to="/#education">
-                  {t.education}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#social">
-                  {t.social}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#upliftment">
-                  {t.upliftment}
-                </HashLink>
-              </li>
-              <li>
-                <HashLink smooth to="/#environment">
-                  {t.environment}
-                </HashLink>
-              </li>
+              <li><HashLink smooth to="/#education">{t.education}</HashLink></li>
+              <li><HashLink smooth to="/#social">{t.social}</HashLink></li>
+              <li><HashLink smooth to="/#upliftment">{t.upliftment}</HashLink></li>
+              <li><HashLink smooth to="/#environment">{t.environment}</HashLink></li>
             </ul>
           </div>
 
+          {/* Column 3 */}
           <div>
             <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.donate}</h4>
             <ul className="space-y-1 text-sm cursor-pointer">
@@ -176,26 +142,38 @@ export default function Footer({ languageType }) {
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.links}</h4>
-            <HashLink smooth to="/#home"><p className="cursor-pointer text-sm">{t.privacy}</p></HashLink>
-            <HashLink smooth to="/#home"><p className="cursor-pointer text-sm">{t.terms}</p></HashLink>
-            <h4 className="font-bold mt-5 mb-2 text-lg sm:text-xl">
-              {t.connect}
-            </h4>
-            <div className="flex gap-3 text-lg">
-              <img src={insta} className="cursor-pointer w-7 h-7" />
-              <img src={linkedin} className="cursor-pointer w-7 h-7" />
-              <img src={youtube} className="cursor-pointer w-7 h-7" />
+          {/* Column 4 (wrapper for Links & Connect) */}
+          {/* Behaves as a single flex item on desktop, but its children become grid items on mobile */}
+          <div className="contents sm:block">
+            <div>
+              <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.links}</h4>
+              <ul className="space-y-1 text-sm">
+                <li><HashLink smooth to="/#home" className="cursor-pointer">{t.privacy}</HashLink></li>
+                <li><HashLink smooth to="/#home" className="cursor-pointer">{t.terms}</HashLink></li>
+              </ul>
             </div>
+            <div className="mt-0 sm:mt-5">
+              <h4 className="font-bold mb-2 text-lg sm:text-xl">{t.connect}</h4>
+              <div className="flex gap-3 text-lg">
+                <img src={insta} alt="Instagram" className="cursor-pointer w-7 h-7" />
+                <img src={linkedin} alt="LinkedIn" className="cursor-pointer w-7 h-7" />
+                <img src={youtube} alt="YouTube" className="cursor-pointer w-7 h-7" />
+              </div>
+            </div>
+          </div>
+          
+          {/* Copyright for mobile grid view only */}
+          <div className="text-sm sm:hidden">
+            <p>© 2025 Hill Riders Manav Seva Samiti</p>
+            <p>{t.rights}</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-2 text-center sm:text-left">
+      {/* Copyright for larger screens */}
+      <div className="max-w-7xl mx-auto px-6 py-2 text-center sm:text-left hidden sm:block">
         <p className="text-sm">
-          © 2025 Hill Riders Manav Seva Samiti <br className="sm:hidden" />{" "}
-          {t.rights}
+          © 2025 Hill Riders Manav Seva Samiti {" "} {t.rights}
         </p>
       </div>
 
