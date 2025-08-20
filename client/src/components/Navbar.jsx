@@ -83,22 +83,22 @@ const Navbar = ({ languageType, setLanguageType }) => {
           <li><Link to="/admin" class="hover:text-blue-400">admin</Link></li>
     </ul>
 
-      {/* Language Switch Buttons */ }
-  <div className="buttons">
-    <button
-      className={`btn ${languageType === "en" ? "active-btn" : ""}`}
-      onClick={() => setLanguageType("en")}
-    >
-      EN
-    </button>
-    <button
-      className={`btn ${languageType === "hi" ? "active-btn" : ""}`}
-      onClick={() => setLanguageType("hi")}
-    >
-      HI
-    </button>
-  </div>
-    </nav >
+      {/* Language Switch Buttons */}
+      <div className="buttons">
+        <button
+          className={`btn ${languageType === "hi" ? "active-btn" : ""}`}
+          onClick={() => setLanguageType("hi")}
+        >
+           अ 
+        </button>/
+         <button
+          className={`btn ${languageType === "en" ? "active-btn" : ""}`}
+          onClick={() => setLanguageType("en")}
+        >
+           A 
+        </button>
+      </div>
+    </nav>
   );
 };
 

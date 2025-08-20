@@ -1,6 +1,6 @@
 .nav {
   display: flex;
-  height: 40px;
+  height: 55px;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
@@ -59,20 +59,24 @@
 
 .buttons {
   display: flex;
-  gap: 5px;
-  background: #c1b0b0ff;
-  border-radius: 4px;
-  padding: 3px;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 2px;
+  gap:2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color:#0a3153;
 }
 
 .btn {
   border: none;
-  padding: 5px 10px;
+  padding: 2px 6px;
   cursor: pointer;
   font-weight: bold;
+  font-size: small;
   background: #fff;
-  color: #222;
-  border-radius: 4px;
+  color: #0a3153;
+  border-radius: 8px;
 }
 
 .active-btn {

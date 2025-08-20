@@ -9,6 +9,8 @@ import Footer from './components/Footer';
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import AdminPanel from './components/pages/adminPage';
+import Olympiad from './components/Olympiad';
+import Registration from './components/OlyRegistration';
 
 function App() {
   const [languageType, setLanguageType] = useState("en");
@@ -23,6 +25,8 @@ function App() {
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/login" element={<AdminLogin />} />
          <Route path="/admin" element={<AdminPanel/>} />
+        <Route path="/olympiad" element={<Olympiad languageType={languageType}/>}/>
+        <Route path="/pressrelease" element={<Registration languageType={languageType}/>}/>
       </Routes>
       <Footer />
     </Router>
