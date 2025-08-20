@@ -12,6 +12,7 @@ import AdminPanel from './components/pages/adminPage';
 import Olympiad from './components/Olympiad';
 import Registration from './components/OlyRegistration';
 import AdminStudentRegistration from './components/pages/AdminStudentRegistration'; // Import the new component
+import DonationPage from './components/DonationPage';
 
 // A wrapper to protect routes that require admin authentication
 const PrivateRoute = ({ children, isAdmin }) => {
@@ -40,7 +41,7 @@ function App() {
         <Route path="/login" element={<AdminLogin setIsAdmin={setIsAdmin} />} />
         <Route path="/olympiad" element={<Olympiad languageType={languageType} />} />
         <Route path="/pressrelease" element={<Registration languageType={languageType} />} />
-        
+        <Route path="/donate" element={<DonationPage languageType={languageType} />} />
         {/* Admin-only Routes */}
         <Route 
           path="/admin" 
@@ -61,7 +62,7 @@ function App() {
         {/* You might want to protect this route as well */}
         <Route path="/register" element={<AdminRegister />} />
       </Routes>
-      <Footer />
+      <Footer languageType={languageType} />
     </Router>
   );
 }
