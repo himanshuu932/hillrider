@@ -2,7 +2,6 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
-// Component Imports
 import LandingPage from './components/LandingPage';
 import AdminRegister from "./components/pages/AdminRegister";
 import AdminLogin from "./components/pages/AdminLogin";
@@ -11,10 +10,9 @@ import Navbar from "./components/Navbar";
 import AdminPanel from './components/pages/adminPage';
 import Olympiad from './components/Olympiad';
 import Registration from './components/OlyRegistration';
-import AdminStudentRegistration from './components/pages/AdminStudentRegistration'; // Import the new component
+import AdminStudentRegistration from './components/pages/AdminStudentRegistration';
 import DonationPage from './components/DonationPage';
 
-// A wrapper to protect routes that require admin authentication
 const PrivateRoute = ({ children, isAdmin }) => {
   return isAdmin ? children : <Navigate to="/login" />;
 };
