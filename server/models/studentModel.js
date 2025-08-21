@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const StudentSchema = new mongoose.Schema({
-    // ... (other fields remain the same)
+const StudentSchema = new mongoose.Schema({    
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
@@ -11,10 +10,9 @@ const StudentSchema = new mongoose.Schema({
     subject: { type: String, required: true },
     transactionId: { type: String, unique: true, sparse: true },
     
-    // Updated paymentStatus enum
     paymentStatus: {
         type: String,
-        enum: ['Paid', 'Unverified', 'Failed', 'Offline Paid'], // Changed 'Not Required'
+        enum: ['Paid', 'Unverified', 'Failed', 'Offline Paid'], 
         default: 'Unverified'
     },
     amount: { type: Number, required: true, default: 500 },
