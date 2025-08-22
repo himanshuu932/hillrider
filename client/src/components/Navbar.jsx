@@ -97,6 +97,11 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.volunteer}
           </Link>
         </li>
+        <li className="navbar__item">
+          <Link to="/admin" className={getLinkClass("/admin")} onClick={() => setIsMenuOpen(false)}>
+            {selectedContent.admin}
+          </Link>
+        </li>
       </ul>
 
       {/* Language Switch Buttons */}

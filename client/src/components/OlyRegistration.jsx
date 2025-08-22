@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../components/styles/registration.css"; // Using the original stylesheet
+import RegistrationPrint from "./RegistrationPrint";
+
+function calculateFee(classValue, subjectValue) {
+  let fee = 0;
+  const classNum = parseInt(classValue, 10);
+  if (classNum >= 1 && classNum <= 5) fee = 120;
+  else if (classNum >= 6 && classNum <= 8) fee = 130;
+  else if (classNum >= 9 && classNum <= 10) fee = 150;
+  else if (classNum >= 11 && classNum <= 12) fee = 180;
+  else if (classNum >= 13) fee = 210;
+  else fee = 0;
+  return fee;
+}
 
 export default function OlyRegistration({ languageType }) {
   const content = {
@@ -48,6 +61,7 @@ export default function OlyRegistration({ languageType }) {
     class: "",
     phone: "",
     school: "",
+    amount: "",
     subject: "Mathematics",
     transactionId: "",
   });
@@ -55,6 +69,7 @@ export default function OlyRegistration({ languageType }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [registeredStudent, setRegisteredStudent] = useState(null);
 
   // Fetch schools on component mount
   useEffect(() => {
@@ -69,6 +84,11 @@ export default function OlyRegistration({ languageType }) {
     };
     fetchSchools();
   }, []);
+
+  useEffect(() => {
+    const fee = calculateFee(formData.class, formData.subject);
+    setFormData(prev => ({ ...prev, amount: fee }));
+  }, [formData.class, formData.subject]);
 
   // Input change handle function
   const handleChange = (e) => {
@@ -85,9 +105,10 @@ export default function OlyRegistration({ languageType }) {
     try {
       const res = await axios.post("http://localhost:5000/api/students/register-payment", formData);
       setSuccessMessage(res.data.message || selectedContent.successMsg);
+      setRegisteredStudent(res.data.student);
       setFormData({
         firstName: "", lastName: "", dateOfBirth: "", class: "",
-        phone: "", school: "", subject: "Mathematics", transactionId: ""
+        phone: "", amount: "", school: "", subject: "Mathematics", transactionId: ""
       });
     } catch (err) {
       setError(err.response?.data?.message || selectedContent.errorMsg);
@@ -102,7 +123,7 @@ export default function OlyRegistration({ languageType }) {
         <h2>{selectedContent.title}</h2>
       </div>
 
-      {/* Displaying success/error messages */}
+     
       {successMessage && <p className="success-message">{successMessage}</p>}
       {error && <p className="error-message">{error}</p>}
 
@@ -151,7 +172,7 @@ export default function OlyRegistration({ languageType }) {
             )}
           </select>
         </div>
-        
+
         {/* Row 5: Subject + Transaction ID */}
         <div className="form-row">
           <div className="form-group">
@@ -167,11 +188,49 @@ export default function OlyRegistration({ languageType }) {
             <input type="text" name="transactionId" value={formData.transactionId} onChange={handleChange} required />
           </div>
         </div>
+        <div className="form-group full-width">
+          <label>Calculated Fee</label>
+          <div className="font-bold text-green-700">
+            ₹{formData.amount || 0}
+          </div>
+        </div>
 
         <button type="submit" className="submit-btn" disabled={isLoading}>
           {isLoading ? 'Submitting...' : selectedContent.register}
         </button>
       </form>
+      {registeredStudent && (
+        <div className="my-10 p-4 bg-white rounded-lg shadow-lg">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">
+            Registration Receipt
+          </h3>
+          <RegistrationPrint
+            languageType="en"
+            ngo={{
+              name: "HILL RIDER MANAV SEWA SAMITI",
+              logo: "/logo.png",
+              tagline: "Serving Humanity with Dedication",
+              address: "123 NGO Lane, Bhopal, MP",
+              phone: "+91-9876543210",
+              email: "contact@hillriderngo.org",
+            }}
+            student={{
+              firstName: registeredStudent.firstName,
+              lastName: registeredStudent.lastName,
+              dob: registeredStudent.dateOfBirth,
+              class: registeredStudent.class,
+              amount: registeredStudent.amount,
+              phone: registeredStudent.phone,
+              school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
+              subject: registeredStudent.subject,
+              transactionId: registeredStudent.transactionId || "N/A",
+            }}
+            registrationId={registeredStudent.studentCode}
+            issuedAt={registeredStudent.createdAt}
+            documentTitle="Admin Registered Student"
+          />
+        </div>
+      )}
     </div>
   );
 }

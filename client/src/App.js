@@ -44,17 +44,17 @@ function App() {
         <Route 
           path="/admin" 
           element={
-            <PrivateRoute isAdmin={isAdmin}>
+          
               <AdminPanel />
-            </PrivateRoute>
+        
           } 
         />
         <Route 
           path="/admin/register-student" 
           element={
-            <PrivateRoute isAdmin={isAdmin}>
+           
               <AdminStudentRegistration />
-            </PrivateRoute>
+
           } 
         />
         {/* You might want to protect this route as well */}

@@ -2,6 +2,7 @@ const cookieParser = require('cookie-parser');
 const Admin = require('../models/adminModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Student = require('../models/studentModel')
 
 const registerAdmin = async (req, res) => {
     try {
@@ -81,8 +82,45 @@ const getAdminProfile = async (req, res) => {
     }
 };
 
+const deleteRegistration = async (req, res) => {
+    try {
+        const student = await Student.findByIdAndDelete(req.params.deleteID);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found.' });
+        }
+        res.status(200).json({ message: 'Student deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting student:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
+
+const editRegistraion = async (req, res) => {
+    try {
+
+        if (!req.params.editingID) {
+            return res.status(400).json({ message: 'No student ID provided.' });
+        }
+        const student = await Student.findByIdAndUpdate(
+            req.params.editingID,
+            req.body,
+            { new: true }
+        ).populate('school', 'name code');
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found.' });
+        }
+        res.status(200).json({ message: 'Student updated successfully.', student });
+    } catch (error) {
+        console.error('Error updating student:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
+
+
 module.exports = {
     registerAdmin,
     loginAdmin,
-    getAdminProfile
+    getAdminProfile,
+    editRegistraion,
+    deleteRegistration
 };
