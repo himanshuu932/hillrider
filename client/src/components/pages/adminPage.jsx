@@ -7,6 +7,7 @@ import RegistrationDashboard from './RegistrationDashboard';
 import VerifyRegistrations from './VerifyRegistrations';
 import axios from "axios";
 import "./AdminRegister.css";
+import Settings from './Settings';
 
 const mockRegistrations = [
   { id: 1, firstName: 'Rahul', lastName: 'Sharma', age: 14, class: '9th', phone: '9876543210', school: 'Delhi Public School', subject: 'Mathematics', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-15' },
@@ -294,33 +295,7 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'settings' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Fee Structure</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Registration Fee</label>
-                  <input
-                    type="number"
-                    defaultValue="500"
-                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Late Fee</label>
-                  <input
-                    type="number"
-                    defaultValue="100"
-                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-              <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                Save Changes
-              </button>
-            </div>
-          </div>
+          <Settings/>
         )}
       </div>
     </div>

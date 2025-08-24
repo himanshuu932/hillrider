@@ -1,5 +1,6 @@
 const School = require('../models/schoolModel');
 const Student = require('../models/studentModel');
+const FeeConfig = require('../models/feeModel');
 const crypto = require('crypto');
 
 // --- School Controller Functions ---
@@ -29,7 +30,7 @@ exports.addSchool = async (req, res) => {
         const lastSchool = await School.findOne({ code: new RegExp(`^${prefix}`) }).sort({ code: -1 });
         let nextSequence = lastSchool ? parseInt(lastSchool.code.split('/')[1], 10) + 1 : 1;
         const generatedCode = `${prefix}${String(nextSequence).padStart(2, '0')}`;
-        
+
         // Unique random password generation
         let password;
         let isPasswordUnique = false;
@@ -41,10 +42,10 @@ exports.addSchool = async (req, res) => {
             }
         }
 
-        const school = new School({ 
-            name, 
+        const school = new School({
+            name,
             code: generatedCode,
-            password 
+            password
         });
         await school.save();
 
@@ -82,7 +83,7 @@ const generateStudentCode = async () => {
 
     // Find the last student registered this year, regardless of school
     const lastStudent = await Student.findOne({ studentCode: new RegExp(`^${prefix}`) })
-                                     .sort({ studentCode: -1 });
+        .sort({ studentCode: -1 });
 
     let nextSequence = 1;
     if (lastStudent) {
@@ -116,13 +117,13 @@ exports.registerStudentWithPayment = async (req, res) => {
         const newStudent = new Student({
             ...req.body,
             studentCode,
-            paymentStatus: 'Unverified' 
+            paymentStatus: 'Unverified'
         });
 
         await newStudent.save();
-        res.status(201).json({ 
-            message: `Registration submitted! Your unique code is ${studentCode}. Please save it for future reference.`, 
-            student: newStudent 
+        res.status(201).json({
+            message: `Registration submitted! Your unique code is ${studentCode}. Please save it for future reference.`,
+            student: newStudent
         });
 
     } catch (error) {
@@ -146,12 +147,12 @@ exports.registerStudentByAdmin = async (req, res) => {
             ...req.body,
             studentCode,
             paymentStatus: 'Offline Paid', // <-- UPDATED STATUS
-            transactionId: null 
+            transactionId: null
         });
         await newStudent.save();
-        res.status(201).json({ 
-            message: `Student registered! Their unique code is ${studentCode}.`, 
-            student: newStudent 
+        res.status(201).json({
+            message: `Student registered! Their unique code is ${studentCode}.`,
+            student: newStudent
         });
     } catch (error) {
         console.error('Error in student registration by admin:', error);
@@ -214,3 +215,42 @@ exports.verifyStudentPayment = async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 };
+
+exports.addFeeConfig = async (req, res) => {
+    try {
+        const config = new FeeConfig(req.body);
+        await config.save();
+        res.status(201).json(config);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+exports.getFeeConfig = async (req, res) => {
+    try {
+        const feeConfig = await FeeConfig.findOne();
+        if (!feeConfig) {
+            return res.status(404).json({ message: "No fee config found" });
+        }
+        res.status(200).json(feeConfig);
+    } catch (error) {
+        console.error("error in getting fees:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.updateFeeConfig = async (req, res) => {
+    try {
+        const { className, amount } = req.body;
+        const config = await FeeConfig.findOne();
+        if (!config) return res.status(404).json({ message: "No fee config found" });
+
+        config[className] = amount;
+        await config.save();
+        res.json(config);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
+
+
