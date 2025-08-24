@@ -23,7 +23,7 @@ const RegistrationDashboard = () => {
     const [registrations, setRegistrations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const [schools, setSchools] = useState([]);
     // State for managing filters
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
@@ -32,6 +32,9 @@ const RegistrationDashboard = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    const [editingId, setEditingId] = useState(null);
+    const [editData, setEditData] = useState({});
+    const [registrationsState, setRegistrationsState] = useState([]);
 
     // Fetch registration data from the backend
     useEffect(() => {
@@ -49,6 +52,24 @@ const RegistrationDashboard = () => {
         fetchRegistrations();
     }, []);
 
+    useEffect(() => {
+        const fetchSchools = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/api/schools');
+                setSchools(res.data);
+            } catch (err) {
+                console.error("Failed to fetch schools", err);
+                setError('Could not load school list. Please refresh the page.');
+            }
+        };
+        fetchSchools();
+    }, []);
+
+    // Sync local state with fetched registrations
+    useEffect(() => {
+        setRegistrationsState(registrations);
+    }, [registrations]);
+
     // Memoized array for "valid" registrations (Paid or Offline Paid) used for analytics
     const validRegistrations = useMemo(() => {
         return registrations.filter(
@@ -61,13 +82,13 @@ const RegistrationDashboard = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Set to start of today for accurate comparison
 
-        return registrations.filter(reg => {
+        return registrationsState.filter(reg => {
             const fullName = `${reg.firstName} ${reg.lastName}`.toLowerCase();
             const schoolName = reg.school?.name?.toLowerCase() || '';
 
-            const matchesSearch = fullName.includes(searchTerm.toLowerCase()) || 
-                                  schoolName.includes(searchTerm.toLowerCase());
-            
+            const matchesSearch = fullName.includes(searchTerm.toLowerCase()) ||
+                schoolName.includes(searchTerm.toLowerCase());
+
             const matchesStatus = filterStatus === 'All' || reg.paymentStatus === filterStatus;
             const matchesSchool = filterSchool === 'All' || reg.school?._id === filterSchool;
 
@@ -88,7 +109,7 @@ const RegistrationDashboard = () => {
 
             return matchesSearch && matchesStatus && matchesSchool && matchesDate;
         });
-    }, [registrations, searchTerm, filterStatus, filterSchool, dateFilter, startDate, endDate]);
+    }, [registrationsState, searchTerm, filterStatus, filterSchool, dateFilter, startDate, endDate]);
 
     // KPIs based on the correct data sets
     const kpis = useMemo(() => {
@@ -140,11 +161,61 @@ const RegistrationDashboard = () => {
             borderWidth: 1,
         }],
     };
-    
+
     // Print handler
     const handlePrint = () => {
         alert('Printing...');
         // In a real application, you would use window.print() or a library like react-to-print
+    };
+
+    const handleEdit = (id) => {
+        const reg = registrationsState.find(r => r._id === id);
+        setEditingId(id);
+        // If school is an object, store its _id for editing
+        setEditData({
+            ...reg,
+            school: reg.school?._id || ''
+        });
+    };
+
+    const handleSave = async (id) => {
+        try {
+            const editingID = id;
+            // Prepare payload for backend (school as id)
+            const payload = { ...editData };
+            // If school is just id, backend should handle it
+            const res = await axios.put(`http://localhost:5000/api/admin/edit/${editingID}`, payload);
+            // Update local state with backend response
+            setRegistrationsState(prev => prev.map(reg =>
+                reg._id === editingID ? res.data.student : reg
+            ));
+            setEditingId(null);
+            setEditData({});
+        } catch (err) {
+            alert('Failed to save changes.');
+        }
+    };
+
+    const handleCancel = () => {
+        setEditingId(null);
+        setEditData({});
+    };
+
+    const handleReceipt=async(id)=>{
+        const recieptId=id;
+     
+
+    }
+    const handleDelete = async (id) => {
+        const deleteID = id;
+        if (window.confirm('Are you sure you want to delete this registration?')) {
+            try {
+                await axios.delete(`http://localhost:5000/api/admin/delete/${deleteID}`);
+                setRegistrationsState(prev => prev.filter(reg => reg._id !== id));
+            } catch (err) {
+                alert('Failed to delete registration.');
+            }
+        }
     };
 
     if (loading) return <p className="text-center p-10">Loading dashboard...</p>;
@@ -204,15 +275,15 @@ const RegistrationDashboard = () => {
                         </select>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                         <select value={dateFilter} onChange={e => setDateFilter(e.target.value)} className="p-3 border rounded-md bg-gray-50">
+                        <select value={dateFilter} onChange={e => setDateFilter(e.target.value)} className="p-3 border rounded-md bg-gray-50">
                             <option value="all">All Time</option>
                             <option value="today">Today</option>
                             <option value="custom">Custom Range</option>
                         </select>
                         {dateFilter === 'custom' && (
                             <>
-                                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-3 border rounded-md bg-gray-50"/>
-                                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 border rounded-md bg-gray-50"/>
+                                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-3 border rounded-md bg-gray-50" />
+                                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 border rounded-md bg-gray-50" />
                             </>
                         )}
                     </div>
@@ -226,31 +297,112 @@ const RegistrationDashboard = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">School</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registered On</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {filteredRegistrationsForTable.length > 0 ? filteredRegistrationsForTable.map(reg => (
                                 <tr key={reg._id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{reg.firstName} {reg.lastName}</div>
-                                        <div className="text-sm text-gray-500">{reg.phone}</div>
+                                        {editingId === reg._id ? (
+                                            <div>
+                                                <input
+                                                    type="text"
+                                                    value={editData.firstName || ''}
+                                                    onChange={e => setEditData({ ...editData, firstName: e.target.value })}
+                                                    className="text-sm font-medium text-gray-900 border rounded px-2 py-1"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={editData.lastName || ''}
+                                                    onChange={e => setEditData({ ...editData, lastName: e.target.value })}
+                                                    className="text-sm text-gray-500 border rounded px-2 py-1"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={editData.phone || ''}
+                                                    onChange={e => setEditData({ ...editData, phone: e.target.value })}
+                                                    className="text-sm text-gray-500 border rounded px-2 py-1"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <div className="text-sm font-medium text-gray-900">{reg.firstName} {reg.lastName}</div>
+                                                <div className="text-sm text-gray-500">{reg.phone}</div>
+                                            </div>
+                                        )}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{reg.school?.name || 'N/A'}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                        {editingId === reg._id ? (
+                                            <select
+                                                value={editData.school || ''}
+                                                onChange={e => setEditData({ ...editData, school: e.target.value })}
+                                                className="text-sm border rounded px-2 py-1"
+                                            >
+                                                <option value="" disabled>-- Select School --</option>
+                                                {schools.length > 0 ? (
+                                                    schools.map(school => (
+                                                        <option key={school._id} value={school._id}>{school.name} ({school.code})</option>
+                                                    ))
+                                                ) : (
+                                                    <option disabled>Loading schools...</option>
+                                                )}
+                                            </select>
+                                        ) : (
+                                            reg.school?.name || 'N/A'
+                                        )}
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            reg.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' :
-                                            reg.paymentStatus === 'Unverified' ? 'bg-yellow-100 text-yellow-800' :
-                                            reg.paymentStatus === 'Offline Paid' ? 'bg-blue-100 text-blue-800' :
-                                            'bg-gray-100 text-gray-800'
-                                        }`}>
-                                            {reg.paymentStatus}
-                                        </span>
+                                        {editingId === reg._id ? (
+                                            <select
+                                                value={editData.paymentStatus || ''}
+                                                onChange={e => setEditData({ ...editData, paymentStatus: e.target.value })}
+                                                className="text-xs font-semibold rounded-full px-2 py-1"
+                                            >
+                                                <option value="Paid">Paid</option>
+                                                <option value="Unverified">Unverified</option>
+                                                <option value="Offline Paid">Offline Paid</option>
+                                            </select>
+                                        ) : (
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${reg.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' :
+                                                reg.paymentStatus === 'Unverified' ? 'bg-yellow-100 text-yellow-800' :
+                                                    reg.paymentStatus === 'Offline Paid' ? 'bg-blue-100 text-blue-800' :
+                                                        'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                {reg.paymentStatus}
+                                            </span>
+                                        )}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(reg.createdAt).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {editingId === reg._id ? (
+                                            <input
+                                                type="date"
+                                                value={editData.createdAt ? new Date(editData.createdAt).toISOString().slice(0, 10) : ''}
+                                                onChange={e => setEditData({ ...editData, createdAt: e.target.value })}
+                                                className="text-sm border rounded px-2 py-1"
+                                            />
+                                        ) : (
+                                            new Date(reg.createdAt).toLocaleDateString()
+                                        )}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        {editingId === reg._id ? (
+                                            <div className="flex space-x-2">
+                                                <button onClick={()=>handleSave(reg._id)} className="text-green-600 hover:text-green-900">Save</button>
+                                                <button onClick={handleCancel} className="text-red-600 hover:text-red-900">Cancel</button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex space-x-2">
+                                                <button onClick={() => handleEdit(reg._id)} className="text-blue-600 hover:text-blue-900">Edit</button>
+                                                <button onClick={() => handleDelete(reg._id)} className="text-red-600 hover:text-red-900">Delete</button>
+                                                <button onClick={() => handleReceipt(reg._id)} className="text-green-600 hover:text-green-900">Reciept</button>
+                                            </div>
+                                        )}
+                                    </td>
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan="4" className="text-center py-10 text-gray-500">No matching registrations found.</td>
+                                    <td colSpan="5" className="text-center py-10 text-gray-500">No matching registrations found.</td>
                                 </tr>
                             )}
                         </tbody>
