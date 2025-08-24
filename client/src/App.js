@@ -41,6 +41,7 @@ function App() {
         <Route path="/login" element={<AdminLogin setIsAdmin={setIsAdmin} />} />
         <Route path="/olympiad" element={<Olympiad languageType={languageType} />} />
         <Route path="/pressrelease" element={<Registration languageType={languageType} />} />
+        <Route path="/registration" element={<Registration languageType={languageType} />} />
         <Route path="/donate" element={<DonationPage languageType={languageType} />} />
         {/* Admin-only Routes */}
         <Route 

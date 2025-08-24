@@ -1,0 +1,131 @@
+
+.olympiad-container-img {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px 0;
+}
+
+/* Carousel */
+.olympiad-container img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+/* Container */
+.olympiad-container{
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px 0;
+}
+
+/* Intro Section */
+.olympiad-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.olympiad-intro h2 {
+  font-size: 2.5rem;
+  color: #2a6f8f;
+  margin-bottom: 15px;
+}
+
+.olympiad-intro p {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto 20px;
+}
+
+.olympiad-intro .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.olympiad-intro .btn {
+  padding: 12px 25px;
+  border: none;
+  background-color: #2a6f8f;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.olympiad-intro .btn:hover {
+  background-color: #1e4d63;
+}
+
+/* Section Headings */
+section h3 {
+  font-size: 1.8rem;
+  color: #1f4e5f;
+  margin: 30px 0 15px;
+  border-bottom: 2px solid #2a6f8f;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  text-align: center;
+}
+
+table th {
+  background-color: #2a6f8f;
+  color: white;
+}
+.class-heading{
+  background-color: #7cecf8c6;
+  color: #1f1f1f;
+  font-weight: bold;
+  text-align: center;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Rules List */
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .olympiad-intro .buttons {
+    flex-direction: column;
+  }
+
+  .olympiad-intro .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  table th, table td {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}
