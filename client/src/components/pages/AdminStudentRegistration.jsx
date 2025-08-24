@@ -39,6 +39,8 @@ const AdminStudentRegistration = () => {
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [registeredStudent, setRegisteredStudent] = useState(null);
+    const [feeConfig, setFeeConfig] = useState({});
+    const [fee, setFee] = useState(0);
 
     // Fetch schools on component mount
     useEffect(() => {
@@ -59,10 +61,32 @@ const AdminStudentRegistration = () => {
     };
 
 
+    // useEffect(() => {
+    //     const fee = calculateFee(formData.class, formData.subject);
+    //     setFormData(prev => ({ ...prev, amount: fee }));
+    // }, [formData.class, formData.subject]);
+
     useEffect(() => {
-        const fee = calculateFee(formData.class, formData.subject);
-        setFormData(prev => ({ ...prev, amount: fee }));
-    }, [formData.class, formData.subject]);
+        const fetchFeeConfig = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/api/students/fee");
+                setFeeConfig(res.data);
+            } catch (err) {
+                console.error("Failed to fetch fee config", err);
+                setError("Could not load fee configuration.");
+            }
+        };
+
+        fetchFeeConfig();
+    }, []);
+
+    useEffect(() => {
+        const cls = formData.class;
+        if (cls && feeConfig[cls] !== undefined) {
+            setFee(feeConfig[cls]);
+            setFormData(prev => ({ ...prev, amount: feeConfig[cls] }));
+        }
+    }, [formData.class, feeConfig]);
 
 
     const handleSubmit = async (e) => {
@@ -117,7 +141,24 @@ const AdminStudentRegistration = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" name="class" placeholder="Class (e.g., 9th)" value={formData.class} onChange={handleChange} required className="p-3 border rounded-md" />
+                    <div className="form-group">
+                        <select name="class" value={formData.class} onChange={handleChange} required>
+                            <option value="">Select Class</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                        </select>
+                    </div>
                     <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="p-3 border rounded-md" />
                 </div>
 
@@ -237,11 +278,15 @@ const AdminStudentRegistration = () => {
                         <label className="text-sm text-gray-600">PinCode</label>
                         <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required className="p-3 border rounded-md" />
                     </div>
-                    <div className="form-group full-width">
+                    {/* <div className="form-group full-width">
                         <label>Calculated Fee</label>
                         <div className="font-bold text-green-700">
                             ₹{formData.amount || 0}
                         </div>
+                    </div> */}
+                    <div className="form-group">
+                        <label>Fee</label>
+                        <input type="number" value={fee} readOnly />
                     </div>
                 </div>
 

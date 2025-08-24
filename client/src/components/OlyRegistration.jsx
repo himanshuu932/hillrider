@@ -3,17 +3,17 @@ import axios from "axios";
 import "../components/styles/registration.css"; // Using the original stylesheet
 import RegistrationPrint from "./RegistrationPrint";
 
-function calculateFee(classValue, subjectValue) {
-  let fee = 0;
-  const classNum = parseInt(classValue, 10);
-  if (classNum >= 1 && classNum <= 5) fee = 120;
-  else if (classNum >= 6 && classNum <= 8) fee = 130;
-  else if (classNum >= 9 && classNum <= 10) fee = 150;
-  else if (classNum >= 11 && classNum <= 12) fee = 180;
-  else if (classNum >= 13) fee = 210;
-  else fee = 0;
-  return fee;
-}
+// function calculateFee(classValue, subjectValue) {
+//   let fee = 0;
+//   const classNum = parseInt(classValue, 10);
+//   if (classNum >= 1 && classNum <= 5) fee = 120;
+//   else if (classNum >= 6 && classNum <= 8) fee = 130;
+//   else if (classNum >= 9 && classNum <= 10) fee = 150;
+//   else if (classNum >= 11 && classNum <= 12) fee = 180;
+//   else if (classNum >= 13) fee = 210;
+//   else fee = 0;
+//   return fee;
+// }
 
 export default function OlyRegistration({ languageType }) {
   const content = {
@@ -79,6 +79,9 @@ export default function OlyRegistration({ languageType }) {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [registeredStudent, setRegisteredStudent] = useState(null);
+  const [feeConfig, setFeeConfig] = useState({});
+  const [fee, setFee] = useState(0);
+
 
   // Fetch schools on component mount
   useEffect(() => {
@@ -94,10 +97,34 @@ export default function OlyRegistration({ languageType }) {
     fetchSchools();
   }, []);
 
+  // useEffect(() => {
+  //   const fee = calculateFee(formData.class, formData.subject);
+  //   setFormData(prev => ({ ...prev, amount: fee }));
+  // }, [formData.class, formData.subject]);
+
   useEffect(() => {
-    const fee = calculateFee(formData.class, formData.subject);
-    setFormData(prev => ({ ...prev, amount: fee }));
-  }, [formData.class, formData.subject]);
+    const fetchFeeConfig = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/students/fee");
+        setFeeConfig(res.data);
+      } catch (err) {
+        console.error("Failed to fetch fee config", err);
+        setError("Could not load fee configuration.");
+      }
+    };
+
+    fetchFeeConfig();
+  }, []);
+
+  useEffect(() => {
+    const cls = formData.class;
+    if (cls && feeConfig[cls] !== undefined) {
+      setFee(feeConfig[cls]);
+      setFormData(prev => ({ ...prev, amount: feeConfig[cls] }));
+    }
+  }, [formData.class, feeConfig]);
+
+
 
   // Input change handle function
   const handleChange = (e) => {
@@ -156,10 +183,30 @@ export default function OlyRegistration({ languageType }) {
             <label>{selectedContent.dob}</label>
             <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>{selectedContent.class}</label>
             <input type="text" name="class" value={formData.class} onChange={handleChange} required />
+          </div> */}
+          <div className="form-group">
+            <label>{selectedContent.class}</label>
+            <select name="class" value={formData.class} onChange={handleChange} required>
+              <option value="">Select Class</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+            </select>
           </div>
+
         </div>
 
         {/* Row 3: Phone */}
@@ -303,11 +350,9 @@ export default function OlyRegistration({ languageType }) {
 
 
 
-        <div className="form-group full-width">
-          <label>Calculated Fee</label>
-          <div className="font-bold text-green-700">
-            ₹{formData.amount || 0}
-          </div>
+        <div className="form-group">
+          <label>Fee</label>
+          <input type="number" value={fee} readOnly />
         </div>
 
         <button type="submit" className="submit-btn" disabled={isLoading}>

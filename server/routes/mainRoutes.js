@@ -9,7 +9,10 @@ const {
     registerStudentByAdmin,
     getAllStudents,
     getUnverifiedStudents,
-    verifyStudentPayment
+    verifyStudentPayment,
+    getFeeConfig,
+    addFeeConfig,
+    updateFeeConfig
 } = require('../controllers/mainController');
 
 // In a real-world application, you would protect admin-only routes
@@ -57,6 +60,13 @@ router.get('/students/unverified', /* protectAdmin, */ getUnverifiedStudents);
 // @desc    Verify a student's payment (Admin only)
 // @access  Private
 router.patch('/students/verify/:id', /* protectAdmin, */ verifyStudentPayment);
+
+
+router.get('/students/fee', getFeeConfig);
+
+router.post('/students/fee', addFeeConfig);
+
+router.put('/students/fee', updateFeeConfig);
 
 
 module.exports = router;
