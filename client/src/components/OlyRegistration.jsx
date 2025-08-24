@@ -64,6 +64,15 @@ export default function OlyRegistration({ languageType }) {
     amount: "",
     subject: "Mathematics",
     transactionId: "",
+    aadharNumber: '',
+    gender: '',
+    category: '',
+    competitionCategory: '',
+    village: '',
+    post: '',
+    district: '',
+    state: '',
+    pinCode: '',
   });
   const [schools, setSchools] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,7 +117,8 @@ export default function OlyRegistration({ languageType }) {
       setRegisteredStudent(res.data.student);
       setFormData({
         firstName: "", lastName: "", dateOfBirth: "", class: "",
-        phone: "", amount: "", school: "", subject: "Mathematics", transactionId: ""
+        phone: "", amount: "", school: "", subject: "Mathematics", transactionId: "",
+        gender: '', category: '', competitionCategory: '', village: '', post: '', district: '', state: '', pinCode: '', aadharNumber: ''
       });
     } catch (err) {
       setError(err.response?.data?.message || selectedContent.errorMsg);
@@ -123,7 +133,7 @@ export default function OlyRegistration({ languageType }) {
         <h2>{selectedContent.title}</h2>
       </div>
 
-     
+
       {successMessage && <p className="success-message">{successMessage}</p>}
       {error && <p className="error-message">{error}</p>}
 
@@ -158,6 +168,11 @@ export default function OlyRegistration({ languageType }) {
           <input type="tel" name="phone" pattern="[0-9]{10}" value={formData.phone} onChange={handleChange} required />
         </div>
 
+        <div className="form-group full-width">
+          <label>Aadhar Number</label>
+          <input type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleChange} required />
+        </div>
+
         {/* Row 4: School Dropdown */}
         <div className="form-group full-width">
           <label>{selectedContent.school}</label>
@@ -188,6 +203,106 @@ export default function OlyRegistration({ languageType }) {
             <input type="text" name="transactionId" value={formData.transactionId} onChange={handleChange} required />
           </div>
         </div>
+
+        <div className="form-group">
+          <label>Gender</label>
+          <select name="gender" value={formData.gender} onChange={handleChange} required>
+            <option value="" disabled>-- Select Gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Category</label>
+          <select name="category" value={formData.category} onChange={handleChange} required>
+            <option value="" disabled>-- Select Category --</option>
+            <option value="GN">GN</option>
+            <option value="OBC">OBC</option>
+            <option value="SC">SC</option>
+            <option value="ST">ST</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Competition Category</label>
+          <select name="competitionCategory" value={formData.competitionCategory} onChange={handleChange} required>
+            <option value="" disabled>-- Select Competition Category --</option>
+            <option value="Primary">Primary</option>
+            <option value="Junior">Junior</option>
+            <option value="High-School">High-School</option>
+          </select>
+        </div>
+
+        <div className="form-group full-width">
+          <label>Village</label>
+          <input type="text" name="village" value={formData.village} onChange={handleChange} required />
+        </div>
+        <div className="form-group full-width">
+          <label>Post</label>
+          <input type="text" name="post" value={formData.post} onChange={handleChange} required />
+        </div>
+        <div className="form-group full-width">
+          <label>District</label>
+          <input type="text" name="district" value={formData.district} onChange={handleChange} required />
+        </div>
+        <div className="form-group full-width">
+          <label>PinCode</label>
+          <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required />
+        </div>
+
+        <div className="form-group">
+          <label>State</label>
+          <select name="state" value={formData.state} onChange={handleChange} required>
+            <option value="">-- Select State --</option>
+
+            {/* States */}
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+            <option value="Assam">Assam</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Goa">Goa</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Manipur">Manipur</option>
+            <option value="Meghalaya">Meghalaya</option>
+            <option value="Mizoram">Mizoram</option>
+            <option value="Nagaland">Nagaland</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Sikkim">Sikkim</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Tripura">Tripura</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="West Bengal">West Bengal</option>
+
+            {/* Union Territories */}
+            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Dadra and Nagar Haveli and Daman and Diu">
+              Dadra and Nagar Haveli and Daman and Diu
+            </option>
+            <option value="Delhi">Delhi</option>
+            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+            <option value="Ladakh">Ladakh</option>
+            <option value="Lakshadweep">Lakshadweep</option>
+            <option value="Puducherry">Puducherry</option>
+
+          </select>
+        </div>
+
+
+
         <div className="form-group full-width">
           <label>Calculated Fee</label>
           <div className="font-bold text-green-700">

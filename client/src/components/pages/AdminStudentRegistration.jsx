@@ -24,6 +24,15 @@ const AdminStudentRegistration = () => {
         school: '',
         amount: '',
         subject: 'Mathematics', // Default subject
+        category: '',
+        competitionCategory: '',
+        village: '',
+        post: '',
+        district: '',
+        state: '',
+        gender: '',
+        pinCode: ''
+
     });
     const [schools, setSchools] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +59,12 @@ const AdminStudentRegistration = () => {
     };
 
 
-      useEffect(() => {
+    useEffect(() => {
         const fee = calculateFee(formData.class, formData.subject);
         setFormData(prev => ({ ...prev, amount: fee }));
-      }, [formData.class, formData.subject]);
-    
-      
+    }, [formData.class, formData.subject]);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -76,7 +85,9 @@ const AdminStudentRegistration = () => {
             console.log(res);
             setFormData({
                 firstName: '', lastName: '', dateOfBirth: '', class: '',
-                phone: '', school: '', subject: 'Mathematics'
+                phone: '', school: '', subject: 'Mathematics', gender: '', category: '', competitionCategory: '',
+                village: '', post: '', district: '', state: '', pinCode: '',
+                aadharNumber: ''
             });
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed. Please try again.');
@@ -110,6 +121,8 @@ const AdminStudentRegistration = () => {
                     <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="p-3 border rounded-md" />
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> <input type="text" name="aadharNumber" placeholder="Aadhar Number" value={formData.aadharNumber} onChange={handleChange} required className="p-3 border rounded-md" /> </div>
+
                 <div>
                     <select name="school" value={formData.school} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
                         <option value="" disabled>-- Select School --</option>
@@ -130,10 +143,105 @@ const AdminStudentRegistration = () => {
                         <option value="English">English</option>
                     </select>
                 </div>
-                <div className="form-group full-width">
-                    <label>Calculated Fee</label>
-                    <div className="font-bold text-green-700">
-                        ₹{formData.amount || 0}
+
+                <div>
+                    <select name="gender" value={formData.gender} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="category" value={formData.category} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
+                        <option value="">-- Select Category --</option>
+                        <option value="GN">GN</option>
+                        <option value="OBC">OBC</option>
+                        <option value="SC">SC</option>
+                        <option value="ST">ST</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="competitionCategory" value={formData.competitionCategory} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
+                        <option value="">-- Select Competition Category --</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Junior">Junior</option>
+                        <option value="High-School">High-School</option>
+                        <option value="10+2">10+2</option>
+                    </select>
+                </div><br />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className='flex flex-col'>
+                        <label className="text-sm text-gray-600">Village</label>
+                        <input type="text" name="village" value={formData.village} onChange={handleChange} required className="p-3 border rounded-md" />
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className="text-sm text-gray-600">Post</label>
+                        <input type="text" name="post" value={formData.post} onChange={handleChange} required className="p-3 border rounded-md" />
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className="text-sm text-gray-600">District</label>
+                        <input type="text" name="district" value={formData.district} onChange={handleChange} required className="p-3 border rounded-md" />
+                    </div>
+                    <select
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        required
+                        className="w-full p-3 border rounded-md bg-white"
+                    >
+                        <option value="">-- Select State --</option>
+
+                        {/* States */}
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+
+                        {/* Union Territories */}
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">
+                            Dadra and Nagar Haveli and Daman and Diu
+                        </option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                        <option value="Ladakh">Ladakh</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+                    </select>
+                    <div className='flex flex-col'>
+                        <label className="text-sm text-gray-600">PinCode</label>
+                        <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required className="p-3 border rounded-md" />
+                    </div>
+                    <div className="form-group full-width">
+                        <label>Calculated Fee</label>
+                        <div className="font-bold text-green-700">
+                            ₹{formData.amount || 0}
+                        </div>
                     </div>
                 </div>
 
