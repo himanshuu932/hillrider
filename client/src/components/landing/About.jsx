@@ -3,14 +3,14 @@ import missionVisionBg from './img.jpg';
 
 const content = {
   en: {
-    aboutTitle: "ABOUT US",
+    aboutTitle: "",
     aboutText: `<strong>Hill Riders Manav Sewa Samiti</strong> is a registered non-profit organization (Reg. No. GOR/02834/2023-2024) dedicated to holistic community development. We are committed to uplifting society through multifaceted initiatives in education, environmental conservation, healthcare, and social welfare. Our focus is on empowering marginalized communities, fostering self-reliance among the youth, and creating a sustainable and harmonious society for all. Through our various projects, we strive to build a future where every individual has the opportunity to thrive.`,
     missionTitle: "MISSION",
     visionTitle: "VISION",
     missionAndVisionText: `To provide every child with an ideal, modern, and developed education, ensuring their holistic development through academics, cultural arts, and sports to make them self-reliant. We are dedicated to environmental protection and instilling positive values to foster an atmosphere of harmony and brotherhood.`
   },
   hi: {
-    aboutTitle: "हमारे बारे में",
+    aboutTitle: "",
     aboutText: `<strong>हिल राइडर्स मानव सेवा समिति</strong> एक पंजीकृत गैर-लाभकारी संगठन (पंजीकरण संख्या GOR/02834/2023-2024) है जो समग्र सामुदायिक विकास के लिए समर्पित है। हम शिक्षा, पर्यावरण संरक्षण, स्वास्थ्य सेवा, और सामाजिक कल्याण में बहुमुखी पहलों के माध्यम से समाज के उत्थान के लिए प्रतिबद्ध हैं। हमारा ध्यान हाशिए पर मौजूद समुदायों को सशक्त बनाने, युवाओं में आत्मनिर्भरता को बढ़ावा देने, और सभी के लिए एक स्थायी और सामंजस्यपूर्ण समाज बनाने पर है। अपनी विभिन्न परियोजनाओं के माध्यम से, हम एक ऐसे भविष्य का निर्माण करने का प्रयास करते हैं जहाँ हर व्यक्ति को आगे बढ़ने का अवसर मिले।`,
     missionTitle: "मिशन",
     visionTitle: "दृष्टिकोण",

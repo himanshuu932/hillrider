@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Edit, Save, X, Users, DollarSign, Download, School, UserPlus } from 'lucide-react';
-import AddSchool from './AddSchool'; // Import the component
-import AdminStudentRegistration from './AdminStudentRegistration'; // Import the component
+import AddSchool from './AddSchool'; 
+import AdminStudentRegistration from './AdminStudentRegistration'; 
 import RegistrationDashboard from './RegistrationDashboard';
 import VerifyRegistrations from './VerifyRegistrations';
 import axios from "axios";
@@ -19,6 +19,7 @@ const mockRegistrations = [
   { id: 7, firstName: 'Rohit', lastName: 'Verma', age: 15, class: '10th', phone: '9876543216', school: 'Ryan International', subject: 'English', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-21' },
   { id: 8, firstName: 'Kavya', lastName: 'Nair', age: 13, class: '8th', phone: '9876543217', school: 'Kendriya Vidyalaya', subject: 'Science', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-22' }
 ];
+
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('registrations');

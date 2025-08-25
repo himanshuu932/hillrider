@@ -11,8 +11,8 @@ const images = [olympiad1, olympiad2, olympiad3, olympiad4];
 
 const content = {
   en: {
-    title: "Olympiad",
-    desc: "The Olympiad is organized to encourage students to showcase their knowledge, logical thinking, and problem-solving skills. It helps in developing competitive spirit and builds confidence.",
+    title: "HILL RIDERS OLYMPIAD",
+    desc: "Participating in an Olympiad is more than just a competition, it’s a journey of growth, learning and achievement. Olympiads not only test your knowledge but also help you discover your true potential. They open doors to new opportunities, nurture problem-solving skills and build confidence to face bigger challenges ahead. From enhancing your academic performance to preparing you for future competitive exams, Olympiads give you a golden platform to shine at state, national and even international levels.",
     register: "Register Now",
     contact: "Contact",
     Prizes: "Prizes",
@@ -196,8 +196,8 @@ const content = {
     ],
   },
   hi: {
-    title: "ओलंपियाड",
-    desc: "ओलंपियाड का आयोजन छात्रों को अपना ज्ञान, तार्किक सोच और समस्या समाधान क्षमता प्रदर्शित करने के लिए प्रोत्साहित करने हेतु किया जाता है। यह प्रतिस्पर्धात्मक भावना विकसित करता है और आत्मविश्वास बढ़ाता है।",
+    title: "हिल राइडर्स ओलंपियाड",
+    desc: "ओलंपियाड केवल एक प्रतियोगिता नहीं, बल्कि सीखने, बढ़ने और उपलब्धि हासिल करने की एक यात्रा है। यह न सिर्फ़ आपके ज्ञान की परख करता है, बल्कि आपकी असली क्षमता को भी उजागर करता है। यह नए अवसरों के द्वार खोलता है, समस्या-समाधान कौशल विकसित करता है और बड़े चुनौतियों का सामना करने का आत्मविश्वास देता है। अकादमिक प्रदर्शन को बेहतर बनाने से लेकर भविष्य की प्रतियोगी परीक्षाओं की तैयारी तक – ओलंपियाड आपको राज्य, राष्ट्रीय और अंतर्राष्ट्रीय स्तर पर चमकने का सुनहरा मंच प्रदान करता है।",
     register: "अभी पंजीकरण करें",
     contact: "संपर्क करें",
     Prizes: "पुरस्कार",
@@ -423,7 +423,7 @@ const Olympiad = ({ languageType }) => {
         </div>
 
         {/* Class-wise Section */}
-        <section>
+        <section className="classWiseSection">
           <h3>{selectedContent.ClassWiseSub}</h3>
           <table>
             <thead>
@@ -445,19 +445,19 @@ const Olympiad = ({ languageType }) => {
 
         {/* Contact Section */}
 
-        <section id="Contact">
+        <section id="Contact" className="contact">
           <h3>{selectedContent.contact}</h3>
           <ul>
             {selectedContent.contact_us.map((item, i) => (
               <li key={i}>
-                <strong>{item.label}:</strong> {item.value}
+                <strong>{item.label}:     </strong> {item.value}
               </li>
             ))}
           </ul>
         </section>
 
         {/* Exam Section */}
-        <section>
+        <section className="exam">
           <h3>{selectedContent.ExamDesc}</h3>
           <div className="exam-tables">
             {selectedContent.examData.map((exam, index) => (
@@ -489,7 +489,7 @@ const Olympiad = ({ languageType }) => {
         </section>
 
         {/* Fees Section */}
-        <section>
+        <section className="fees">
           <h3>{selectedContent.Fees}</h3>
           <table>
             <thead>
@@ -510,7 +510,7 @@ const Olympiad = ({ languageType }) => {
         </section>
 
         {/* Rules Section */}
-        <section>
+        <section className="rules">
           <h3>{selectedContent.ScholarshipRules}</h3>
           <ul>
             {selectedContent.scholarshipRules.map((rule, i) => (
@@ -526,7 +526,7 @@ const Olympiad = ({ languageType }) => {
         </section>
 
         {/* Scholarship Section */}
-        <section>
+        <section className="scholarship">
           <h3>{selectedContent.Scholarship}</h3>
           <table>
             <thead>

@@ -4,6 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearSca
 import { Pie, Bar } from 'react-chartjs-2';
 import { Users, Search, CheckCircle, Clock, Printer } from 'lucide-react';
 import RegistrationReceipt from '../RegistrationPrint';
+import RegistrationListPrint from '../RegistrationListPrint';
 import ReactPaginate from 'react-paginate';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
@@ -41,6 +42,7 @@ const RegistrationDashboard = () => {
     const [registrationsState, setRegistrationsState] = useState([]);
     const [registeredStudent, setRegisteredStudent] = useState(null);
     const [showReceipt, setShowReceipt] = useState(false);
+    const [showPrintList, setShowPrintList] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
 
     // Fetch registration data from the backend
@@ -171,10 +173,26 @@ const RegistrationDashboard = () => {
         }],
     };
 
-    // Print handler
+    // Print handler - now shows the print component
     const handlePrint = () => {
-        alert('Printing...');
+        setShowPrintList(true);
+    };
 
+    // Prepare filters info for print component
+    const getFiltersForPrint = () => {
+        const filters = {};
+        if (filterStatus !== 'All') filters.status = filterStatus;
+        if (filterSchool !== 'All') {
+            filters.school = filterSchool;
+            const school = uniqueSchools.find(s => s.id === filterSchool);
+            filters.schoolName = school ? school.name : 'Unknown';
+        }
+        if (searchTerm) filters.search = searchTerm;
+        if (dateFilter === 'today') filters.dateRange = 'Today';
+        if (dateFilter === 'custom' && startDate && endDate) {
+            filters.dateRange = `${startDate} to ${endDate}`;
+        }
+        return filters;
     };
 
     const handleEdit = (id) => {
@@ -229,6 +247,10 @@ const RegistrationDashboard = () => {
         setRegisteredStudent(null);
     };
 
+    const handleClosePrintList = () => {
+        setShowPrintList(false);
+    };
+
     const handleDelete = async (id) => {
         const deleteID = id;
         if (window.confirm('Are you sure you want to delete this registration?')) {
@@ -260,6 +282,36 @@ const RegistrationDashboard = () => {
 
     if (loading) return <p className="text-center p-10">Loading dashboard...</p>;
     if (error) return <p className="text-center p-10 text-red-500">{error}</p>;
+
+    // Show Print List View
+    if (showPrintList) {
+        return (
+            <div className="min-h-screen bg-white">
+                <div className="p-4 no-print">
+                    <button 
+                        onClick={handleClosePrintList}
+                        className="mb-4 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition"
+                    >
+                        ← Back to Dashboard
+                    </button>
+                </div>
+                <RegistrationListPrint 
+                    registrations={filteredRegistrationsForTable}
+                    title={`Student Registration List (${filteredRegistrationsForTable.length} records)`}
+                    ngo={{
+                        name: "HILL RIDER MANAV SEWA SAMITI",
+                        logo: "/logo.png",
+                        tagline: "Serving Humanity with Dedication",
+                        address: "123 NGO Lane, Bhopal, MP",
+                        phone: "+91-9876543210",
+                        email: "contact@hillriderngo.org",
+                    }}
+                    filters={getFiltersForPrint()}
+                    generatedAt={new Date()}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-8 p-4 md:p-6">
@@ -437,7 +489,7 @@ const RegistrationDashboard = () => {
                                                     <div className="flex space-x-2">
                                                         <button onClick={() => handleEdit(reg._id)} className="text-blue-600 hover:text-blue-900">Edit</button>
                                                         <button onClick={() => handleDelete(reg._id)} className="text-red-600 hover:text-red-900">Delete</button>
-                                                        <button onClick={() => handleReceipt(reg._id)} className="text-green-600 hover:text-green-900">Reciept</button>
+                                                        <button onClick={() => handleReceipt(reg._id)} className="text-green-600 hover:text-green-900">Receipt</button>
                                                     </div>
                                                 )}
                                             </td>
