@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import RegistrationPrint from '../RegistrationPrint';
+import RegistrationReceipt from '../RegistrationPrint'; // Updated import
 
-function calculateFee(classValue, subjectValue) {
+function calculateFee(classValue, subjects) {
     let fee = 0;
     const classNum = parseInt(classValue, 10);
     if (classNum >= 1 && classNum <= 5) fee = 120;
@@ -31,8 +31,8 @@ const AdminStudentRegistration = () => {
         district: '',
         state: '',
         gender: '',
-        pinCode: ''
-
+        pinCode: '',
+        aadharNumber: ''
     });
     const [schools, setSchools] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -60,12 +60,6 @@ const AdminStudentRegistration = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-
-    // useEffect(() => {
-    //     const fee = calculateFee(formData.class, formData.subject);
-    //     setFormData(prev => ({ ...prev, amount: fee }));
-    // }, [formData.class, formData.subject]);
-
     useEffect(() => {
         const fetchFeeConfig = async () => {
             try {
@@ -87,7 +81,6 @@ const AdminStudentRegistration = () => {
             setFormData(prev => ({ ...prev, amount: feeConfig[cls] }));
         }
     }, [formData.class, feeConfig]);
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -121,7 +114,6 @@ const AdminStudentRegistration = () => {
     };
 
     return (
-
         <div className="max-w-2xl mx-auto p-8 bg-gray-50 shadow-lg rounded-lg my-10">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">Admin Panel</h2>
             <p className="text-center text-gray-600 mb-8">Register a New Student</p>
@@ -142,7 +134,7 @@ const AdminStudentRegistration = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="form-group">
-                        <select name="class" value={formData.class} onChange={handleChange} required>
+                        <select name="class" value={formData.class} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
                             <option value="">Select Class</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -162,7 +154,9 @@ const AdminStudentRegistration = () => {
                     <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="p-3 border rounded-md" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> <input type="text" name="aadharNumber" placeholder="Aadhar Number" value={formData.aadharNumber} onChange={handleChange} required className="p-3 border rounded-md" /> </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" name="aadharNumber" placeholder="Aadhar Number" value={formData.aadharNumber} onChange={handleChange} required className="p-3 border rounded-md" />
+                </div>
 
                 <div>
                     <select name="school" value={formData.school} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
@@ -192,6 +186,7 @@ const AdminStudentRegistration = () => {
                         <option value="Female">Female</option>
                     </select>
                 </div>
+
                 <div>
                     <select name="category" value={formData.category} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
                         <option value="">-- Select Category --</option>
@@ -201,6 +196,7 @@ const AdminStudentRegistration = () => {
                         <option value="ST">ST</option>
                     </select>
                 </div>
+
                 <div>
                     <select name="competitionCategory" value={formData.competitionCategory} onChange={handleChange} required className="w-full p-3 border rounded-md bg-white">
                         <option value="">-- Select Competition Category --</option>
@@ -209,7 +205,8 @@ const AdminStudentRegistration = () => {
                         <option value="High-School">High-School</option>
                         <option value="10+2">10+2</option>
                     </select>
-                </div><br />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className='flex flex-col'>
                         <label className="text-sm text-gray-600">Village</label>
@@ -231,8 +228,6 @@ const AdminStudentRegistration = () => {
                         className="w-full p-3 border rounded-md bg-white"
                     >
                         <option value="">-- Select State --</option>
-
-                        {/* States */}
                         <option value="Andhra Pradesh">Andhra Pradesh</option>
                         <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                         <option value="Assam">Assam</option>
@@ -261,13 +256,9 @@ const AdminStudentRegistration = () => {
                         <option value="Uttar Pradesh">Uttar Pradesh</option>
                         <option value="Uttarakhand">Uttarakhand</option>
                         <option value="West Bengal">West Bengal</option>
-
-                        {/* Union Territories */}
                         <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
                         <option value="Chandigarh">Chandigarh</option>
-                        <option value="Dadra and Nagar Haveli and Daman and Diu">
-                            Dadra and Nagar Haveli and Daman and Diu
-                        </option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
                         <option value="Delhi">Delhi</option>
                         <option value="Jammu and Kashmir">Jammu and Kashmir</option>
                         <option value="Ladakh">Ladakh</option>
@@ -278,29 +269,23 @@ const AdminStudentRegistration = () => {
                         <label className="text-sm text-gray-600">PinCode</label>
                         <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required className="p-3 border rounded-md" />
                     </div>
-                    {/* <div className="form-group full-width">
-                        <label>Calculated Fee</label>
-                        <div className="font-bold text-green-700">
-                            ₹{formData.amount || 0}
-                        </div>
-                    </div> */}
                     <div className="form-group">
                         <label>Fee</label>
-                        <input type="number" value={fee} readOnly />
+                        <input type="number" value={fee} readOnly className="p-3 border rounded-md bg-gray-100" />
                     </div>
                 </div>
-
 
                 <button type="submit" disabled={isLoading} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-md hover:bg-green-700 transition duration-300 disabled:bg-green-400">
                     {isLoading ? 'Registering...' : 'Register Student'}
                 </button>
             </form>
+
             {registeredStudent && (
                 <div className="my-10 p-4 bg-white rounded-lg shadow-lg">
                     <h3 className="text-xl font-bold text-gray-800 mb-4">
                         Registration Receipt
                     </h3>
-                    <RegistrationPrint
+                    <RegistrationReceipt
                         languageType="en"
                         ngo={{
                             name: "HILL RIDER MANAV SEWA SAMITI",
@@ -313,21 +298,31 @@ const AdminStudentRegistration = () => {
                         student={{
                             firstName: registeredStudent.firstName,
                             lastName: registeredStudent.lastName,
-                            dob: registeredStudent.dateOfBirth,
+                            dateOfBirth: registeredStudent.dateOfBirth,
                             class: registeredStudent.class,
-                            amount: registeredStudent.amount,
                             phone: registeredStudent.phone,
                             school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
                             subject: registeredStudent.subject,
                             transactionId: registeredStudent.transactionId || "N/A",
+                            aadharNumber: registeredStudent.aadharNumber,
+                            gender: registeredStudent.gender,
+                            category: registeredStudent.category,
+                            competitionCategory: registeredStudent.competitionCategory,
+                            village: registeredStudent.village,
+                            post: registeredStudent.post,
+                            district: registeredStudent.district,
+                            pinCode: registeredStudent.pinCode,
+                            state: registeredStudent.state,
+                            paymentStatus: registeredStudent.paymentStatus || "Unverified",
+                            amount: registeredStudent.amount,
+                            studentCode: registeredStudent.studentCode,
                         }}
                         registrationId={registeredStudent.studentCode}
                         issuedAt={registeredStudent.createdAt}
-                        documentTitle="Admin Registered Student"
+                        documentTitle="Admin Registration"
                     />
                 </div>
             )}
-
         </div>
     );
 };

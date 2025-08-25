@@ -3,17 +3,17 @@ import axios from "axios";
 import "../components/styles/registration.css"; // Using the original stylesheet
 import RegistrationPrint from "./RegistrationPrint";
 
-// function calculateFee(classValue, subjectValue) {
-//   let fee = 0;
-//   const classNum = parseInt(classValue, 10);
-//   if (classNum >= 1 && classNum <= 5) fee = 120;
-//   else if (classNum >= 6 && classNum <= 8) fee = 130;
-//   else if (classNum >= 9 && classNum <= 10) fee = 150;
-//   else if (classNum >= 11 && classNum <= 12) fee = 180;
-//   else if (classNum >= 13) fee = 210;
-//   else fee = 0;
-//   return fee;
-// }
+function calculateFee(classValue, subjectValue) {
+  let fee = 0;
+  const classNum = parseInt(classValue, 10);
+  if (classNum >= 1 && classNum <= 5) fee = 120;
+  else if (classNum >= 6 && classNum <= 8) fee = 130;
+  else if (classNum >= 9 && classNum <= 10) fee = 150;
+   else if (classNum >= 11 && classNum <= 12) fee = 180;
+   else if (classNum >= 13) fee = 210;
+  else fee = 0;
+   return fee;
+}
 
 export default function OlyRegistration({ languageType }) {
   const content = {
@@ -97,10 +97,10 @@ export default function OlyRegistration({ languageType }) {
     fetchSchools();
   }, []);
 
-  // useEffect(() => {
-  //   const fee = calculateFee(formData.class, formData.subject);
-  //   setFormData(prev => ({ ...prev, amount: fee }));
-  // }, [formData.class, formData.subject]);
+ useEffect(() => {
+  const fee = calculateFee(formData.class, formData.subject);
+  setFormData(prev => ({ ...prev, amount: fee }));
+  }, [formData.class, formData.subject]);
 
   useEffect(() => {
     const fetchFeeConfig = async () => {
@@ -384,6 +384,18 @@ export default function OlyRegistration({ languageType }) {
               school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
               subject: registeredStudent.subject,
               transactionId: registeredStudent.transactionId || "N/A",
+               aadharNumber: registeredStudent.aadharNumber,
+              gender: registeredStudent.gender,
+              category: registeredStudent.category,
+              competitionCategory: registeredStudent.competitionCategory,
+              village: registeredStudent.village,
+              post: registeredStudent.post,
+              district: registeredStudent.district,
+              pinCode: registeredStudent.pinCode,
+              state: registeredStudent.state,
+              paymentStatus: registeredStudent.paymentStatus || "Unverified",
+              amount: registeredStudent.amount,
+              studentCode: registeredStudent.studentCode,
             }}
             registrationId={registeredStudent.studentCode}
             issuedAt={registeredStudent.createdAt}
