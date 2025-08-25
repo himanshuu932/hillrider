@@ -9,10 +9,10 @@ function calculateFee(classValue, subjectValue) {
   if (classNum >= 1 && classNum <= 5) fee = 120;
   else if (classNum >= 6 && classNum <= 8) fee = 130;
   else if (classNum >= 9 && classNum <= 10) fee = 150;
-   else if (classNum >= 11 && classNum <= 12) fee = 180;
-   else if (classNum >= 13) fee = 210;
+  else if (classNum >= 11 && classNum <= 12) fee = 180;
+  else if (classNum >= 13) fee = 210;
   else fee = 0;
-   return fee;
+  return fee;
 }
 
 export default function OlyRegistration({ languageType }) {
@@ -81,6 +81,7 @@ export default function OlyRegistration({ languageType }) {
   const [registeredStudent, setRegisteredStudent] = useState(null);
   const [feeConfig, setFeeConfig] = useState({});
   const [fee, setFee] = useState(0);
+  const [errors, setErrors] = useState({});
 
 
   // Fetch schools on component mount
@@ -97,9 +98,9 @@ export default function OlyRegistration({ languageType }) {
     fetchSchools();
   }, []);
 
- useEffect(() => {
-  const fee = calculateFee(formData.class, formData.subject);
-  setFormData(prev => ({ ...prev, amount: fee }));
+  useEffect(() => {
+    const fee = calculateFee(formData.class, formData.subject);
+    setFormData(prev => ({ ...prev, amount: fee }));
   }, [formData.class, formData.subject]);
 
   useEffect(() => {
@@ -124,6 +125,43 @@ export default function OlyRegistration({ languageType }) {
     }
   }, [formData.class, feeConfig]);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+
+    //DOB 
+    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
+
+    //Class 
+    if (!formData.class) newErrors.class = "Class is required";
+
+    //Phone (10 digits)
+    if (!/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be 10 digits";
+    }
+
+    //Aadhar (12 digits)
+    if (!/^\d{12}$/.test(formData.aadharNumber)) {
+      newErrors.aadharNumber = "Aadhar must be 12 digits";
+    }
+
+    //Pincode (6 digits)
+    if (!/^\d{6}$/.test(formData.pinCode)) {
+      newErrors.pinCode = "Pincode must be 6 digits";
+    }
+
+    if (!formData.school) newErrors.school = "School is required";
+    if (!formData.village) newErrors.village = "village is required";
+    if (!formData.post) newErrors.post = "post is required";
+    if (!formData.district) newErrors.district = "district is required";
+    if (!formData.state) newErrors.state = "state is required";
+    if (!formData.transactionId.trim()) newErrors.transactionId = "Transaction ID is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
 
   // Input change handle function
@@ -134,6 +172,7 @@ export default function OlyRegistration({ languageType }) {
   // Handle submit with new logic
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!validateForm()) return;
     setIsLoading(true);
     setError('');
     setSuccessMessage('');
@@ -147,6 +186,7 @@ export default function OlyRegistration({ languageType }) {
         phone: "", amount: "", school: "", subject: "Mathematics", transactionId: "",
         gender: '', category: '', competitionCategory: '', village: '', post: '', district: '', state: '', pinCode: '', aadharNumber: ''
       });
+      setErrors({});
     } catch (err) {
       setError(err.response?.data?.message || selectedContent.errorMsg);
     } finally {
@@ -169,11 +209,13 @@ export default function OlyRegistration({ languageType }) {
         <div className="form-row">
           <div className="form-group">
             <label>{selectedContent.firstName}</label>
-            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
+            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required /> 
+            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>} 
           </div>
           <div className="form-group">
             <label>{selectedContent.lastName}</label>
             <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
+            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
           </div>
         </div>
 
@@ -182,6 +224,7 @@ export default function OlyRegistration({ languageType }) {
           <div className="form-group">
             <label>{selectedContent.dob}</label>
             <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required />
+            {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
           </div>
           {/* <div className="form-group">
             <label>{selectedContent.class}</label>
@@ -205,6 +248,7 @@ export default function OlyRegistration({ languageType }) {
               <option value="12">12</option>
               <option value="13">13</option>
             </select>
+            {errors.class && <p className="text-red-500 text-sm mt-1">{errors.class}</p>}
           </div>
 
         </div>
@@ -212,12 +256,14 @@ export default function OlyRegistration({ languageType }) {
         {/* Row 3: Phone */}
         <div className="form-group full-width">
           <label>{selectedContent.phone}</label>
-          <input type="tel" name="phone" pattern="[0-9]{10}" value={formData.phone} onChange={handleChange} required />
+          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
+          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
 
         <div className="form-group full-width">
           <label>Aadhar Number</label>
           <input type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleChange} required />
+          {errors.aadharNumber && <p className="text-red-500 text-sm mt-1">{errors.aadharNumber}</p>}
         </div>
 
         {/* Row 4: School Dropdown */}
@@ -233,6 +279,7 @@ export default function OlyRegistration({ languageType }) {
               <option disabled>{selectedContent.loadingSchools}</option>
             )}
           </select>
+          {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school}</p>}
         </div>
 
         {/* Row 5: Subject + Transaction ID */}
@@ -248,6 +295,7 @@ export default function OlyRegistration({ languageType }) {
           <div className="form-group">
             <label>{selectedContent.transactionId}</label>
             <input type="text" name="transactionId" value={formData.transactionId} onChange={handleChange} required />
+            {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
           </div>
         </div>
 
@@ -278,24 +326,29 @@ export default function OlyRegistration({ languageType }) {
             <option value="Primary">Primary</option>
             <option value="Junior">Junior</option>
             <option value="High-School">High-School</option>
+            <option value="10+2">10+2</option>
           </select>
         </div>
 
         <div className="form-group full-width">
           <label>Village</label>
           <input type="text" name="village" value={formData.village} onChange={handleChange} required />
+          {errors.village && <p className="text-red-500 text-sm mt-1">{errors.village}</p>}
         </div>
         <div className="form-group full-width">
           <label>Post</label>
           <input type="text" name="post" value={formData.post} onChange={handleChange} required />
+          {errors.post && <p className="text-red-500 text-sm mt-1">{errors.post}</p>}
         </div>
         <div className="form-group full-width">
           <label>District</label>
           <input type="text" name="district" value={formData.district} onChange={handleChange} required />
+          {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district}</p>}
         </div>
         <div className="form-group full-width">
           <label>PinCode</label>
           <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required />
+          {errors.pinCode && <p className="text-red-500 text-sm mt-1">{errors.pinCode}</p>}
         </div>
 
         <div className="form-group">
@@ -346,6 +399,7 @@ export default function OlyRegistration({ languageType }) {
             <option value="Puducherry">Puducherry</option>
 
           </select>
+          {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
         </div>
 
 
@@ -384,7 +438,7 @@ export default function OlyRegistration({ languageType }) {
               school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
               subject: registeredStudent.subject,
               transactionId: registeredStudent.transactionId || "N/A",
-               aadharNumber: registeredStudent.aadharNumber,
+              aadharNumber: registeredStudent.aadharNumber,
               gender: registeredStudent.gender,
               category: registeredStudent.category,
               competitionCategory: registeredStudent.competitionCategory,
