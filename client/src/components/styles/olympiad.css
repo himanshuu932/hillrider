@@ -1,47 +1,47 @@
 
 .olympiad-container-img {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
   font-family: 'Arial', sans-serif;
   color: #333;
   line-height: 1.6;
-  padding: 20px 0;
+  padding:0;
 }
 
-/* Carousel */
-.olympiad-container img {
+
+.olympiad-container {
   width: 100%;
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
-/* Container */
-.olympiad-container{
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Arial', sans-serif;
+  margin: 0;
   color: #333;
-  line-height: 1.6;
-  padding: 20px 0;
+  line-height: 1.7;
+  padding: 30px 20px;
+ 
+  background: linear-gradient(135deg, #fefaee, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Intro Section */
+
 .olympiad-intro {
   text-align: center;
   margin-bottom: 40px;
 }
 
 .olympiad-intro h2 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: bold;
   color: #0A3153;
   margin-bottom: 15px;
 }
 
 .olympiad-intro p {
   font-size: 1.1rem;
-  max-width: 800px;
-  margin: 0 auto 20px;
+  font-weight: 545;
+  margin: 10 px, auto;
+  text-align: justify;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .olympiad-intro .buttons {
@@ -53,67 +53,103 @@
 .olympiad-intro .btn {
   padding: 12px 25px;
   border: none;
+  font-weight:bold;
   background-color: #0A3153;
   color: white;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .olympiad-intro .btn:hover {
   background-color: #1e4d63;
+  transform: translateY(-3px);
 }
 
-/* Section Headings */
+
 section h3 {
   font-size: 1.8rem;
-  color: #ffffff;
+  font-weight: bold;
+  color: #0A3153;
   margin: 30px 0 15px;
-  border-bottom: 2px solid #0A3153;
+  border-bottom: 3px solid #0A3153;
   display: inline-block;
   padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Tables */
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 30px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 table th, table td {
-  border: 1px solid #ccc;
-  padding: 10px 15px;
+  border: 1px solid #765f5f;
+  padding: 12px 15px;
   text-align: center;
 }
 
 table th {
   background-color: #0A3153;
+  background-color: #0A3153;
   color: white;
 }
-.class-heading{
-  background-color: #7cecf8c6;
-  color: #1f1f1f;
+
+.class-heading {
+  background-color: #2a6f8f;
+  color: #fff;
   font-weight: bold;
   text-align: center;
 }
 
 table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f9f9f9;
 }
 
-/* Rules List */
-ul {
-  list-style-type: disc;
-  padding-left: 20px;
+.contact{
+  font-size: 1.1rem;
+  font-weight: 550;
 }
 
-ul li {
-  margin-bottom: 10px;
+.rules {
+  background: #e6f3f7;
+  border-left: 6px solid #0A3153;
+  padding: 20px;
+  font-size: 1.1rem;
+  font-weight: 550;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 
-/* Responsive */
+.rules ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.rules ul li {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-left: 4px solid #0A3153;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.rules ul li:hover {
+  background: #d6ecf1;
+  transform: translateX(5px);
+}
+
+
 @media (max-width: 768px) {
   .olympiad-intro .buttons {
     flex-direction: column;
@@ -129,3 +165,4 @@ ul li {
     padding: 8px 10px;
   }
 }
+
