@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles/HeroSection.css';
-import sevabharti6 from '../../assets/6.png';
-import sevabharti2 from '../../assets/5.png';
-import sevabharti3 from '../../assets/2.png';
-import sevabharti4 from '../../assets/4.png';
-import sevabharti5 from '../../assets/3.png';
-import sevabharti from '../../assets/1.png';
+import sevabharti6 from '../../assets/headImage6.webp';
+import sevabharti2 from '../../assets/headImage5.webp';
+import sevabharti3 from '../../assets/headImage4.webp';
+import sevabharti4 from '../../assets/headImage3.webp';
+import sevabharti5 from '../../assets/headImage2.webp';
+import sevabharti from '../../assets/headImage.webp';
 
 const slides = [
   {
