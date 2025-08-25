@@ -26,6 +26,20 @@ const registerAdmin = async (req, res) => {
     }
 };
 
+const getStudentById = async (req, res) => {
+    try {
+        const student = await Student.findById(req.params.id).populate('school');
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        res.json(student);
+    } catch (error) {
+        console.error('Error fetching student by ID:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
 const loginAdmin = async (req, res) => {
     try {
         const { identifier, password } = req.body;
@@ -122,5 +136,6 @@ module.exports = {
     loginAdmin,
     getAdminProfile,
     editRegistraion,
-    deleteRegistration
+    deleteRegistration,
+    getStudentById
 };
