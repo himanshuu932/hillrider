@@ -37,14 +37,15 @@ const AboutUs = ({ languageType}) => {
 
       <div className="mission-vision-section" style={{ backgroundImage: `url(${missionVisionBg})` }}>
         <div className="overlay">
-          <div className="mission">
-            <h3>{selectedContent.missionTitle}</h3>
-            <p>{selectedContent.missionAndVisionText}</p>
-          </div>
-          <div className="vision">
-            <h3>{selectedContent.visionTitle}</h3>
-            <p>{selectedContent.missionAndVisionText}</p>
-          </div>
+         <div className="mission">
+  <h3 style={{ color: "white" }}>{selectedContent.missionTitle}</h3>
+  <p>{selectedContent.missionAndVisionText}</p>
+</div>
+<div className="vision">
+  <h3 style={{ color: "white" }}>{selectedContent.visionTitle}</h3>
+  <p>{selectedContent.missionAndVisionText}</p>
+</div>
+
         </div>
       </div>
     </div>

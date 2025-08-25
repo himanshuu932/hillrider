@@ -153,11 +153,11 @@ table tr:nth-child(even) {
 @media (max-width: 768px) {
   .olympiad-intro .buttons {
     flex-direction: column;
-  }
 
+  }
+  
   .olympiad-intro .btn {
     width: 100%;
-    max-width: 250px;
   }
 
   table th, table td {
