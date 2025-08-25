@@ -1,10 +1,12 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { Printer, Download, Eye, EyeOff, Check, AlertCircle, Info } from "lucide-react";
+import html2pdf from 'html2pdf.js';
 
 export default function RegistrationReceipt({
   languageType = "en",
   ngo = {
     name: "HILL RIDER MANAV SEWA SAMITI",
-    logo: null,
+    logo: "/logo.webp",
     tagline: "Serving Humanity with Dedication",
     address: "123 NGO Lane, Bhopal, MP",
     phone: "+91-9876543210",
@@ -16,7 +18,7 @@ export default function RegistrationReceipt({
     dateOfBirth: "2011-06-15",
     class: "8th",
     phone: "9876543210",
-    school: " Public School",
+    school: "Public School of Excellence",
     subject: "Mathematics",
     transactionId: "TXN123456789",
     aadharNumber: "1234-5678-9012",
@@ -24,289 +26,159 @@ export default function RegistrationReceipt({
     category: "GN",
     competitionCategory: "Junior",
     village: "Rampur",
-    post: "post",
-    district: "dictrict",
+    post: "Post Office Rampur",
+    district: "Bhopal",
     pinCode: "462001",
-    state: "state",
-    paymentStatus: "Unverified",
+    state: "Madhya Pradesh",
+    paymentStatus: "Paid",
     amount: 500,
     studentCode: "HR2025001",
   },
   registrationId = "HR-2025-001",
   issuedAt = new Date(),
   documentTitle,
+  onPrint,
+  onDownload,
 }) {
   const printRef = useRef(null);
+  const [showPreview, setShowPreview] = useState(true);
+  const [isPrinting, setIsPrinting] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const t = useMemo(() => {
     const map = {
-      en: {
-        documentTitle: documentTitle || "OLYMPIAD REGISTRATION",
-        receiptTitle: "REGISTRATION ACKNOWLEDGMENT",
-        regNo: "REG. NO.",
-        studentId: "STUDENT ID",
-        datetime: "DATE & TIME",
-        candidate: "CANDIDATE INFORMATION",
-        location: "ADDRESS DETAILS",
-        academic: "ACADEMIC DETAILS",
-        fees: "FEE DETAILS",
-        printSave: "Print / Save as PDF",
-        note: "Note: Payment verification will be done separately",
-        keepSafe: "Please keep this receipt safe for future reference",
-        footer: "*** COMPUTER GENERATED RECEIPT ***",
-        amount: "Registration Fee",
-        txnId: "Transaction Reference",
-        status: "Verification Status",
-      },
-      hi: {
-        documentTitle: documentTitle || "ओलंपियाड पंजीकरण",
-        receiptTitle: "पंजीकरण रसीद",
-        regNo: "पंजी. संख्या",
-        studentId: "छात्र आईडी",
-        datetime: "दिनांक व समय",
-        candidate: "अभ्यर्थी की जानकारी",
-        location: "पता विवरण",
-        academic: "शैक्षणिक विवरण",
-        fees: "फीस विवरण",
-        printSave: "प्रिंट / पीडीएफ सेव करें",
-        note: "नोट: भुगतान सत्यापन अलग से किया जाएगा",
-        keepSafe: "भविष्य के संदर्भ के लिए इस रसीद को सुरक्षित रखें",
-        footer: "*** कंप्यूटर जनरेटेड रसीद ***",
-        amount: "पंजीकरण शुल्क",
-        txnId: "लेनदेन संदर्भ",
-        status: "सत्यापन स्थिति",
-      },
+        en: { documentTitle: documentTitle || "OLYMPIAD REGISTRATION", receiptTitle: "REGISTRATION ACKNOWLEDGMENT", regNo: "REG. NO.", studentId: "STUDENT ID", datetime: "Issued on", candidate: "CANDIDATE DETAILS", fees: "FEE DETAILS", printReceipt: "Print", downloadPdf: "Download PDF", togglePreview: "Toggle Preview", previewMode: "A4 Preview", normalMode: "Web View", keepSafe: "Please keep this receipt safe for future reference.", footer: "This is a computer-generated receipt.", amount: "Registration Fee", txnId: "Transaction Reference", status: "Payment Status", name: "Name", dob: "Date of Birth", gender: "Gender", category: "Category", phone: "Phone", aadhar: "Aadhar", address: "Address", school: "School", class: "Class", subject: "Subject", competitionCategory: "Competition", printing: "Printing...", downloading: "Downloading...", },
+        hi: { documentTitle: documentTitle || "ओलंपियाड पंजीकरण", receiptTitle: "पंजीकरण रसीद", regNo: "पंजी. संख्या", studentId: "छात्र आईडी", datetime: "जारी करने की तारीख", candidate: "अभ्यर्थी का विवरण", fees: "शुल्क विवरण", printReceipt: "प्रिंट करें", downloadPdf: "पीडीएफ डाउनलोड करें", togglePreview: "पूर्वावलोकन टॉगल करें", previewMode: "A4 पूर्वावलोकन", normalMode: "वेब देखें", keepSafe: "भविष्य के संदर्भ के लिए इस रसीद को सुरक्षित रखें।", footer: "यह एक कंप्यूटर जनित रसीद है।", amount: "पंजीकरण शुल्क", txnId: "लेन-देन संदर्भ", status: "भुगतान स्थिति", name: "नाम", dob: "जन्म तिथि", gender: "लिंग", category: "श्रेणी", phone: "फ़ोन", aadhar: "आधार", address: "पता", school: "विद्यालय", class: "कक्षा", subject: "विषय", competitionCategory: "प्रतियोगिता", printing: "प्रिंट हो रहा है...", downloading: "डाउनलोड हो रहा है...", },
     };
     return map[languageType] || map.en;
   }, [languageType, documentTitle]);
+  
+  function safeVal(v, format = null) { if (v === null || v === undefined || v === "") return "N/A"; if (format === "date") { try { return new Date(v).toLocaleDateString("en-IN", { year: 'numeric', month: 'long', day: 'numeric' }); } catch { return String(v); } } if (format === "currency") { return `₹${Number(v).toLocaleString("en-IN")}`; } return String(v); }
+  const formattedDateTime = useMemo(() => { try { const d = new Date(issuedAt); return d.toLocaleDateString('en-GB') + " at " + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); } catch { return String(issuedAt); } }, [issuedAt]);
+  
 
-  function safeVal(v, format = null) {
-    if (v === null || v === undefined) return "-";
-    if (typeof v === "boolean") return v ? "Yes" : "No";
-    if (Array.isArray(v)) return v.join(", ");
-    if (typeof v === "object") return JSON.stringify(v);
 
-    if (format === "date") {
-      try {
-        return new Date(v).toLocaleDateString();
-      } catch {
-        return String(v);
-      }
-    }
-
-    if (format === "currency") {
-      return `₹${Number(v).toLocaleString()}`;
-    }
-
-    return String(v);
-  }
-
-  const formattedDateTime = useMemo(() => {
-    try {
-      const d = new Date(issuedAt);
-      return d.toLocaleDateString('en-IN') + " " + d.toLocaleTimeString('en-IN', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    } catch {
-      return String(issuedAt);
-    }
-  }, [issuedAt]);
-
-  const handlePrint = () => {
-    const prev = document.title;
-    document.title = `${t.documentTitle} - ${registrationId}`;
-    window.print();
-    setTimeout(() => (document.title = prev), 500);
+  const handlePrint = () => { window.print(); if (onPrint) onPrint(); };
+  const handleDownload = () => {
+    setIsDownloading(true);
+    const element = printRef.current;
+    const studentName = `${student.firstName}_${student.lastName}`.replace(/\s+/g, '_');
+    const fileName = `Receipt_${registrationId}_${studentName}.pdf`;
+    const opt = { margin: 0, filename: fileName, image: { type: 'jpeg', quality: 0.98 }, html2canvas:  { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+    html2pdf().from(element).set(opt).save().then(() => { setIsDownloading(false); if (onDownload) onDownload(); });
   };
+ 
+  const DetailRow = ({ label, value }) => (
+    <div className="flex text-sm py-1">
+      <p className="w-36 text-gray-500 shrink-0">{label}</p>
+      <div className="font-medium text-gray-800">{value}</div>
+    </div>
+  );
 
   return (
-    <div id="receipt" ref={printRef} className="max-w-3xl mx-auto bg-white ...">
-      <div className="min-h-screen bg-gray-50 py-6 px-4 print:bg-white print:py-0">
-        <div className="max-w-2xl mx-auto mb-4 flex justify-center print:hidden">
-          <button
-            onClick={handlePrint}
-            className="px-6 py-2 rounded-md bg-[#0A3153] text-white font-medium shadow hover:bg-[#0A3153]/90 transition"
-          >
-            {t.printSave}
-          </button>
-        </div>
-
-        <div
-          ref={printRef}
-          className="max-w-2xl mx-auto bg-white shadow-sm border-2 border-gray-800 print:shadow-none print:border-gray-800"
-        >
-
-          <div className="text-center p-4 border-b border-gray-300">
-            {ngo.logo ? (
-              <img
-                src={ngo.logo}
-                alt={`${ngo.name} logo`}
-                className="w-16 h-16 mx-auto mb-3 object-contain"
-              />
-            ) : (
-              <div className="w-16 h-16 mx-auto mb-3 bg-[#0A3153] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">HR</span>
+    <div className={`bg-gray-200 print-container print:bg-white`}>
+     
+      <div className="max-w-4xl mx-auto px-4 py-6 print:hidden">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="flex flex-col sm:flex-row justify-center items-start sm:items-center gap-4">
+             <div className="flex flex-wrap items-center gap-2">
+             <button onClick={handleDownload} disabled={isDownloading} className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 disabled:opacity-50"> 
+              <Download className="w-4 h-4 mr-2" /> {isDownloading ? t.downloading : t.downloadPdf} </button>
               </div>
-            )}
-            <h1 className="text-xl font-bold text-gray-900 leading-tight">
-              {ngo.name || "Your NGO"}
-            </h1>
-            {ngo.tagline && (
-              <p className="text-sm text-gray-600 mt-1">{ngo.tagline}</p>
-            )}
-            <div className="text-xs text-gray-500 mt-2 space-y-1">
-              {ngo.address && <div>{ngo.address}</div>}
-              <div className="flex justify-center space-x-4">
-                {ngo.phone && <span>{ngo.phone}</span>}
-                {ngo.email && <span>{ngo.email}</span>}
-              </div>
-            </div>
-          </div>
-
-
-          <div className="bg-gray-100 px-4 py-3 border-b-2 border-gray-800">
-            <h2 className="text-center text-lg font-bold text-gray-800 tracking-wide">
-              {t.receiptTitle}
-            </h2>
-          </div>
-
-          <div className="p-4 bg-gray-50 border-b border-gray-300">
-            <div className="grid grid-cols-3 gap-4 text-sm">
-              <div>
-                <span className="font-semibold text-gray-600">{t.regNo}</span>
-                <div className="text-lg font-bold text-gray-900">{registrationId}</div>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">{t.studentId}</span>
-                <div className="text-lg font-bold text-gray-900">{student.studentCode}</div>
-              </div>
-              <div>
-                <span className="font-semibold text-gray-600">{t.datetime}</span>
-                <div className="text-sm font-bold text-gray-900">{formattedDateTime}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 space-y-6">
-            <div>
-              <h3 className="text-sm font-bold text-gray-800 mb-3 pb-1 border-b border-gray-400 uppercase tracking-wide">
-                {t.candidate}
-              </h3>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">Name:</span>
-                  <span className="font-semibold">{student.firstName} {student.lastName}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">DOB:</span>
-                  <span className="font-semibold">{safeVal(student.dateOfBirth, "date")}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">Gender:</span>
-                  <span className="font-semibold">{student.gender}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">Category:</span>
-                  <span className="font-semibold">{student.category}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">Phone:</span>
-                  <span className="font-semibold">{student.phone}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-24 text-gray-600 font-medium">Aadhar:</span>
-                  <span className="font-semibold">{student.aadharNumber}</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-gray-800 mb-3 pb-1 border-b border-gray-400 uppercase tracking-wide">
-                {t.location}
-              </h3>
-              <div className="text-sm space-y-1">
-                <div className="flex">
-                  <span className="w-16 text-gray-600 font-medium">Village:</span>
-                  <span className="font-semibold">{student.village}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-16 text-gray-600 font-medium">Post:</span>
-                  <span className="font-semibold">{student.post}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-16 text-gray-600 font-medium">Address:</span>
-                  <span className="font-semibold">{student.district}, {student.state} - {student.pinCode}</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-bold text-gray-800 mb-3 pb-1 border-b border-gray-400 uppercase tracking-wide">
-                {t.academic}
-              </h3>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                <div className="flex">
-                  <span className="w-20 text-gray-600 font-medium">School:</span>
-                  <span className="font-semibold">{student.school}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-20 text-gray-600 font-medium">Class:</span>
-                  <span className="font-semibold">{student.class}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-20 text-gray-600 font-medium">Subject:</span>
-                  <span className="font-semibold">{student.subject}</span>
-                </div>
-                <div className="flex">
-                  <span className="w-20 text-gray-600 font-medium">Category:</span>
-                  <span className="font-semibold">{student.competitionCategory}</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-bold text-gray-800 mb-3 pb-1 border-b border-gray-400 uppercase tracking-wide">
-                {t.fees}
-              </h3>
-              <div className="bg-gray-50 p-3 rounded border">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">{t.amount}:</span>
-                  <span className="text-lg font-bold text-gray-900">{safeVal(student.amount, "currency")}</span>
-                </div>
-                <div className="flex justify-between items-center mb-2 text-sm">
-                  <span className="font-medium text-gray-700">{t.txnId}:</span>
-                  <span className="font-mono text-gray-900">{student.transactionId}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t-2 border-gray-800 bg-gray-100 p-4">
-            <div className="text-center space-y-2">
-              <p className="text-xs font-semibold text-orange-700 bg-orange-50 px-2 py-1 rounded">
-                {t.note}
-              </p>
-              <p className="text-xs text-gray-600">{t.keepSafe}</p>
-              <p className="text-xs font-bold text-gray-800">{t.footer}</p>
-            </div>
           </div>
         </div>
+      </div>
+      
+      <div className="page-wrapper py-8 print:py-0">
+        <div ref={printRef} className={`a4-page-container ${!showPreview ? "standard-view" : ""}`}>
+          <div className="receipt-content bg-white p-8">
+            
+            <header className="flex items-start justify-between pb-6 border-b">
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 shrink-0">
+                   {ngo.logo ? <img src={ngo.logo} alt="NGO Logo" className="w-full h-full object-contain" /> : <div className="w-full h-full bg-gray-200 rounded-md"></div> }
+                </div>
+                <div className="text-left">
+                  <h1 className="text-2xl font-bold text-gray-800">{ngo.name}</h1>
+                  <p className="text-sm text-gray-600">{ngo.tagline}</p>
+                  <p className="text-xs text-gray-500 mt-1">{ngo.address}</p>
+                  <p className="text-xs text-gray-500">Ph: {ngo.phone} | Email: {ngo.email}</p>
+                </div>
+              </div>
+                <div className="text-right my-8">
+                <p className="text-xs text-gray-500">{t.regNo}</p>
+                <p className="text-base font-bold text-gray-900">{registrationId}</p>
+              </div>
+            </header>
 
-        <style>{`
+            <main className="flex-grow">
+               {/* 1. Registration ID moved out of the flex row with the title */}
+            
+
+              <h2 className="text-xl font-semibold text-gray-800 tracking-wide uppercase mb-0 text-center">{t.receiptTitle}</h2>
+              
+              <div className="space-y-8">
+                <section>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b uppercase tracking-wider">{t.candidate}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                    <DetailRow label={t.name} value={`${student.firstName} ${student.lastName}`} />
+                    <DetailRow label={t.dob} value={safeVal(student.dateOfBirth, "date")} />
+                    <DetailRow label={t.gender} value={student.gender} />
+                    <DetailRow label={t.category} value={student.category} />
+                    <DetailRow label={t.phone} value={student.phone} />
+                    <DetailRow label={t.aadhar} value={student.aadharNumber} />
+                    <div className="md:col-span-2"> <DetailRow label={t.address} value={`${student.village}, ${student.post}, ${student.district}, ${student.state} - ${student.pinCode}`} /> </div>
+                    <div className="md:col-span-2 pt-2 mt-2 border-t"> <DetailRow label={t.school} value={student.school} /> </div>
+                    <DetailRow label={t.class} value={student.class} />
+                    <DetailRow label={t.subject} value={student.subject} />
+                    <DetailRow label={t.competitionCategory} value={student.competitionCategory} />
+                    <DetailRow label={t.studentId} value={student.studentCode} />
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b uppercase tracking-wider">{t.fees}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                    <DetailRow label={t.amount} value={<span className="text-lg font-bold">{safeVal(student.amount, "currency")}</span>} />
+                    <DetailRow label={t.txnId} value={<span className="font-mono">{student.transactionId}</span>} />
+                   
+                    <DetailRow label={t.status} value={
+                        <span className={`text-xs font-semibold px-2.5 py-1 `}>
+                            {student.paymentStatus}
+                        </span>
+                    } />
+                  </div>
+                </section>
+              </div>
+            </main>
+
+            <footer className="text-center text-xs text-gray-500 pt-8 mt-auto">
+                <p className="mb-2">{t.footer}{t.keepSafe}</p>
+                <div className="flex justify-center items-center border-t pt-3">
+                    <p className="font-medium">{t.datetime}: {formattedDateTime}</p>
+                
+                </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .a4-page-container { width: 210mm; height: 291mm; margin: 0 auto; display: flex; flex-direction: column; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.2); transition: all 0.3s ease; box-sizing: border-box; }
+        .receipt-content { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
+        .standard-view { width: 100%; max-width: 896px; height: auto; box-shadow: none; }
+        .standard-view .receipt-content { border-radius: 0.5rem; border: 1px solid #ddd; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
         @media print {
-          @page { 
-            size: A4; 
-            margin: 15mm; 
-          }
-          .print\\:hidden { display: none !important; }
-          .print\\:shadow-none { box-shadow: none !important; }
-          .print\\:bg-white { background: #fff !important; }
-          .print\\:py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
-          .print\\:border-gray-800 { border-color: #1f2937 !important; }
-          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          @page { size: A4; margin: 0; }
+          body, html { margin: 0 !important; padding: 0 !important; background-color: #fff !important; }
+          .print-container > * { display: none; }
+          .print-container .page-wrapper { display: block !important; }
+          .page-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 0; margin: 0; }
+          .a4-page-container { margin: 0 !important; padding: 0 !important; width: 100% !important; height: 100% !important; box-shadow: none !important; border: none !important; box-sizing: border-box; page-break-inside: avoid; }
+          .receipt-content { border: none !important; box-shadow: none !important; }
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
         }
       `}</style>
-      </div>
     </div>
   );
 }
