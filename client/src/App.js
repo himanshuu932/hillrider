@@ -12,6 +12,7 @@ import Olympiad from './components/Olympiad';
 import Registration from './components/OlyRegistration';
 import AdminStudentRegistration from './components/pages/AdminStudentRegistration';
 import DonationPage from './components/DonationPage';
+import PressRelease from './components/PressRelease';
 
 const PrivateRoute = ({ children, isAdmin }) => {
   return isAdmin ? children : <Navigate to="/login" />;
@@ -38,7 +39,7 @@ function App() {
         <Route path="/" element={<LandingPage languageType={languageType} />} />
         <Route path="/login" element={<AdminLogin setIsAdmin={setIsAdmin} />} />
         <Route path="/olympiad" element={<Olympiad languageType={languageType} />} />
-        <Route path="/pressrelease" element={<Registration languageType={languageType} />} />
+        <Route path="/pressrelease" element={<PressRelease languageType={languageType} />} />
         <Route path="/registration" element={<Registration languageType={languageType} />} />
         <Route path="/donate" element={<DonationPage languageType={languageType} />} />
         {/* Admin-only Routes */}
