@@ -1,5 +1,5 @@
-import heroImage1 from "../assets/heroImage1.png";
-import heroImage2 from "../assets/heroImage2.png";
+import heroImage1 from "../assets/image7.webp";
+import heroImage2 from "../assets/image8.webp";
 import { useState } from "react";
 
 export default function DonationPage({languageType}) {
