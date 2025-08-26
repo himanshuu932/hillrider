@@ -101,7 +101,7 @@ const AdminStudentRegistration = () => {
         if (!formData.gender) newErrors.gender = "Please select gender";
         if (!formData.category) newErrors.category = "Please select category";
 
-        if (formData.aadharNumber && !/^\d{12}$/.test(formData.aadharNumber)) {
+        if (!/^\d{12}$/.test(formData.aadharNumber)) {
             newErrors.aadharNumber = "Aadhar must be 12 digits";
         }
 
@@ -156,132 +156,308 @@ const AdminStudentRegistration = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-8 bg-gray-50 shadow-lg rounded-lg my-10">
+        <div className="max-w-7xl mx-auto pr-8 pl-8 pb-8 pt-4 bg-gray-50 shadow-lg rounded-lg my-5">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">Admin Panel</h2>
             <p className="text-center text-gray-600 mb-8">Register a New Student</p>
 
             {error && <p className="text-red-500 bg-red-100 p-3 rounded-md mb-4">{error}</p>}
-            {successMessage && !registeredStudent && <p className="text-green-500 bg-green-100 p-3 rounded-md mb-4">{successMessage}</p>}
+            {successMessage && !registeredStudent && (
+                <p className="text-green-500 bg-green-100 p-3 rounded-md mb-4">{successMessage}</p>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-8">
-                {/* *** ENHANCEMENT: Form Sections *** */}
-                <fieldset className="border p-4 rounded-lg">
-                    <legend className="text-lg font-semibold px-2 text-gray-700">Personal Information</legend>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                        <div className="flex flex-col">
-                            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <label className="text-sm text-gray-600">Date of Birth</label>
-                            <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="w-full p-3 border rounded-md" />
-                            {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full p-3 border rounded-md bg-white">
-                                <option value="">-- Select Gender --</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <select name="category" value={formData.category} onChange={handleChange} className="w-full p-3 border rounded-md bg-white">
-                                <option value="">-- Select Category --</option>
-                                <option value="GN">GN</option>
-                                <option value="OBC">OBC</option>
-                                <option value="SC">SC</option>
-                                <option value="ST">ST</option>
-                            </select>
-                            {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
-                        </div>
-                        <div className="flex flex-col">
-                            <input type="text" name="aadharNumber" placeholder="Aadhar Number" value={formData.aadharNumber} onChange={handleChange} className="p-3 border rounded-md md:col-span-2" />
-                            {errors.aadharNumber && <p className="text-red-500 text-sm mt-1">{errors.aadharNumber}</p>}
-                        </div>
-                    </div>
-                </fieldset>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* LEFT: PERSONAL DETAILS */}
+                    <fieldset className="border p-4 rounded-lg space-y-4">
+                        <legend className="text-lg font-semibold text-gray-700">Personal Details</legend>
+                        <div className="space-y-4">
+                            {/* First & Last Name */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="firstName"
+                                        placeholder="First Name"
+                                        value={formData.firstName}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full"
+                                    />
+                                    {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                                </div>
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        placeholder="Last Name"
+                                        value={formData.lastName}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full"
+                                    />
+                                    {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                                </div>
+                            </div>
 
-                <fieldset className="border p-4 rounded-lg">
-                    <legend className="text-lg font-semibold px-2 text-gray-700">Academic Details</legend>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                        <select name="school" value={formData.school} onChange={handleChange} className="w-full p-3 border rounded-md bg-white md:col-span-2">
-                            <option value="" disabled>-- Select School --</option>
-                            {schools.length > 0 ? (
-                                schools.map(school => (
-                                    <option key={school._id} value={school._id}>{school.name} ({school.code})</option>
-                                ))
-                            ) : (
-                                <option disabled>Loading schools...</option>
-                            )}
-                        </select>
-                        {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school}</p>}
-                        <div className="flex items-center gap-4">
-                            
-                                <select name="class" value={formData.class} onChange={handleChange} className="w-full p-3 border rounded-md bg-white">
-                                    <option value="">Select Class</option>
-                                    {[...Array(13).keys()].map(i => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
-                                </select>
-                                {errors.class && <p className="text-red-500 text-sm mt-1">{errors.class}</p>}
-                            
-                            {/* *** ENHANCEMENT: Improved Fee Display *** */}
-                            <div className="flex flex-col items-center">
-                                <label className="text-sm text-gray-600">Fee</label>
-                                <span className="text-xl font-bold text-green-600">₹{fee}</span>
+                            {/* DOB & Phone */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <input
+                                        type="date"
+                                        name="dateOfBirth"
+                                        value={formData.dateOfBirth}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full"
+                                    />
+                                    {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
+                                </div>
+                                <div>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        placeholder="Phone Number"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full"
+                                    />
+                                    {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+                                </div>
+                            </div>
+
+                            {/* Gender & Category */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <select
+                                        name="gender"
+                                        value={formData.gender}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full bg-white"
+                                    >
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                    {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+                                </div>
+                                <div>
+                                    <select
+                                        name="category"
+                                        value={formData.category}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md w-full bg-white"
+                                    >
+                                        <option value="">Select Category</option>
+                                        <option value="GN">GN</option>
+                                        <option value="OBC">OBC</option>
+                                        <option value="SC">SC</option>
+                                        <option value="ST">ST</option>
+                                    </select>
+                                    {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
+                                </div>
+                            </div>
+
+                            {/* Aadhaar */}
+                            <div>
+                                <input
+                                    type="text"
+                                    name="aadharNumber"
+                                    placeholder="Aadhar Number"
+                                    value={formData.aadharNumber}
+                                    onChange={handleChange}
+                                    className="p-3 border rounded-md w-full"
+                                />
+                                {errors.aadharNumber && <p className="text-red-500 text-sm">{errors.aadharNumber}</p>}
                             </div>
                         </div>
-                        <select name="subject" value={formData.subject} onChange={handleChange} className="w-full p-3 border rounded-md bg-white">
-                            <option value="Mathematics">Mathematics</option>
-                            <option value="Science">Science</option>
-                            <option value="English">English</option>
-                        </select>
-                        {/* *** ENHANCEMENT: Read-only automated category *** */}
-                        <div>
-                            <label className="text-sm text-gray-600">Competition Category</label>
-                            <input type="text" name="competitionCategory" value={formData.competitionCategory} readOnly className="w-full p-3 border rounded-md bg-gray-100" />
-                        </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
 
+                    {/* RIGHT: ACADEMIC DETAILS */}
+                    <fieldset className="border p-4 rounded-lg space-y-4">
+                        <legend className="text-lg font-semibold text-gray-700">Academic Details</legend>
+                        <div className="space-y-4">
+                            {/* School */}
+                            <div>
+                                <select
+                                    name="school"
+                                    value={formData.school}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-md bg-white"
+                                >
+                                    <option value="">Select School</option>
+                                    {schools.map((s) => (
+                                        <option key={s._id} value={s._id}>
+                                            {s.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.school && <p className="text-red-500 text-sm">{errors.school}</p>}
+                            </div>
+
+                            {/* Class + Subject */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <select
+                                        name="class"
+                                        value={formData.class}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md bg-white w-full"
+                                    >
+                                        <option value="">Select Class</option>
+                                        {[...Array(12)].map((_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {i + 1}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.class && <p className="text-red-500 text-sm">{errors.class}</p>}
+                                </div>
+                                <div>
+                                    <select
+                                        name="subject"
+                                        value={formData.subject}
+                                        onChange={handleChange}
+                                        className="p-3 border rounded-md bg-white w-full"
+                                    >
+                                        <option value="">Select Subject</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Science">Science</option>
+                                        <option value="English">English</option>
+                                    </select>
+                                    {errors.subject && <p className="text-red-500 text-sm">{errors.subject}</p>}
+                                </div>
+                            </div>
+
+                            {/* Fee + Competition Category */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="p-3 border rounded-md bg-gray-50 flex items-center justify-between">
+                                    <span className="text-sm text-gray-600">Fee</span>
+                                    <span className="font-semibold">₹{fee}</span>
+                                </div>
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="competitionCategory"
+                                        value={formData.competitionCategory}
+                                        readOnly
+                                        className="p-3 border rounded-md bg-gray-100 w-full"
+                                    />
+                                    {errors.competitionCategory && (
+                                        <p className="text-red-500 text-sm">{errors.competitionCategory}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                {/* ADDRESS SECTION */}
                 <fieldset className="border p-4 rounded-lg">
-                    <legend className="text-lg font-semibold px-2 text-gray-700">Address</legend>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                        <div className='flex flex-col'>
-                            <input type="text" name="village" placeholder="Village" value={formData.village} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.village && <p className="text-red-500 text-sm mt-1">{errors.village}</p>}
+                    <legend className="text-lg font-semibold text-gray-700">Address</legend>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                        <div>
+                            <input
+                                type="text"
+                                name="village"
+                                placeholder="Village"
+                                value={formData.village}
+                                onChange={handleChange}
+                                className="p-3 border rounded-md w-full"
+                            />
+                            {errors.village && <p className="text-red-500 text-sm">{errors.village}</p>}
                         </div>
-                        <div className='flex flex-col'>
-                            <input type="text" name="post" placeholder="Post Office" value={formData.post} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.post && <p className="text-red-500 text-sm mt-1">{errors.post}</p>}
+                        <div>
+                            <input
+                                type="text"
+                                name="post"
+                                placeholder="Post Office"
+                                value={formData.post}
+                                onChange={handleChange}
+                                className="p-3 border rounded-md w-full"
+                            />
+                            {errors.post && <p className="text-red-500 text-sm">{errors.post}</p>}
                         </div>
-                        <div className='flex flex-col'>
-                            <input type="text" name="district" placeholder="District" value={formData.district} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district}</p>}
+                        <div>
+                            <input
+                                type="text"
+                                name="district"
+                                placeholder="District"
+                                value={formData.district}
+                                onChange={handleChange}
+                                className="p-3 border rounded-md w-full"
+                            />
+                            {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
                         </div>
-                        <div className='flex flex-col'>
-                            <input type="text" name="pinCode" placeholder="Pin Code" value={formData.pinCode} onChange={handleChange} className="p-3 border rounded-md" />
-                            {errors.pinCode && <p className="text-red-500 text-sm mt-1">{errors.pinCode}</p>}
+                        <div>
+                            <input
+                                type="text"
+                                name="pinCode"
+                                placeholder="Pin Code"
+                                value={formData.pinCode}
+                                onChange={handleChange}
+                                className="p-3 border rounded-md w-full"
+                            />
+                            {errors.pinCode && <p className="text-red-500 text-sm">{errors.pinCode}</p>}
                         </div>
-                        <select name="state" value={formData.state} onChange={handleChange} className="w-full p-3 border rounded-md bg-white md:col-span-2">
-                            <option value="">-- Select State --</option>
-                            {/* A comprehensive list of states and UTs */}
-                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option><option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chandigarh">Chandigarh</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option><option value="Delhi">Delhi</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jammu and Kashmir">Jammu and Kashmir</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Puducherry">Puducherry</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option>
-                        </select>
-                        {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+                        <div className="md:col-span-2">
+                            <select
+                                name="state"
+                                value={formData.state}
+                                onChange={handleChange}
+                                className="p-3 border rounded-md bg-white w-full"
+                            >
+                                <option value="">Select State</option>
+                                {/* States */}
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
 
+                                {/* Union Territories */}
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">
+                                    Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+
+                            </select>
+                            {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+                        </div>
                     </div>
                 </fieldset>
 
-                <button type="submit" disabled={isLoading} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-md hover:bg-green-700 transition duration-300 disabled:bg-green-400">
-                    {isLoading ? 'Registering...' : 'Register Student'}
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-md hover:bg-green-700 transition disabled:bg-green-400"
+                >
+                    {isLoading ? "Registering..." : "Register Student"}
                 </button>
             </form>
 
@@ -308,8 +484,9 @@ const AdminStudentRegistration = () => {
                         documentTitle="Admin Registration"
                     />
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 };
 
