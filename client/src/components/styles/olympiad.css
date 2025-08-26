@@ -204,7 +204,6 @@ table tr:nth-child(even) {
 
   .olympiad-intro .btn {
     width: 100%;
-    max-width: 250px;
   }
 
   table th, table td {
