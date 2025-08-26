@@ -3,6 +3,7 @@ import { Printer, Download, Eye, EyeOff, Check, AlertCircle, Info } from "lucide
 import html2pdf from 'html2pdf.js';
 
 export default function RegistrationReceipt({
+   showControls = true,
   languageType = "en",
   ngo = {
     name: "HILL RIDER MANAV SEWA SAMITI",
@@ -47,8 +48,8 @@ export default function RegistrationReceipt({
 
   const t = useMemo(() => {
     const map = {
-        en: { documentTitle: documentTitle || "OLYMPIAD REGISTRATION", receiptTitle: "REGISTRATION ACKNOWLEDGMENT", regNo: "REG. NO.", studentId: "STUDENT ID", datetime: "Issued on", candidate: "CANDIDATE DETAILS", fees: "FEE DETAILS", printReceipt: "Print", downloadPdf: "Download PDF", togglePreview: "Toggle Preview", previewMode: "A4 Preview", normalMode: "Web View", keepSafe: "Please keep this receipt safe for future reference.", footer: "This is a computer-generated receipt.", amount: "Registration Fee", txnId: "Transaction Reference", status: "Payment Status", name: "Name", dob: "Date of Birth", gender: "Gender", category: "Category", phone: "Phone", aadhar: "Aadhar", address: "Address", school: "School", class: "Class", subject: "Subject", competitionCategory: "Competition", printing: "Printing...", downloading: "Downloading...", },
-        hi: { documentTitle: documentTitle || "ओलंपियाड पंजीकरण", receiptTitle: "पंजीकरण रसीद", regNo: "पंजी. संख्या", studentId: "छात्र आईडी", datetime: "जारी करने की तारीख", candidate: "अभ्यर्थी का विवरण", fees: "शुल्क विवरण", printReceipt: "प्रिंट करें", downloadPdf: "पीडीएफ डाउनलोड करें", togglePreview: "पूर्वावलोकन टॉगल करें", previewMode: "A4 पूर्वावलोकन", normalMode: "वेब देखें", keepSafe: "भविष्य के संदर्भ के लिए इस रसीद को सुरक्षित रखें।", footer: "यह एक कंप्यूटर जनित रसीद है।", amount: "पंजीकरण शुल्क", txnId: "लेन-देन संदर्भ", status: "भुगतान स्थिति", name: "नाम", dob: "जन्म तिथि", gender: "लिंग", category: "श्रेणी", phone: "फ़ोन", aadhar: "आधार", address: "पता", school: "विद्यालय", class: "कक्षा", subject: "विषय", competitionCategory: "प्रतियोगिता", printing: "प्रिंट हो रहा है...", downloading: "डाउनलोड हो रहा है...", },
+        en: { documentTitle: documentTitle || "OLYMPIAD REGISTRATION", receiptTitle: "REGISTRATION ACKNOWLEDGMENT", regNo: "REG. NO.", studentId: "STUDENT ID", datetime: "Issued on", candidate: "CANDIDATE DETAILS", fees: "FEE DETAILS", printReceipt: "Print", downloadPdf: "Download PDF", togglePreview: "Toggle Preview", previewMode: "A4 Preview", normalMode: "Web View", keepSafe: "Please keep this receipt safe for future reference.", footer: "This is a computer-generated receipt.", amount: "Registration Fee", txnId: "Transaction Reference", status: "Payment Status", name: "Name", dob: "Date of Birth", gender: "Gender", category: "Category", phone: "Phone", aadhar: "Aadhar", address: "Address", school: "School", class: "Class", subject: "Subject", competitionCategory: "Competition", printing: "Printing...", downloading: "Downloading...", authoritySign: "Authorised Signatory" },
+        hi: { documentTitle: documentTitle || "ओलंपियाड पंजीकरण", receiptTitle: "पंजीकरण रसीद", regNo: "पंजी. संख्या", studentId: "छात्र आईडी", datetime: "जारी करने की तारीख", candidate: "अभ्यर्थी का विवरण", fees: "शुल्क विवरण", printReceipt: "प्रिंट करें", downloadPdf: "पीडीएफ डाउनलोड करें", togglePreview: "पूर्वावलोकन टॉगल करें", previewMode: "A4 पूर्वावलोकन", normalMode: "वेब देखें", keepSafe: "भविष्य के संदर्भ के लिए इस रसीद को सुरक्षित रखें।", footer: "यह एक कंप्यूटर जनित रसीद है।", amount: "पंजीकरण शुल्क", txnId: "लेन-देन संदर्भ", status: "भुगतान स्थिति", name: "नाम", dob: "जन्म तिथि", gender: "लिंग", category: "श्रेणी", phone: "फ़ोन", aadhar: "आधार", address: "पता", school: "विद्यालय", class: "कक्षा", subject: "विषय", competitionCategory: "प्रतियोगिता", printing: "प्रिंट हो रहा है...", downloading: "डाउनलोड हो रहा है...", authoritySign: "अधिकृत हस्ताक्षरकर्ता" },
     };
     return map[languageType] || map.en;
   }, [languageType, documentTitle]);
@@ -78,7 +79,7 @@ export default function RegistrationReceipt({
   return (
     <div className={`bg-gray-200 print-container print:bg-white`}>
      
-      <div className="max-w-4xl mx-auto px-4 py-6 print:hidden">
+     {showControls && <div className="max-w-4xl mx-auto px-4 py-6 print:hidden">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex flex-col sm:flex-row justify-center items-start sm:items-center gap-4">
              <div className="flex flex-wrap items-center gap-2">
@@ -88,8 +89,9 @@ export default function RegistrationReceipt({
           </div>
         </div>
       </div>
+      }
       
-      <div className="page-wrapper py-8 print:py-0">
+      <div className="page-wrapper  print:py-0">
         <div ref={printRef} className={`a4-page-container ${!showPreview ? "standard-view" : ""}`}>
           <div className="receipt-content bg-white p-8">
             
@@ -112,23 +114,20 @@ export default function RegistrationReceipt({
             </header>
 
             <main className="flex-grow">
-               {/* 1. Registration ID moved out of the flex row with the title */}
-            
-
-              <h2 className="text-xl font-semibold text-gray-800 tracking-wide uppercase mb-0 text-center">{t.receiptTitle}</h2>
+              <h2 className="text-xl font-semibold text-gray-800 tracking-wide uppercase mt-6 mb-8 text-center">{t.receiptTitle}</h2>
               
               <div className="space-y-8">
                 <section>
                   <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b uppercase tracking-wider">{t.candidate}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-1">
                     <DetailRow label={t.name} value={`${student.firstName} ${student.lastName}`} />
                     <DetailRow label={t.dob} value={safeVal(student.dateOfBirth, "date")} />
                     <DetailRow label={t.gender} value={student.gender} />
                     <DetailRow label={t.category} value={student.category} />
                     <DetailRow label={t.phone} value={student.phone} />
                     <DetailRow label={t.aadhar} value={student.aadharNumber} />
-                    <div className="md:col-span-2"> <DetailRow label={t.address} value={`${student.village}, ${student.post}, ${student.district}, ${student.state} - ${student.pinCode}`} /> </div>
-                    <div className="md:col-span-2 pt-2 mt-2 border-t"> <DetailRow label={t.school} value={student.school} /> </div>
+                    <div className="col-span-2"> <DetailRow label={t.address} value={`${student.village}, ${student.post}, ${student.district}, ${student.state} - ${student.pinCode}`} /> </div>
+                    <div className="col-span-2 pt-2 mt-2 border-t"> <DetailRow label={t.school} value={student.school} /> </div>
                     <DetailRow label={t.class} value={student.class} />
                     <DetailRow label={t.subject} value={student.subject} />
                     <DetailRow label={t.competitionCategory} value={student.competitionCategory} />
@@ -138,7 +137,7 @@ export default function RegistrationReceipt({
 
                 <section>
                   <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b uppercase tracking-wider">{t.fees}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-1">
                     <DetailRow label={t.amount} value={<span className="text-lg font-bold">{safeVal(student.amount, "currency")}</span>} />
                     <DetailRow label={t.txnId} value={<span className="font-mono">{student.transactionId}</span>} />
                    
@@ -150,21 +149,37 @@ export default function RegistrationReceipt({
                   </div>
                 </section>
               </div>
+
+              {/* ===== SIGNATURE AND STAMP AREA ===== */}
+              <div className="flex justify-end pt-16 print:pt-12">
+                <div className="w-60 text-center">
+                  <div className="h-20 flex justify-center items-center">
+                    {/* Placeholder for the official stamp */}
+                    <div className="w-24 h-24 border-2 border-dashed border-gray-400 rounded-full flex items-center justify-center">
+                      <p className="text-xs text-gray-500">Official Stamp</p>
+                    </div>
+                  </div>
+                  <div className="border-t border-gray-500 mt-8"></div>
+                  <p className="text-sm font-medium pt-2">{t.authoritySign}</p>
+                </div>
+              </div>
+              {/* ===== END SIGNATURE AREA ===== */}
+
             </main>
 
             <footer className="text-center text-xs text-gray-500 pt-8 mt-auto">
-                <p className="mb-2">{t.footer}{t.keepSafe}</p>
+                <p className="mb-2">{t.keepSafe}</p>
                 <div className="flex justify-center items-center border-t pt-3">
                     <p className="font-medium">{t.datetime}: {formattedDateTime}</p>
-                
                 </div>
+               
             </footer>
           </div>
         </div>
       </div>
 
       <style>{`
-        .a4-page-container { width: 210mm; height: 291mm; margin: 0 auto; display: flex; flex-direction: column; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.2); transition: all 0.3s ease; box-sizing: border-box; }
+        .a4-page-container { width: 210mm; height: 297mm; margin: 0 auto; display: flex; flex-direction: column; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.2); transition: all 0.3s ease; box-sizing: border-box; }
         .receipt-content { display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; }
         .standard-view { width: 100%; max-width: 896px; height: auto; box-shadow: none; }
         .standard-view .receipt-content { border-radius: 0.5rem; border: 1px solid #ddd; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
