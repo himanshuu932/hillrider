@@ -15,7 +15,7 @@ const content = {
     donate: "DONATE",
     pressrelease: "PRESS RELEASE",
     volunteer: "VOLUNTEER",
-    admin: "ADMIN"
+    
   },
   hi: {
     logo: "हिल राइडर्स",
@@ -27,7 +27,7 @@ const content = {
     donate: "दान करें",
     pressrelease: "प्रेस विज्ञप्ति",
     volunteer: "स्वयंसेवक",
-    admin: "एडमिन"
+    
   },
 };
 
@@ -97,11 +97,7 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.volunteer}
           </Link>
         </li>
-        <li className="navbar__item">
-          <Link to="/admin" className={getLinkClass("/admin")} onClick={() => setIsMenuOpen(false)}>
-            {selectedContent.admin}
-          </Link>
-        </li>
+       
       </ul>
 
       {/* Language Switch Buttons */}

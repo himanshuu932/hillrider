@@ -5,7 +5,7 @@ import linkedin from "../assets/linkedin.png";
 import youtube from "../assets/youtube.png";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-
+import { useNavigate } from "react-router-dom";
 export default function Footer({ languageType }) {
   const content = {
     en: {
@@ -75,7 +75,7 @@ export default function Footer({ languageType }) {
   };
 
   const t = content[languageType] || content.en;
-
+  const navigate = useNavigate();
   return (
     <footer className="bg-[#0A3153] text-white font-robotoSlab">
       <div className="max-w-7xl mx-auto px-6 pt-8 flex flex-col lg:flex-row lg:gap-20 gap-8">
@@ -164,20 +164,28 @@ export default function Footer({ languageType }) {
           
           {/* Copyright for mobile grid view only */}
           <div className="text-sm sm:hidden">
-            <p>© 2025 Hill Riders Manav Seva Samiti</p>
+            <p onClick={()=>navigate('/login')}>© 2025 Hill Riders Manav Seva Samiti</p>
             <p>{t.rights}</p>
           </div>
         </div>
       </div>
 
-      {/* Copyright for larger screens */}
       <div className="max-w-7xl mx-auto px-6 py-2 text-center sm:text-left hidden sm:block">
-        <p className="text-sm">
+        <p onClick={()=>navigate('/login')} className="text-sm">
           © 2025 Hill Riders Manav Seva Samiti {" "} {t.rights}
         </p>
       </div>
 
-      <div className="bg-[#0A3153] py-4 text-center text-sm">{t.made}</div>
+      <div className="bg-[#0A3153] py-4 text-center text-sm">
+          <a
+              href="https://bludgers.vercel.app/"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{color:"white"}}
+            >
+              {t.made}
+              </a>
+              </div>
     </footer>
   );
 }
