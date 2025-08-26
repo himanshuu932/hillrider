@@ -3,17 +3,17 @@ import axios from "axios";
 import "../components/styles/registration.css"; // Using the original stylesheet
 import RegistrationPrint from "./RegistrationPrint";
 
-function calculateFee(classValue, subjectValue) {
-  let fee = 0;
-  const classNum = parseInt(classValue, 10);
-  if (classNum >= 1 && classNum <= 5) fee = 120;
-  else if (classNum >= 6 && classNum <= 8) fee = 130;
-  else if (classNum >= 9 && classNum <= 10) fee = 150;
-  else if (classNum >= 11 && classNum <= 12) fee = 180;
-  else if (classNum >= 13) fee = 210;
-  else fee = 0;
-  return fee;
-}
+// function calculateFee(classValue, subjectValue) {
+//   let fee = 0;
+//   const classNum = parseInt(classValue, 10);
+//   if (classNum >= 1 && classNum <= 5) fee = 120;
+//   else if (classNum >= 6 && classNum <= 8) fee = 130;
+//   else if (classNum >= 9 && classNum <= 10) fee = 150;
+//   else if (classNum >= 11 && classNum <= 12) fee = 180;
+//   else if (classNum >= 13) fee = 210;
+//   else fee = 0;
+//   return fee;
+// }
 
 export default function OlyRegistration({ languageType }) {
   const content = {
@@ -82,6 +82,7 @@ export default function OlyRegistration({ languageType }) {
   const [feeConfig, setFeeConfig] = useState({});
   const [fee, setFee] = useState(0);
   const [errors, setErrors] = useState({});
+  const [step, setStep] = useState(1);
 
 
   // Fetch schools on component mount
@@ -98,10 +99,10 @@ export default function OlyRegistration({ languageType }) {
     fetchSchools();
   }, []);
 
-  useEffect(() => {
-    const fee = calculateFee(formData.class, formData.subject);
-    setFormData(prev => ({ ...prev, amount: fee }));
-  }, [formData.class, formData.subject]);
+  // useEffect(() => {
+  //   const fee = calculateFee(formData.class, formData.subject);
+  //   setFormData(prev => ({ ...prev, amount: fee }));
+  // }, [formData.class, formData.subject]);
 
   useEffect(() => {
     const fetchFeeConfig = async () => {
@@ -123,46 +124,65 @@ export default function OlyRegistration({ languageType }) {
       setFee(feeConfig[cls]);
       setFormData(prev => ({ ...prev, amount: feeConfig[cls] }));
     }
+
+    let competitionCategory = '';
+    if (cls >= 1 && cls <= 5) competitionCategory = 'Primary';
+    else if (cls >= 6 && cls <= 8) competitionCategory = 'Junior';
+    else if (cls >= 9 && cls <= 10) competitionCategory = 'High-School';
+    else if (cls >= 11 && cls <= 13) competitionCategory = '10+2';
+    setFormData(prev => ({ ...prev, competitionCategory }));
   }, [formData.class, feeConfig]);
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (step === 1) {
+      if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+      if (!formData.lastName.trim()) newErrors.lastName = "Last name is required ";
 
-    //DOB 
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
+      //DOB 
+      if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
 
-    //Class 
-    if (!formData.class) newErrors.class = "Class is required";
+      //Class 
+      if (!formData.class) newErrors.class = "Class is required";
 
-    //Phone (10 digits)
-    if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must be 10 digits";
+      //Phone (10 digits)
+      if (!/^\d{10}$/.test(formData.phone)) {
+        newErrors.phone = "Phone number must be 10 digits";
+      }
+
+      //Aadhar (12 digits)
+      if (!/^\d{12}$/.test(formData.aadharNumber)) {
+        newErrors.aadharNumber = "Aadhar must be 12 digits";
+      }
+
+      //Pincode (6 digits)
+      if (!/^\d{6}$/.test(formData.pinCode)) {
+        newErrors.pinCode = "Pincode must be 6 digits";
+      }
+
+      if (!formData.gender) newErrors.gender = "Gender is required";
+      if (!formData.category) newErrors.category = "Category is required";
+      if (!formData.competitionCategory) newErrors.competitionCategory = "Competition Category is required";
+
+      if (!formData.school) newErrors.school = "School is required";
+      if (!formData.village) newErrors.village = "Village is required";
+      if (!formData.post) newErrors.post = "Post is required";
+      if (!formData.district) newErrors.district = "District is required";
+      if (!formData.state) newErrors.state = "State is required";
     }
-
-    //Aadhar (12 digits)
-    if (!/^\d{12}$/.test(formData.aadharNumber)) {
-      newErrors.aadharNumber = "Aadhar must be 12 digits";
+    if (step === 2) {
+      if (!formData.transactionId.trim()) newErrors.transactionId = "Transaction ID is required";
     }
-
-    //Pincode (6 digits)
-    if (!/^\d{6}$/.test(formData.pinCode)) {
-      newErrors.pinCode = "Pincode must be 6 digits";
-    }
-
-    if (!formData.school) newErrors.school = "School is required";
-    if (!formData.village) newErrors.village = "village is required";
-    if (!formData.post) newErrors.post = "post is required";
-    if (!formData.district) newErrors.district = "district is required";
-    if (!formData.state) newErrors.state = "state is required";
-    if (!formData.transactionId.trim()) newErrors.transactionId = "Transaction ID is required";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const nextStep = () => {
+    if (validateForm()) setStep(2);
+  };
+
+  const prevStep = () => setStep(1);
 
   // Input change handle function
   const handleChange = (e) => {
@@ -172,7 +192,7 @@ export default function OlyRegistration({ languageType }) {
   // Handle submit with new logic
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!validateForm()) return;
+    if (!validateForm()) return;
     setIsLoading(true);
     setError('');
     setSuccessMessage('');
@@ -195,266 +215,275 @@ export default function OlyRegistration({ languageType }) {
   };
 
   return (
-    <div className="form-container">
-      <div className="form-title">
-        <h2>{selectedContent.title}</h2>
-      </div>
-
+  
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl">
+      
+      <div className="flex mb-6">
+        <div className={`flex-1 text-center ${step === 1 ? "font-bold text-blue-600" : "text-gray-400"}`}>
+          Step 1: Student Details
+        </div>
+        <div className={`flex-1 text-center ${step === 2 ? "font-bold text-blue-600" : "text-gray-400"}`}>
+          Step 2: Payment
+        </div>
+      </div><br />
 
       {successMessage && <p className="success-message">{successMessage}</p>}
       {error && <p className="error-message">{error}</p>}
 
-      <form className="form-box" onSubmit={handleSubmit}>
-        {/* Row 1: First + Last Name */}
-        <div className="form-row">
-          <div className="form-group">
-            <label>{selectedContent.firstName}</label>
-            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required /> 
-            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>} 
-          </div>
-          <div className="form-group">
-            <label>{selectedContent.lastName}</label>
-            <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
-            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
-          </div>
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {step === 1 && (
+          <div className="space-y-4">
+            <label className="text-l font-semibold">Personal & Academic Details</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} className="w-full border rounded p-3 focus:outline-none" />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+              </div>
+              <div>
+                <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} className="w-full border rounded p-3 focus:outline-none" />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+              </div>
+            </div>
 
-        {/* Row 2: DOB + Class */}
-        <div className="form-row">
-          <div className="form-group">
-            <label>{selectedContent.dob}</label>
-            <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required />
-            {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
-          </div>
-          {/* <div className="form-group">
-            <label>{selectedContent.class}</label>
-            <input type="text" name="class" value={formData.class} onChange={handleChange} required />
-          </div> */}
-          <div className="form-group">
-            <label>{selectedContent.class}</label>
-            <select name="class" value={formData.class} onChange={handleChange} required>
-              <option value="">Select Class</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
+            <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="w-full border rounded p-3 focus:outline-none" />
+            {errors.dateOfBirth && <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <select name="class" value={formData.class} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+                <option value="">Select Class</option>
+                {[...Array(13).keys()].map(i => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+              </select>
+              {errors.class && <p className="text-red-500 text-sm">{errors.class}</p>}
+
+              <select name="subject" value={formData.subject} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+                <option value="">-- Select Subject --</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Science">Science</option>
+                <option value="English">English</option>
+              </select>
+              {errors.subject && <p className="text-red-500 text-sm">{errors.subject}</p>}
+
+              <select name="gender" value={formData.gender} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+
+              <select name="category" value={formData.category} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+                <option value="">-- Select Category --</option>
+                <option value="GN">GN</option>
+                <option value="OBC">OBC</option>
+                <option value="SC">SC</option>
+                <option value="ST">ST</option>
+              </select>
+              {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
+            </div>
+            <div>
+              <input
+                type="text"
+                name="competitionCategory"
+                value={formData.competitionCategory}
+                readOnly
+                className="w-full border rounded p-3 bg-gray-100 cursor-not-allowed"
+              />
+              {errors.competitionCategory && (
+                <p className="text-red-500 text-sm">{errors.competitionCategory}</p>
+              )}
+            </div>
+
+            <select name="school" value={formData.school} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+              <option value="">-- Select School --</option>
+              {schools.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
             </select>
-            {errors.class && <p className="text-red-500 text-sm mt-1">{errors.class}</p>}
+            {errors.school && <p className="text-red-500 text-sm">{errors.school}</p>}
+            
+            <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full border rounded p-3 focus:outline-none" />
+            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+
+            <input type="text" name="aadharNumber" placeholder="Aadhar Number (12 digits)" value={formData.aadharNumber} onChange={handleChange} className="w-full border rounded p-3 focus:outline-none" />
+            {errors.aadharNumber && <p className="text-red-500 text-sm">{errors.aadharNumber}</p>}
+
+
+            {/* Address Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="col-span-2 font-semibold">Address Details:</label>
+              <div className="flex flex-col">
+                <input type="text" name="village" placeholder="Village" value={formData.village} onChange={handleChange} className="border rounded p-3 focus:outline-none" />
+                {errors.village && <p className="text-red-500 text-sm">{errors.village}</p>}
+              </div>
+              <div className="flex flex-col">
+                <input type="text" name="post" placeholder="Post Office" value={formData.post} onChange={handleChange} className="border rounded p-3 focus:outline-none" />
+                {errors.post && <p className="text-red-500 text-sm">{errors.post}</p>}
+              </div>
+              <div className="flex flex-col">
+                <input type="text" name="district" placeholder="District" value={formData.district} onChange={handleChange} className="border rounded p-3 focus:outline-none" />
+                {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
+              </div>
+              <div className="flex flex-col">
+                <select name="state" value={formData.state} onChange={handleChange} className="w-full border rounded p-3 bg-white focus:outline-none">
+                  <option value="">-- Select State --</option>
+
+                  {/* States */}
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+
+                  {/* Union Territories */}
+                  <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Dadra and Nagar Haveli and Daman and Diu">
+                    Dadra and Nagar Haveli and Daman and Diu
+                  </option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Ladakh">Ladakh</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Puducherry">Puducherry</option>
+
+                </select>
+                {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+              </div>
+              <div className="flex flex-col">
+                <input type="text" name="pinCode" placeholder="Pin Code (6 digits)" value={formData.pinCode} onChange={handleChange} className="border rounded p-3 focus:outline-none" />
+                {errors.pinCode && <p className="text-red-500 text-sm">{errors.pinCode}</p>}
+              </div>
+            </div>
+
+
+            <button type="button" onClick={nextStep} className="w-full bg-blue-600 text-white py-3 rounded-lg">
+              Next →
+            </button>
           </div>
+        )}
 
-        </div>
 
-        {/* Row 3: Phone */}
-        <div className="form-group full-width">
-          <label>{selectedContent.phone}</label>
-          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
-          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-        </div>
+        {step === 2 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-700">Payment Details</h2>
 
-        <div className="form-group full-width">
-          <label>Aadhar Number</label>
-          <input type="text" name="aadharNumber" value={formData.aadharNumber} onChange={handleChange} required />
-          {errors.aadharNumber && <p className="text-red-500 text-sm mt-1">{errors.aadharNumber}</p>}
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] items-center gap-6  ">
+              <img
+                src="/images/qrcode.png"
+                alt="QR Code for payment"
+                className="w-52 h-52 rounded-lg shadow-md border border-gray-200"
+              />
+              <div className="bg-gray-50 border rounded-lg p-4 shadow-sm space-y-2">
+                <p><span className="font-medium">Bank Name:</span> State Bank of India</p>
+                <p><span className="font-medium">Account Name:</span> Hill Rider Manav Sewa Samiti</p>
+                <p><span className="font-medium">Account Number:</span> 123456789012</p>
+                <p><span className="font-medium">IFSC Code:</span> SBIN0001234</p>
+                <p><span className="font-medium">Branch:</span> Bhopal Main</p>
+              </div>
+            </div>
 
-        {/* Row 4: School Dropdown */}
-        <div className="form-group full-width">
-          <label>{selectedContent.school}</label>
-          <select name="school" value={formData.school} onChange={handleChange} required>
-            <option value="" disabled>{selectedContent.selectSchool}</option>
-            {schools.length > 0 ? (
-              schools.map(school => (
-                <option key={school._id} value={school._id}>{school.name}</option>
-              ))
-            ) : (
-              <option disabled>{selectedContent.loadingSchools}</option>
+            <div className="bg-gray-100 p-3 rounded-md text-center w-full">
+              <p className="font-semibold text-gray-700">Payable Fee: ₹{fee}</p>
+            </div>
+            <input
+              type="text"
+              name="transactionId"
+              placeholder="Enter Transaction ID"
+              value={formData.transactionId}
+              onChange={handleChange}
+              className="w-full border rounded p-3 focus:outline-none"
+            />
+            {errors.transactionId && (
+              <p className="text-red-500 text-sm">{errors.transactionId}</p>
             )}
-          </select>
-          {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school}</p>}
-        </div>
 
-        {/* Row 5: Subject + Transaction ID */}
-        <div className="form-row">
-          <div className="form-group">
-            <label>{selectedContent.subject}</label>
-            <select name="subject" value={formData.subject} onChange={handleChange} required>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Science">Science</option>
-              <option value="English">English</option>
-            </select>
+            {/* Buttons */}
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-400 text-white py-2 px-6 rounded-lg hover:bg-gray-500"
+              >
+                ← Back
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-          <div className="form-group">
-            <label>{selectedContent.transactionId}</label>
-            <input type="text" name="transactionId" value={formData.transactionId} onChange={handleChange} required />
-            {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Gender</label>
-          <select name="gender" value={formData.gender} onChange={handleChange} required>
-            <option value="" disabled>-- Select Gender --</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Category</label>
-          <select name="category" value={formData.category} onChange={handleChange} required>
-            <option value="" disabled>-- Select Category --</option>
-            <option value="GN">GN</option>
-            <option value="OBC">OBC</option>
-            <option value="SC">SC</option>
-            <option value="ST">ST</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Competition Category</label>
-          <select name="competitionCategory" value={formData.competitionCategory} onChange={handleChange} required>
-            <option value="" disabled>-- Select Competition Category --</option>
-            <option value="Primary">Primary</option>
-            <option value="Junior">Junior</option>
-            <option value="High-School">High-School</option>
-            <option value="10+2">10+2</option>
-          </select>
-        </div>
-
-        <div className="form-group full-width">
-          <label>Village</label>
-          <input type="text" name="village" value={formData.village} onChange={handleChange} required />
-          {errors.village && <p className="text-red-500 text-sm mt-1">{errors.village}</p>}
-        </div>
-        <div className="form-group full-width">
-          <label>Post</label>
-          <input type="text" name="post" value={formData.post} onChange={handleChange} required />
-          {errors.post && <p className="text-red-500 text-sm mt-1">{errors.post}</p>}
-        </div>
-        <div className="form-group full-width">
-          <label>District</label>
-          <input type="text" name="district" value={formData.district} onChange={handleChange} required />
-          {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district}</p>}
-        </div>
-        <div className="form-group full-width">
-          <label>PinCode</label>
-          <input type="text" name="pinCode" value={formData.pinCode} onChange={handleChange} required />
-          {errors.pinCode && <p className="text-red-500 text-sm mt-1">{errors.pinCode}</p>}
-        </div>
-
-        <div className="form-group">
-          <label>State</label>
-          <select name="state" value={formData.state} onChange={handleChange} required>
-            <option value="">-- Select State --</option>
-
-            {/* States */}
-            <option value="Andhra Pradesh">Andhra Pradesh</option>
-            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-            <option value="Assam">Assam</option>
-            <option value="Bihar">Bihar</option>
-            <option value="Chhattisgarh">Chhattisgarh</option>
-            <option value="Goa">Goa</option>
-            <option value="Gujarat">Gujarat</option>
-            <option value="Haryana">Haryana</option>
-            <option value="Himachal Pradesh">Himachal Pradesh</option>
-            <option value="Jharkhand">Jharkhand</option>
-            <option value="Karnataka">Karnataka</option>
-            <option value="Kerala">Kerala</option>
-            <option value="Madhya Pradesh">Madhya Pradesh</option>
-            <option value="Maharashtra">Maharashtra</option>
-            <option value="Manipur">Manipur</option>
-            <option value="Meghalaya">Meghalaya</option>
-            <option value="Mizoram">Mizoram</option>
-            <option value="Nagaland">Nagaland</option>
-            <option value="Odisha">Odisha</option>
-            <option value="Punjab">Punjab</option>
-            <option value="Rajasthan">Rajasthan</option>
-            <option value="Sikkim">Sikkim</option>
-            <option value="Tamil Nadu">Tamil Nadu</option>
-            <option value="Telangana">Telangana</option>
-            <option value="Tripura">Tripura</option>
-            <option value="Uttar Pradesh">Uttar Pradesh</option>
-            <option value="Uttarakhand">Uttarakhand</option>
-            <option value="West Bengal">West Bengal</option>
-
-            {/* Union Territories */}
-            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-            <option value="Chandigarh">Chandigarh</option>
-            <option value="Dadra and Nagar Haveli and Daman and Diu">
-              Dadra and Nagar Haveli and Daman and Diu
-            </option>
-            <option value="Delhi">Delhi</option>
-            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-            <option value="Ladakh">Ladakh</option>
-            <option value="Lakshadweep">Lakshadweep</option>
-            <option value="Puducherry">Puducherry</option>
-
-          </select>
-          {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
-        </div>
-
-
-
-        <div className="form-group">
-          <label>Fee</label>
-          <input type="number" value={fee} readOnly />
-        </div>
-
-        <button type="submit" className="submit-btn" disabled={isLoading}>
-          {isLoading ? 'Submitting...' : selectedContent.register}
-        </button>
+        )}
       </form>
       {registeredStudent && (
-        <div className="my-10 p-4 bg-white rounded-lg shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">
+        <div className="my-10 p-4 bg-white rounded-lg shadow-lg overflow-x-auto">
+
+          <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
             Registration Receipt
           </h3>
-          <RegistrationPrint
-            languageType="en"
-            ngo={{
-              name: "HILL RIDER MANAV SEWA SAMITI",
-              logo: "/logo.png",
-              tagline: "Serving Humanity with Dedication",
-              address: "123 NGO Lane, Bhopal, MP",
-              phone: "+91-9876543210",
-              email: "contact@hillriderngo.org",
-            }}
-            student={{
-              firstName: registeredStudent.firstName,
-              lastName: registeredStudent.lastName,
-              dob: registeredStudent.dateOfBirth,
-              class: registeredStudent.class,
-              amount: registeredStudent.amount,
-              phone: registeredStudent.phone,
-              school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
-              subject: registeredStudent.subject,
-              transactionId: registeredStudent.transactionId || "N/A",
-              aadharNumber: registeredStudent.aadharNumber,
-              gender: registeredStudent.gender,
-              category: registeredStudent.category,
-              competitionCategory: registeredStudent.competitionCategory,
-              village: registeredStudent.village,
-              post: registeredStudent.post,
-              district: registeredStudent.district,
-              pinCode: registeredStudent.pinCode,
-              state: registeredStudent.state,
-              paymentStatus: registeredStudent.paymentStatus || "Unverified",
-              amount: registeredStudent.amount,
-              studentCode: registeredStudent.studentCode,
-            }}
-            registrationId={registeredStudent.studentCode}
-            issuedAt={registeredStudent.createdAt}
-            documentTitle="Admin Registered Student"
-          />
+          <div className="flex justify-center">
+            <div className="w-full max-w-5xl">
+              <RegistrationPrint
+                languageType="en"
+                ngo={{
+                  name: "HILL RIDER MANAV SEWA SAMITI",
+                  logo: "/logo.png",
+                  tagline: "Serving Humanity with Dedication",
+                  address: "123 NGO Lane, Bhopal, MP",
+                  phone: "+91-9876543210",
+                  email: "contact@hillriderngo.org",
+                }}
+                student={{
+                  firstName: registeredStudent.firstName,
+                  lastName: registeredStudent.lastName,
+                  dob: registeredStudent.dateOfBirth,
+                  class: registeredStudent.class,
+                  amount: registeredStudent.amount,
+                  phone: registeredStudent.phone,
+                  school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",
+                  subject: registeredStudent.subject,
+                  transactionId: registeredStudent.transactionId || "N/A",
+                  aadharNumber: registeredStudent.aadharNumber,
+                  gender: registeredStudent.gender,
+                  category: registeredStudent.category,
+                  competitionCategory: registeredStudent.competitionCategory,
+                  village: registeredStudent.village,
+                  post: registeredStudent.post,
+                  district: registeredStudent.district,
+                  pinCode: registeredStudent.pinCode,
+                  state: registeredStudent.state,
+                  paymentStatus: registeredStudent.paymentStatus || "Unverified",
+                  amount: registeredStudent.amount,
+                  studentCode: registeredStudent.studentCode,
+                }}
+                registrationId={registeredStudent.studentCode}
+                issuedAt={registeredStudent.createdAt}
+                documentTitle="Admin Registered Student"
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
