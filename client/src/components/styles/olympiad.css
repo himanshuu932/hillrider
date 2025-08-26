@@ -15,8 +15,7 @@
   color: #333;
   line-height: 1.7;
   padding: 30px 20px;
- 
-  background: linear-gradient(135deg, #fefaee, #ffffff);
+  background: linear-gradient(150deg, #fefaee, #ffffff);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
@@ -92,13 +91,12 @@ table {
 }
 
 table th, table td {
-  border: 1px solid #765f5f;
+  border: 1px solid #613b3b;
   padding: 12px 15px;
   text-align: center;
 }
 
 table th {
-  background-color: #0A3153;
   background-color: #0A3153;
   color: white;
 }
@@ -111,13 +109,62 @@ table th {
 }
 
 table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #e6f3f7;
 }
 
-.contact{
-  font-size: 1.1rem;
-  font-weight: 550;
+.contact {
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+  border-radius: 15px;
+  border: 2px solid #0A3153;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease-in-out;
 }
+
+.contact:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+}
+
+.contact h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1f4e5f;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #0A3153;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact li {
+  margin: 12px 0;
+  font-size: 1.1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.contact li strong {
+  color: #2a6f8f;
+  margin-right: 8px;
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.contact li:hover {
+  color: #0A3153;
+  transform: translateX(5px);
+  transition: 0.2s ease;
+}
+
 
 .rules {
   background: #e6f3f7;
@@ -151,11 +198,10 @@ table tr:nth-child(even) {
 
 
 @media (max-width: 768px) {
-  .olympiad-intro .buttons {
+  /* .olympiad-intro .buttons {
     flex-direction: column;
+  } */
 
-  }
-  
   .olympiad-intro .btn {
     width: 100%;
   }

@@ -1,29 +1,18 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Edit, Save, X, Users, DollarSign, Download, School, UserPlus } from 'lucide-react';
-import AddSchool from './AddSchool'; 
-import AdminStudentRegistration from './AdminStudentRegistration'; 
+import AddSchool from './AddSchool';
+import AdminStudentRegistration from './AdminStudentRegistration';
 import RegistrationDashboard from './RegistrationDashboard';
 import VerifyRegistrations from './VerifyRegistrations';
 import axios from "axios";
 import "./AdminRegister.css";
 import Settings from './Settings';
 
-const mockRegistrations = [
-  { id: 1, firstName: 'Rahul', lastName: 'Sharma', age: 14, class: '9th', phone: '9876543210', school: 'Delhi Public School', subject: 'Mathematics', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-15' },
-  { id: 2, firstName: 'Priya', lastName: 'Patel', age: 15, class: '10th', phone: '9876543211', school: 'Kendriya Vidyalaya', subject: 'Science', paymentStatus: 'Pending', amount: 500, registrationDate: '2025-01-16' },
-  { id: 3, firstName: 'Arjun', lastName: 'Kumar', age: 13, class: '8th', phone: '9876543212', school: 'St. Marys School', subject: 'English', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-17' },
-  { id: 4, firstName: 'Sneha', lastName: 'Singh', age: 16, class: '11th', phone: '9876543213', school: 'Modern School', subject: 'Mathematics', paymentStatus: 'Failed', amount: 500, registrationDate: '2025-01-18' },
-  { id: 5, firstName: 'Vikram', lastName: 'Rao', age: 14, class: '9th', phone: '9876543214', school: 'Delhi Public School', subject: 'Science', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-19' },
-  { id: 6, firstName: 'Anita', lastName: 'Gupta', age: 12, class: '7th', phone: '9876543215', school: 'Bal Bharati Public School', subject: 'Mathematics', paymentStatus: 'Pending', amount: 500, registrationDate: '2025-01-20' },
-  { id: 7, firstName: 'Rohit', lastName: 'Verma', age: 15, class: '10th', phone: '9876543216', school: 'Ryan International', subject: 'English', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-21' },
-  { id: 8, firstName: 'Kavya', lastName: 'Nair', age: 13, class: '8th', phone: '9876543217', school: 'Kendriya Vidyalaya', subject: 'Science', paymentStatus: 'Paid', amount: 500, registrationDate: '2025-01-22' }
-];
-
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('registrations');
-  const [registrations, setRegistrations] = useState(mockRegistrations);
+  const [registrations, setRegistrations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterSubject, setFilterSubject] = useState('All');
@@ -49,7 +38,21 @@ const AdminPanel = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-//will add admin auth for this
+
+  useEffect(() => {
+    const fetchRegistrations = async () => {
+      try {
+        const res = await axios.get('https://hillrider.onrender.com/api/students');
+        setRegistrations(res.data);
+        console.log("Fetched registrations:", res.data); // Inspect structure here
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchRegistrations();
+  }, []);
+
+  //will add admin auth for this
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -65,32 +68,40 @@ const AdminPanel = () => {
       console.error(err);
     }
   };
+const stats = useMemo(() => {
+  const totalRegistrations = registrations.length;
+  const paid = registrations.filter(r => r.paymentStatus === 'Paid');
+  const unverified = registrations.filter(r => r.paymentStatus === 'Unverified');
+  const failed = registrations.filter(r => r.paymentStatus === 'Failed');
+  const offlinePaid = registrations.filter(r => r.paymentStatus === 'Offline Paid');
 
-  const stats = useMemo(() => {
-    const totalRegistrations = registrations.length;
-    const paidCount = registrations.filter(r => r.paymentStatus === 'Paid').length;
-    const pendingCount = registrations.filter(r => r.paymentStatus === 'Pending').length;
-    const failedCount = registrations.filter(r => r.paymentStatus === 'Failed').length;
-    const totalRevenue = registrations.filter(r => r.paymentStatus === 'Paid').reduce((sum, r) => sum + r.amount, 0);
+  const totalRevenue = paid.reduce((sum, r) => sum + (r.amount || 120), 0) + 
+                      offlinePaid.reduce((sum, r) => sum + (r.amount || 120), 0);
 
-    return { totalRegistrations, paidCount, pendingCount, failedCount, totalRevenue };
-
-  }, [registrations]);
+  return {
+    totalRegistrations,
+    paidCount: paid.length,
+    unverifiedCount: unverified.length,
+    failedCount: failed.length,
+    offlinePaidCount: offlinePaid.length,
+    totalRevenue
+  };
+}, [registrations]);
 
   const filteredRegistrations = useMemo(() => {
-    return registrations.filter(reg => {
-      const matchesSearch =
-        reg.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        reg.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        reg.phone.includes(searchTerm) ||
-        reg.school.toLowerCase().includes(searchTerm.toLowerCase());
+  return registrations.filter(reg => {
+    const matchesSearch =
+      reg.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reg.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reg.phone.includes(searchTerm) ||
+      (reg.school?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = filterStatus === 'All' || reg.paymentStatus === filterStatus;
-      const matchesSubject = filterSubject === 'All' || reg.subject === filterSubject;
+    const matchesStatus = filterStatus === 'All' || reg.paymentStatus === filterStatus;
+    const matchesSubject = filterSubject === 'All' || reg.subject === filterSubject;
 
-      return matchesSearch && matchesStatus && matchesSubject;
-    });
-  }, [registrations, searchTerm, filterStatus, filterSubject]);
+    return matchesSearch && matchesStatus && matchesSubject;
+  });
+}, [registrations, searchTerm, filterStatus, filterSubject]);
 
   // ... (handler functions like handleEdit, handleSave, etc. remain the same)
   const handleEdit = (id) => {
@@ -185,61 +196,105 @@ const AdminPanel = () => {
         {activeTab === 'registerStudent' && (
           <AdminStudentRegistration />
         )}
+          { activeTab === 'statistics' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-900">Statistics Dashboard</h2>
 
-        {activeTab === 'statistics' && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Statistics Dashboard</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Subject</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Mathematics</span>
-                    <span className="font-semibold">{registrations.filter(r => r.subject === 'Mathematics').length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Science</span>
-                    <span className="font-semibold">{registrations.filter(r => r.subject === 'Science').length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>English</span>
-                    <span className="font-semibold">{registrations.filter(r => r.subject === 'English').length}</span>
-                  </div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <StatCard
+                  title="Total Registrations"
+                  value={stats.totalRegistrations}
+                  icon={Users}
+                  color="#3B82F6"
+                />
+                <StatCard
+                  title="Paid"
+                  value={stats.paidCount}
+                  icon={DollarSign}
+                  color="#10B981"
+                />
+                <StatCard
+                  title="Offline Paid"
+                  value={stats.offlinePaidCount}
+                  icon={DollarSign}
+                  color="#8B5CF6"
+                />
+                <StatCard
+                  title="Unverified"
+                  value={stats.unverifiedCount}
+                  icon={Users}
+                  color="#F59E0B"
+                />
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Class</h3>
-                <div className="space-y-2">
-                  {['7th', '8th', '9th', '10th', '11th', '12th'].map(cls => (
-                    <div key={cls} className="flex justify-between">
-                      <span>Class {cls}</span>
-                      <span className="font-semibold">{registrations.filter(r => r.class === cls).length}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Subject</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Mathematics</span>
+                      <span className="font-semibold">{registrations.filter(r => r.subject === 'Mathematics').length}</span>
                     </div>
-                  ))}
+                    <div className="flex justify-between">
+                      <span>Science</span>
+                      <span className="font-semibold">{registrations.filter(r => r.subject === 'Science').length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>English</span>
+                      <span className="font-semibold">{registrations.filter(r => r.subject === 'English').length}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-green-600">
-                    <span>Total Collected</span>
-                    <span className="font-semibold">₹{stats.totalRevenue.toLocaleString()}</span>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Class</h3>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'].map(cls => {
+                      const count = registrations.filter(r => String(r.class) === cls).length;
+                      return count > 0 ? (
+                        <div key={cls} className="flex justify-between">
+                          <span>Class {cls}</span>
+                          <span className="px-4 font-semibold">{count}</span>
+                        </div>
+                      ) : null;
+                    })}
                   </div>
-                  <div className="flex justify-between text-yellow-600">
-                    <span>Pending Amount</span>
-                    <span className="font-semibold">₹{(stats.pendingCount * 500).toLocaleString()}</span>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-green-600">
+                      <span>Total Collected</span>
+                      <span className="font-semibold">₹{stats.totalRevenue.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-yellow-600">
+                      <span>Unverified Amount</span>
+                      <span className="font-semibold">₹{(stats.unverifiedCount * 500).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-red-600">
+                      <span>Failed Payments</span>
+                      <span className="font-semibold">₹{(stats.failedCount * 500).toLocaleString()}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-red-600">
-                    <span>Failed Payments</span>
-                    <span className="font-semibold">₹{(stats.failedCount * 500).toLocaleString()}</span>
+                </div>
+
+                {/* Additional Statistics */}
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Gender</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Male</span>
+                      <span className="font-semibold">{registrations.filter(r => r.gender === 'Male').length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Female</span>
+                      <span className="font-semibold">{registrations.filter(r => r.gender === 'Female').length}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
         )}
         {activeTab === 'AddAdmin' && (
           <div className="register-container">
@@ -296,7 +351,7 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'settings' && (
-          <Settings/>
+          <Settings />
         )}
       </div>
     </div>
