@@ -21,7 +21,7 @@ export default function AdminLogin({ setIsAdmin }) {
         setError(""); // Clear previous errors
         try {
             const res = await axios.post(
-                "http://localhost:5000/api/admin/login",
+                "https://hillrider.onrender.com/api/admin/login",
                 formData,
                 { headers: { "Content-Type": "application/json" } }
             );

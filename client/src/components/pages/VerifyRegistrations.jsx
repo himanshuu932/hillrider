@@ -10,7 +10,7 @@ const VerifyRegistrations = () => {
 
     const fetchUnverified = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/students/unverified');
+            const res = await axios.get('https://hillrider.onrender.com/api/students/unverified');
             setUnverified(res.data);
         } catch (err) {
             setError('Failed to fetch registrations for verification.');
@@ -27,7 +27,7 @@ const VerifyRegistrations = () => {
     const handleVerify = async (studentId) => {
         setVerifyingId(studentId);
         try {
-            await axios.patch(`http://localhost:5000/api/students/verify/${studentId}`);
+            await axios.patch(`https://hillrider.onrender.com/api/students/verify/${studentId}`);
             // Remove the verified student from the list in the UI
             setUnverified(prev => prev.filter(student => student._id !== studentId));
         } catch (err) {

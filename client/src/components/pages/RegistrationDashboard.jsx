@@ -49,7 +49,7 @@ const RegistrationDashboard = () => {
     useEffect(() => {
         const fetchRegistrations = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/students');
+                const res = await axios.get('https://hillrider.onrender.com/api/students');
                 setRegistrations(res.data);
             } catch (err) {
                 setError('Failed to fetch registration data.');
@@ -64,7 +64,7 @@ const RegistrationDashboard = () => {
     useEffect(() => {
         const fetchSchools = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/schools');
+                const res = await axios.get('https://hillrider.onrender.com/api/schools');
                 setSchools(res.data);
             } catch (err) {
                 console.error("Failed to fetch schools", err);
@@ -211,7 +211,7 @@ const RegistrationDashboard = () => {
             // Prepare payload for backend (school as id)
             const payload = { ...editData };
             // If school is just id, backend should handle it
-            const res = await axios.put(`http://localhost:5000/api/admin/edit/${editingID}`, payload);
+            const res = await axios.put(`https://hillrider.onrender.com/api/admin/edit/${editingID}`, payload);
             // Update local state with backend response
             setRegistrationsState(prev => prev.map(reg =>
                 reg._id === editingID ? res.data.student : reg
@@ -231,7 +231,7 @@ const RegistrationDashboard = () => {
     const handleReceipt = async (id) => {
         setRegisteredStudent(null);
         try {
-            const res = await axios.get(`http://localhost:5000/api/admin/get/${id}`);
+            const res = await axios.get(`https://hillrider.onrender.com/api/admin/get/${id}`);
             if (res.data) {
                 setRegisteredStudent(res.data);
                 setShowReceipt(true); // Show only receipt
@@ -255,7 +255,7 @@ const RegistrationDashboard = () => {
         const deleteID = id;
         if (window.confirm('Are you sure you want to delete this registration?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/delete/${deleteID}`);
+                await axios.delete(`https://hillrider.onrender.com/api/admin/delete/${deleteID}`);
                 setRegistrationsState(prev => prev.filter(reg => reg._id !== id));
             } catch (err) {
                 alert('Failed to delete registration.');

@@ -54,7 +54,7 @@ const AdminPanel = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/admin/register",
+        "https://hillrider.onrender.com/api/admin/register",
         formData
       );
       alert("Registration successful!");

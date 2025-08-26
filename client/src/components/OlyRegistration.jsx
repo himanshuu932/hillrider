@@ -87,7 +87,7 @@ export default function OlyRegistration({ languageType }) {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/schools');
+        const res = await axios.get('https://hillrider.onrender.com/api/schools');
         setSchools(res.data);
       } catch (err) {
         console.error("Failed to fetch schools", err);
@@ -105,7 +105,7 @@ export default function OlyRegistration({ languageType }) {
   useEffect(() => {
     const fetchFeeConfig = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/students/fee");
+        const res = await axios.get("https://hillrider.onrender.com/api/students/fee");
         setFeeConfig(res.data);
       } catch (err) {
         console.error("Failed to fetch fee config", err);
@@ -139,7 +139,7 @@ export default function OlyRegistration({ languageType }) {
     setSuccessMessage('');
 
     try {
-      const res = await axios.post("http://localhost:5000/api/students/register-payment", formData);
+      const res = await axios.post("https://hillrider.onrender.com/api/students/register-payment", formData);
       setSuccessMessage(res.data.message || selectedContent.successMsg);
       setRegisteredStudent(res.data.student);
       setFormData({
