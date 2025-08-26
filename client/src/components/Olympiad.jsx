@@ -47,7 +47,7 @@ const content = {
     contact_us: [
       {
         label: "Name",
-        value: "Shivam Mishra (Registration Incharge)- 730760593",
+        value: "Shivam Mishra (Registration Incharge)- 7307605936",
       },
       { label: "Phone/Call", value: "9415116540, 7307605936, 9889138039" },
       { label: "Message", value: "9415116540, 7307605936, 7317775562" },
@@ -237,7 +237,7 @@ const content = {
     contact_us: [
       {
         label: "नाम",
-        value: "शिवम मिश्रा (पंजीकरण प्रभारी) - 730760593",
+        value: "शिवम मिश्रा (पंजीकरण प्रभारी) - 7307605936",
       },
       { label: "फ़ोन/कॉल", value: "9415116540, 7307605936, 9889138039" },
       { label: "संदेश", value: "9415116540, 7307605936, 7317775562" },
@@ -443,19 +443,6 @@ const Olympiad = ({ languageType }) => {
           </table>
         </section>
 
-        {/* Contact Section */}
-
-        <section id="Contact" className="contact">
-          <h3>{selectedContent.contact}</h3>
-          <ul>
-            {selectedContent.contact_us.map((item, i) => (
-              <li key={i}>
-                <strong>{item.label}:     </strong> {item.value}
-              </li>
-            ))}
-          </ul>
-        </section>
-
         {/* Exam Section */}
         <section className="exam">
           <h3>{selectedContent.ExamDesc}</h3>
@@ -572,6 +559,20 @@ const Olympiad = ({ languageType }) => {
             </tbody>
           </table>
         </section> */}
+
+        {/* Contact Section */}
+
+        <section id="Contact" className="contact">
+          <h3>{selectedContent.contact}</h3>
+          <ul>
+            {selectedContent.contact_us.map((item, i) => (
+              <li key={i}>
+                <strong>{item.label}:     </strong> {item.value}
+              </li>
+            ))}
+          </ul>
+        </section>
+
       </div>
     </div>
   );
