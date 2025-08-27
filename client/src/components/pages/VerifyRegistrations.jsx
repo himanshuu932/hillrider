@@ -48,17 +48,17 @@ const VerifyRegistrations = () => {
                 <div className="text-center py-10">
                     <CheckCircle className="mx-auto h-12 w-12 text-green-400" />
                     <h3 className="mt-2 text-sm font-medium text-gray-900">All caught up!</h3>
-                    <p className="mt-1 text-sm text-gray-500">There are no pending payments to verify.</p>
+                    <p className="mt-1 text-sm text-white-600">There are no pending payments to verify.</p>
                 </div>
             ) : (
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">School</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transaction ID</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase">Student</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase">School</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase">Transaction ID</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase">Action</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -66,7 +66,7 @@ const VerifyRegistrations = () => {
                                 <tr key={reg._id}>
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-medium text-gray-900">{reg.firstName} {reg.lastName}</div>
-                                        <div className="text-sm text-gray-500">{reg.phone}</div>
+                                        <div className="text-sm text-white-600">{reg.phone}</div>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-700">{reg.school?.name || 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm font-mono text-gray-600">{reg.transactionId}</td>

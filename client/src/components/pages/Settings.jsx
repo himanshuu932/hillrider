@@ -73,7 +73,7 @@ export default function Settings() {
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="flex items-center justify-center space-x-2">
             <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-            <span className="text-gray-600">Loading fee configuration...</span>
+            <span className="text-white-600">Loading fee configuration...</span>
           </div>
         </div>
       </div>
@@ -83,15 +83,7 @@ export default function Settings() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/*header*/}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
-        <div className="flex items-center space-x-3">
-          <SettingsIcon className="h-8 w-8" />
-          <div>
-            <h1 className="text-2xl font-bold">Fee Settings</h1>
-            <p className="text-blue-100 mt-1">Manage class-wise registration fees</p>
-          </div>
-        </div>
-      </div>
+      
 
       {/* error handle*/}
       {error && (
@@ -108,9 +100,9 @@ export default function Settings() {
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         {filteredClasses.length === 0 ? (
           <div className="p-12 text-center">
-            <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Fee Configuration Found</h3>
-            <p className="text-gray-600">Fee settings will appear here once configured.</p>
+            <DollarSign className="h-12 w-12 text-white-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white-900 mb-2">No Fee Configuration Found</h3>
+            <p className="text-white-600">Fee settings will appear here once configured.</p>
           </div>
         ) : (
           <>
@@ -119,30 +111,30 @@ export default function Settings() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <tr className="bg-white-50 border-b border-white-200">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-white-500 uppercase tracking-wider">
                       Class
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-white-500 uppercase tracking-wider">
                       Registration Fee
                     </th>
-                    <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-right text-xs font-medium text-white-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-white-200">
                   {filteredClasses.map((cls, index) => (
                     <tr 
                       key={cls} 
-                      className={`hover:bg-gray-50 transition-colors ${
+                      className={`hover:bg-white-50 transition-colors ${
                         editClass === cls ? 'bg-blue-50' : ''
                       }`}
                     >
                       <td className="px-2 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="ml-3">
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-white-900">
                               Class {cls}
                             </div>
                           </div>
@@ -151,12 +143,12 @@ export default function Settings() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         {editClass === cls ? (
                           <div className="flex items-center space-x-2">
-                            <span className="text-gray-500">₹</span>
+                            <span className="text-white-500">₹</span>
                             <input
                               type="number"
                               value={editValue}
                               onChange={(e) => setEditValue(e.target.value)}
-                              className="border border-gray-300 rounded-md px-3 py-2 w-24 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="border border-white-300 rounded-md px-3 py-2 w-24 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               placeholder="Amount"
                               autoFocus
                             />
@@ -187,7 +179,7 @@ export default function Settings() {
                             <button
                               onClick={handleCancel}
                               disabled={saving}
-                              className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="inline-flex items-center px-3 py-2 border border-white-300 text-sm leading-4 font-medium rounded-md text-white-700 bg-white hover:bg-white-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               <X className="h-4 w-4 mr-1" />
                               Cancel

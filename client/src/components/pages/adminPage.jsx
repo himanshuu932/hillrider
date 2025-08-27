@@ -120,12 +120,7 @@ const AdminPanel = () => {
         return (
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-gray-900">Statistics Dashboard</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                <StatCard title="Total Registrations" value={stats.totalRegistrations} icon={Users} color="#3B82F6" />
-                <StatCard title="Paid" value={stats.paidCount} icon={DollarSign} color="#10B981" />
-                <StatCard title="Offline Paid" value={stats.offlinePaidCount} icon={DollarSign} color="#8B5CF6" />
-                <StatCard title="Unverified" value={stats.unverifiedCount} icon={Users} color="#F59E0B" />
-              </div>
+             
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Subject</h3>

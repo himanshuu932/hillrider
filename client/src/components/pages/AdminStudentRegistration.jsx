@@ -157,9 +157,7 @@ const AdminStudentRegistration = () => {
 
     return (
         <div className="max-w-7xl mx-auto pr-8 pl-8 pb-8 pt-4 bg-gray-50 shadow-lg rounded-lg my-5">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">Admin Panel</h2>
-            <p className="text-center text-gray-600 mb-8">Register a New Student</p>
-
+          
             {error && <p className="text-red-500 bg-red-100 p-3 rounded-md mb-4">{error}</p>}
             {successMessage && !registeredStudent && (
                 <p className="text-green-500 bg-green-100 p-3 rounded-md mb-4">{successMessage}</p>

@@ -149,9 +149,9 @@ const AddSchool = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School Code</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Password</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase tracking-wider">School Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase tracking-wider">School Code</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white-600 uppercase tracking-wider">Password</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -161,8 +161,8 @@ const AddSchool = () => {
                   filteredSchools.map((school) => (
                     <tr key={school._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{school.name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{school.code}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white-600 font-mono">{school.code}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white-600 font-mono">
                         <div className="flex items-center space-x-2">
                           <span>{school.password}</span>
                           <button onClick={() => copyToClipboard(school.password, school._id)} className="text-gray-400 hover:text-blue-600" title="Copy password">
@@ -173,7 +173,7 @@ const AddSchool = () => {
                     </tr>
                   ))
                 ) : (
-                  <tr><td colSpan="3" className="text-center py-4 text-gray-500">No schools found.</td></tr>
+                  <tr><td colSpan="3" className="text-center py-4 text-white-600">No schools found.</td></tr>
                 )}
               </tbody>
             </table>

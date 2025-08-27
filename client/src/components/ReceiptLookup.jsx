@@ -13,7 +13,7 @@ function ReceiptFetch({ studentCode }) {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch(`http://localhost:5000/api/students/receipt/${encodeURIComponent(studentCode)}`);
+        const res = await fetch(`https://hillrider.onrender.com/api/students/receipt/${encodeURIComponent(studentCode)}`);
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const data = await res.json();
         setReceipt(data);

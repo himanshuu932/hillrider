@@ -13,8 +13,8 @@ const content = {
     olympiad: "OLYMPIAD",
     activity: "ACTIVITY",
     donate: "DONATE",
-    pressrelease: "PRESS RELEASE",
-    volunteer: "VOLUNTEER",
+    // pressrelease: "PRESS RELEASE",
+    // volunteer: "VOLUNTEER",
     
   },
   hi: {
@@ -24,9 +24,9 @@ const content = {
     aboutus: "हमारे बारे में",
     olympiad: "ओलंपियाड",
     activity: "गतिविधियाँ",
-    donate: "दान करें",
-    pressrelease: "प्रेस विज्ञप्ति",
-    volunteer: "स्वयंसेवक",
+     donate: "दान करें",
+    // pressrelease: "प्रेस विज्ञप्ति",
+    // volunteer: "स्वयंसेवक",
     
   },
 };

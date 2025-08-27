@@ -251,20 +251,18 @@ const RegistrationDashboard = () => {
             <div className="space-y-6 p-4 md:p-8">
                 {!showReceipt ? (
                     <>
-                        <h1 className="text-3xl font-bold text-gray-800">Registrations Dashboard</h1>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <StatCard title="Total Valid Registrations" value={kpis.totalValid} icon={Users} bgColor="bg-blue-100" iconColor="text-blue-600" />
-                            <StatCard title="Online (Paid)" value={kpis.paid} icon={CheckCircle} bgColor="bg-green-100" iconColor="text-green-600" />
-                            <StatCard title="Offline (Paid)" value={kpis.offline} icon={Users} bgColor="bg-slate-100" iconColor="text-slate-600" />
-                            <StatCard title="Pending Verification" value={kpis.pending} icon={Clock} bgColor="bg-yellow-100" iconColor="text-yellow-600" />
-                        </div>
+                       
 
                         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-gray-800">Valid Registration Types</h3></div><div className="p-4 h-80"><Pie data={pieChartData} options={chartOptions} /></div></div>
                             <div className="lg:col-span-3 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-gray-800">Valid Registrations by School</h3></div><div className="p-4 h-80"><Bar data={barChartData} options={chartOptions} /></div></div>
                         </div>
-
+                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <StatCard title="Total Valid Registrations" value={kpis.totalValid} icon={Users} bgColor="bg-blue-100" iconColor="text-blue-600" />
+                            <StatCard title="Online (Paid)" value={kpis.paid} icon={CheckCircle} bgColor="bg-green-100" iconColor="text-green-600" />
+                            <StatCard title="Offline (Paid)" value={kpis.offline} icon={Users} bgColor="bg-slate-100" iconColor="text-slate-600" />
+                            <StatCard title="Pending Verification" value={kpis.pending} icon={Clock} bgColor="bg-yellow-100" iconColor="text-yellow-600" />
+                        </div>
                         <div className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 md:p-6 border-b flex flex-wrap justify-between items-center gap-4">
                                 <h3 className="text-xl font-semibold text-gray-800">All Student Entries</h3>
@@ -288,11 +286,22 @@ const RegistrationDashboard = () => {
                             
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y">
-                                    <thead className="bg-slate-100"><tr><th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Student</th><th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">School</th><th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th><th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Registered On</th><th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th></tr></thead>
+                                    <thead className="bg-slate-100"><tr>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Student</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">School</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Registered On</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Actions</th></tr></thead>
                                     <tbody className="bg-white divide-y">
                                         {paginatedRegistrations.length > 0 ? paginatedRegistrations.map(reg => (
                                             <tr key={reg._id} className="hover:bg-slate-50">
+                                                
+                                                
                                                 <td className="px-6 py-4 whitespace-nowrap">{editingId === reg._id ? <div className="flex flex-col gap-2"><input type="text" value={editData.firstName || ''} onChange={e => setEditData({ ...editData, firstName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.lastName || ''} onChange={e => setEditData({ ...editData, lastName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.phone || ''} onChange={e => setEditData({ ...editData, phone: e.target.value })} className="text-sm p-1.5 border rounded-md" /></div> : <div><div className="text-sm font-semibold text-gray-900">{reg.firstName} {reg.lastName}</div><div className="text-sm text-gray-500">{reg.phone}</div></div>}</td>
+                                                 <td className="px-6 py-4 whitespace-nowrap">
+                                                    {reg.studentCode}
+                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{editingId === reg._id ? <select value={editData.school || ''} onChange={e => setEditData({ ...editData, school: e.target.value })} className="text-sm p-1.5 border rounded-md w-full"><option value="" disabled>-- Select School --</option>{schools.map(s => (<option key={s._id} value={s._id}>{s.name} ({s.code})</option>))}</select> : (reg.school?.name || 'N/A')}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{editingId === reg._id ? <select value={editData.paymentStatus || ''} onChange={e => setEditData({ ...editData, paymentStatus: e.target.value })} className="text-sm p-1.5 border rounded-md w-full"><option value="Paid">Paid</option><option value="Unverified">Unverified</option><option value="Offline Paid">Offline Paid</option></select> : <span className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${reg.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' : reg.paymentStatus === 'Unverified' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>{reg.paymentStatus}</span>}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{editingId === reg._id ? <input type="date" value={editData.createdAt ? new Date(editData.createdAt).toISOString().slice(0, 10) : ''} onChange={e => setEditData({ ...editData, createdAt: e.target.value })} className="text-sm p-1.5 border rounded-md" /> : new Date(reg.createdAt).toLocaleDateString()}</td>
@@ -304,7 +313,7 @@ const RegistrationDashboard = () => {
                             </div>
                             {pageCount > 1 && (
                                 <div className="flex justify-center p-6 border-t">
-                                    <ReactPaginate previousLabel={"← Prev"} nextLabel={"Next →"} breakLabel={"..."} pageCount={pageCount} marginPagesDisplayed={1} pageRangeDisplayed={3} onPageChange={handlePageClick} containerClassName={"flex items-center space-x-1"} pageLinkClassName={"px-4 py-2 block"} previousLinkClassName={"px-4 py-2 block"} nextLinkClassName={"px-4 py-2 block"} pageClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} previousClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} nextClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} activeClassName={"!bg-blue-600 !border-blue-600 !text-white hover:!bg-blue-700"} disabledClassName={"opacity-50 cursor-not-allowed"} forcePage={currentPage} />
+                                    <ReactPaginate previousLabel={"← Prev"} nextLabel={"Next →"} breakLabel={"..."} pageCount={pageCount} marginPagesDisplayed={1} pageRangeDisplayed={3} onPageChange={handlePageClick} containerClassName={"flex items-center space-x-1"} pageLinkClassName={"px-4 py-2 block"} previousLinkClassName={"px-4 py-2 block"} nextLinkClassName={"px-4 py-2 block"} pageClassName={"rounded-md border bg-white text-white-600 hover:bg-gray-100"} previousClassName={"rounded-md border bg-white text-white-600 hover:bg-gray-100"} nextClassName={"rounded-md border bg-white text-white-600 hover:bg-gray-100"} activeClassName={"!bg-blue-600 !border-blue-600 !text-white hover:!bg-blue-700"} disabledClassName={"opacity-50 cursor-not-allowed"} forcePage={currentPage} />
                                 </div>
                             )}
                         </div>

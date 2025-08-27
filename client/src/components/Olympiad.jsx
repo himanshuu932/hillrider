@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageCarousel from "./Carousal";
 import "../components/styles/olympiad.css";
@@ -6,7 +6,7 @@ import olympiad1 from "../components/images/olympiad1.webp";
 import olympiad2 from "../components/images/olympiad2.webp";
 import olympiad3 from "../components/images/olympiad3.webp";
 import olympiad4 from "../components/images/olympiad4.webp";
-import ReceiptLookup from "./ReceiptLookup";
+import RegistrationReceipt from "./RegistrationPrint";
 
 const images = [olympiad1, olympiad2, olympiad3, olympiad4];
 
@@ -16,391 +16,90 @@ const content = {
     desc: "Participating in an Olympiad is more than just a competition, it’s a journey of growth, learning and achievement. Olympiads not only test your knowledge but also help you discover your true potential. They open doors to new opportunities, nurture problem-solving skills and build confidence to face bigger challenges ahead. From enhancing your academic performance to preparing you for future competitive exams, Olympiads give you a golden platform to shine at state, national and even international levels.",
     register: "Register Now",
     contact: "Contact",
-    Prizes: "Prizes",
-    Prize: "Prize",
-    Criteria: "Criteria",
-    Scholarship: "Scholarship",
-    Class: "Class",
-    First: "First",
-    Second: "Second",
-    Third: "Third",
-    OtherPrizes: "Other Prizes",
-    GeneralRules: "General Rules",
-    ScholarshipRules: "Scholarship Rules",
-    Fees: "Fees",
-    Amount: "Amount",
-    ExamDesc: "Exam Description",
-    Subject: "Subject",
-    Ques: "Question",
-    Time: "Duration",
-    ClassWiseSub: "Class-Wise Subjects",
-    classwise: [
-      { class: "1-5", subject: "GK, English/Hindi, Mathematics" },
-      { class: "6-8", subject: "GK, English/Hindi, Mathematics, Science" },
-      { class: "9-10", subject: "GK, English/Hindi, Mathematics, Science" },
-      {
-        class: "11-12",
-        subject: "Engineering PCM, Medical PCB, General Studies",
-      },
-      { class: "12th Pass", subject: "General Studies" },
-    ],
-
-    contact_us: [
-      {
-        label: "Name",
-        value: "Shivam Mishra (Registration Incharge)- 7307605936",
-      },
-      { label: "Phone/Call", value: "9415116540, 7307605936, 9889138039" },
-      { label: "Message", value: "9415116540, 7307605936, 7317775562" },
-      {
-        label: "Address",
-        value:
-          "Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002",
-      },
-      { label: "Email", value: "hrmsevasamiti@gmail.com" },
-    ],
-
-    examData: [
-      {
-        class: "1-2",
-        subjects: [
-          {
-            subject: "GK, English, Hindi, Maths",
-            questions: "40",
-            duration: "80 minutes",
-          },
-        ],
-      },
-      {
-        class: "3-5",
-        subjects: [
-          { subject: "GK", questions: "50", duration: "80 minutes" },
-          { subject: "English/Hindi", questions: "50", duration: "80 minutes" },
-          { subject: "Maths", questions: "50", duration: "80 minutes" },
-        ],
-      },
-      {
-        class: "6-8",
-        subjects: [
-          { subject: "GK", questions: "60", duration: "80 minutes" },
-          { subject: "English/Hindi", questions: "60", duration: "80 minutes" },
-          { subject: "Maths", questions: "60", duration: "80 minutes" },
-          { subject: "Science", questions: "60", duration: "80 minutes" },
-        ],
-      },
-      {
-        class: "9-10",
-        subjects: [
-          { subject: "GK", questions: "60", duration: "80 minutes" },
-          { subject: "English/Hindi", questions: "60", duration: "80 minutes" },
-          { subject: "Maths", questions: "60", duration: "80 minutes" },
-          { subject: "Science", questions: "60", duration: "80 minutes" },
-        ],
-      },
-      {
-        class: "11-12",
-        subjects: [
-          {
-            subject: "Engineering PCM",
-            questions: "P20 + C20 + M20",
-            duration: "2 hours",
-          },
-          {
-            subject: "Medical PCB",
-            questions: "P20 + C20 + M20",
-            duration: "2 hours",
-          },
-          {
-            subject: "General Studies (GK, Lang, Social)",
-            questions: "40 + 40 + 40",
-            duration: "2 hours",
-          },
-        ],
-      },
-      {
-        class: "12th Pass",
-        subjects: [
-          {
-            subject: "General Studies",
-            questions:
-              "GK=20, General Studies=20, History=20, Geography=20, Language=20, Method=20, Mathematics=20, Reasoning=20, Total=150",
-            duration: "2 hours",
-          },
-        ],
-      },
-    ],
-
-    fees: [
-      { type: "1-5", amount: "Rs. 120 (per application)" },
-      { type: "6-8", amount: "Rs. 130 (per application)" },
-      { type: "9-10", amount: "Rs. 150 (per application)" },
-      { type: "11-12", amount: "Rs. 210 (per application)" },
-      { type: "12 Pass", amount: "Rs. 210 (per application)" },
-    ],
-    generalRules: [
-      "1. Only registered students can appear in the exam.",
-      "2. Admit card and original Aadhar card are must to carry along with in the exam hall.",
-      "3. Any cheating means like paper, electronic devices, indisciplinary actions, etc.are strictly prohibited in case of any such things found corresponding candidate would be canceled for exam.",
-      "4. A candidate can get his/her OMR sheet rechecked at head office paying Rs. 1000/-",
-      "5. Admit card will be issued on your WhatsApp number/Email provided/ TO YOUR HRO INCHERGE AT YOUR SCHOOL.",
-      "6. All the questions are Multiple Choice Questions (MCQs).",
-      "7. The ranks will be decided as per the highest percentage of marks obtained in each CATEGORY.",
-      "8. Qualifying Mark is 40. Only qualified students can receive the certificate of excellence rest of the students will get certificate of participant.",
-      "9. Report at the centre as time is scheduled, being late no student is allowed to seat in exam once it starts.",
-      "10. Answers will be taken on OMR sheets that is to be filled using blue/black ball point pen.,",
-    ],
-    scholarshipRules: [
-      "> Winner trophy, medal and certificate to all candidates securing first, second and third position (each class).",
-      "> Medal and certificate along with gift to all 17 students (each class) coming in gift category.",
-      "> In case of equal marks in the result, preference will be given to the candidate with higher age and in case of equal age, preference will be given to the one who comes first in alphabetical order of the names of the candidates.",
-    ],
-    scholarship: [
-      {
-        class: "1-5",
-        first: "Rs. 2100",
-        second: "Rs. 1500",
-        third: "Rs. 1100",
-        other: "17 Prizes to Rest",
-      },
-      {
-        class: "6-8",
-        first: "Rs. 3500",
-        second: "Rs. 2500",
-        third: "Rs. 1500",
-        other: "17 Prizes to Rest",
-      },
-      {
-        class: "9-10",
-        first: "Rs. 5000",
-        second: "Rs. 3500",
-        third: "Rs. 2500",
-        other: "17 Prizes to Rest",
-      },
-      {
-        class: "11-12",
-        first: "Rs. 5500",
-        second: "Rs. 4100",
-        third: "Rs. 3100",
-        other: "17 Prizes to Rest",
-      },
-      {
-        class: "12 Pass",
-        first: "Rs. 5100",
-        second: "Rs. 3500",
-        third: "Rs. 2500",
-        other: "17 Prizes to Rest",
-      },
-    ],
-    prizes: [
-      { prize: "Certificate", criteria: "All participants" },
-      { prize: "Medal", criteria: "Top 3" },
-    ],
+    downloadReceipt: "Download Receipt",
+    Prizes: "Prizes", Prize: "Prize", Criteria: "Criteria", Scholarship: "Scholarship", Class: "Class", First: "First", Second: "Second", Third: "Third", OtherPrizes: "Other Prizes", GeneralRules: "General Rules", ScholarshipRules: "Scholarship Rules", Fees: "Fees", Amount: "Amount", ExamDesc: "Exam Description", Subject: "Subject", Ques: "Question", Time: "Duration", ClassWiseSub: "Class-Wise Subjects",
+    classwise: [ { class: "1-5", subject: "GK, English/Hindi, Mathematics" }, { class: "6-8", subject: "GK, English/Hindi, Mathematics, Science" }, { class: "9-10", subject: "GK, English/Hindi, Mathematics, Science" }, { class: "11-12", subject: "Engineering PCM, Medical PCB, General Studies", }, { class: "12th Pass", subject: "General Studies" }, ],
+    contact_us: [ { label: "Name", value: "Shivam Mishra (Registration Incharge)- 7307605936", }, { label: "Phone/Call", value: "9415116540, 7307605936, 9889138039" }, { label: "Message", value: "9415116540, 7307605936, 7317775562" }, { label: "Address", value: "Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002", }, { label: "Email", value: "hrmsevasamiti@gmail.com" }, ],
+    examData: [ { class: "1-2", subjects: [ { subject: "GK, English, Hindi, Maths", questions: "40", duration: "80 minutes", }, ], }, { class: "3-5", subjects: [ { subject: "GK", questions: "50", duration: "80 minutes" }, { subject: "English/Hindi", questions: "50", duration: "80 minutes" }, { subject: "Maths", questions: "50", duration: "80 minutes" }, ], }, { class: "6-8", subjects: [ { subject: "GK", questions: "60", duration: "80 minutes" }, { subject: "English/Hindi", questions: "60", duration: "80 minutes" }, { subject: "Maths", questions: "60", duration: "80 minutes" }, { subject: "Science", questions: "60", duration: "80 minutes" }, ], }, { class: "9-10", subjects: [ { subject: "GK", questions: "60", duration: "80 minutes" }, { subject: "English/Hindi", questions: "60", duration: "80 minutes" }, { subject: "Maths", questions: "60", duration: "80 minutes" }, { subject: "Science", questions: "60", duration: "80 minutes" }, ], }, { class: "11-12", subjects: [ { subject: "Engineering PCM", questions: "P20 + C20 + M20", duration: "2 hours", }, { subject: "Medical PCB", questions: "P20 + C20 + M20", duration: "2 hours", }, { subject: "General Studies (GK, Lang, Social)", questions: "40 + 40 + 40", duration: "2 hours", }, ], }, { class: "12th Pass", subjects: [ { subject: "General Studies", questions: "GK=20, General Studies=20, History=20, Geography=20, Language=20, Method=20, Mathematics=20, Reasoning=20, Total=150", duration: "2 hours", }, ], }, ],
+    fees: [ { type: "1-5", amount: "Rs. 120 (per application)" }, { type: "6-8", amount: "Rs. 130 (per application)" }, { type: "9-10", amount: "Rs. 150 (per application)" }, { type: "11-12", amount: "Rs. 210 (per application)" }, { type: "12 Pass", amount: "Rs. 210 (per application)" }, ],
+    generalRules: [ "1. Only registered students can appear in the exam.", "2. Admit card and original Aadhar card are must to carry along with in the exam hall.", "3. Any cheating means like paper, electronic devices, indisciplinary actions, etc.are strictly prohibited in case of any such things found corresponding candidate would be canceled for exam.", "4. A candidate can get his/her OMR sheet rechecked at head office paying Rs. 1000/-", "5. Admit card will be issued on your WhatsApp number/Email provided/ TO YOUR HRO INCHERGE AT YOUR SCHOOL.", "6. All the questions are Multiple Choice Questions (MCQs).", "7. The ranks will be decided as per the highest percentage of marks obtained in each CATEGORY.", "8. Qualifying Mark is 40. Only qualified students can receive the certificate of excellence rest of the students will get certificate of participant.", "9. Report at the centre as time is scheduled, being late no student is allowed to seat in exam once it starts.", "10. Answers will be taken on OMR sheets that is to be filled using blue/black ball point pen.,", ],
+    scholarshipRules: [ "> Winner trophy, medal and certificate to all candidates securing first, second and third position (each class).", "> Medal and certificate along with gift to all 17 students (each class) coming in gift category.", "> In case of equal marks in the result, preference will be given to the candidate with higher age and in case of equal age, preference will be given to the one who comes first in alphabetical order of the names of the candidates.", ],
+    scholarship: [ { class: "1-5", first: "Rs. 2100", second: "Rs. 1500", third: "Rs. 1100", other: "17 Prizes to Rest", }, { class: "6-8", first: "Rs. 3500", second: "Rs. 2500", third: "Rs. 1500", other: "17 Prizes to Rest", }, { class: "9-10", first: "Rs. 5000", second: "Rs. 3500", third: "Rs. 2500", other: "17 Prizes to Rest", }, { class: "11-12", first: "Rs. 5500", second: "Rs. 4100", third: "Rs. 3100", other: "17 Prizes to Rest", }, { class: "12 Pass", first: "Rs. 5100", second: "Rs. 3500", third: "Rs. 2500", other: "17 Prizes to Rest", }, ],
+    prizes: [ { prize: "Certificate", criteria: "All participants" }, { prize: "Medal", criteria: "Top 3" }, ],
   },
   hi: {
     title: "हिल राइडर्स ओलंपियाड",
     desc: "ओलंपियाड केवल एक प्रतियोगिता नहीं, बल्कि सीखने, बढ़ने और उपलब्धि हासिल करने की एक यात्रा है। यह न सिर्फ़ आपके ज्ञान की परख करता है, बल्कि आपकी असली क्षमता को भी उजागर करता है। यह नए अवसरों के द्वार खोलता है, समस्या-समाधान कौशल विकसित करता है और बड़े चुनौतियों का सामना करने का आत्मविश्वास देता है। अकादमिक प्रदर्शन को बेहतर बनाने से लेकर भविष्य की प्रतियोगी परीक्षाओं की तैयारी तक – ओलंपियाड आपको राज्य, राष्ट्रीय और अंतर्राष्ट्रीय स्तर पर चमकने का सुनहरा मंच प्रदान करता है।",
     register: "अभी पंजीकरण करें",
     contact: "संपर्क करें",
-    Prizes: "पुरस्कार",
-    Prize: "पुरस्कार",
-    Criteria: "मानदंड",
-    Scholarship: "छात्रवृत्ति",
-    Class: "कक्षा",
-    First: "प्रथम",
-    Second: "द्वितीय",
-    Third: "तृतीय",
-    OtherPrizes: "अन्य पुरस्कार",
-    GeneralRules: "सामान्य नियम",
-    ScholarshipRules: "छात्रवृत्ति नियम",
-    Fees: "शुल्क",
-    Amount: "राशि",
-    ExamDesc: "परीक्षा विवरण",
-    Subject: "विषय",
-    Ques: "प्रश्न",
-    Time: "अवधि",
-    ClassWiseSub: "कक्षा-वार विषय",
-    classwise: [
-      { class: "1-5", subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित" },
-      {
-        class: "6-8",
-        subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित, विज्ञान",
-      },
-      {
-        class: "9-10",
-        subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित, विज्ञान",
-      },
-      {
-        class: "11-12",
-        subject: "इंजीनियरिंग पीसीएम, मेडिकल पीसीबी, सामान्य अध्ययन",
-      },
-      { class: "12वीं उत्तीर्ण", subject: "सामान्य अध्ययन" },
-    ],
-    contact_us: [
-      {
-        label: "नाम",
-        value: "शिवम मिश्रा (पंजीकरण प्रभारी) - 7307605936",
-      },
-      { label: "फ़ोन/कॉल", value: "9415116540, 7307605936, 9889138039" },
-      { label: "संदेश", value: "9415116540, 7307605936, 7317775562" },
-      {
-        label: "पता",
-        value:
-          "बेलवा खुर्द, आईओसीएल पंप, सोनबसरा बाज़ार, एयर फ़ोर्स रोड, गोरखपुर, 273002",
-      },
-      { label: "ईमेल", value: "hrmsevasamiti@gmail.com" },
-    ],
-
-    examData: [
-      {
-        class: "1-2",
-        subjects: [
-          {
-            subject: "सामान्य ज्ञान, अंग्रेज़ी, हिंदी, गणित",
-            questions: "40",
-            duration: "80 मिनट",
-          },
-        ],
-      },
-      {
-        class: "3-5",
-        subjects: [
-          { subject: "सामान्य ज्ञान", questions: "50", duration: "80 मिनट" },
-          { subject: "अंग्रेज़ी/हिंदी", questions: "50", duration: "80 मिनट" },
-          { subject: "गणित", questions: "50", duration: "80 मिनट" },
-        ],
-      },
-      {
-        class: "6-8",
-        subjects: [
-          { subject: "सामान्य ज्ञान", questions: "60", duration: "80 मिनट" },
-          { subject: "अंग्रेज़ी/हिंदी", questions: "60", duration: "80 मिनट" },
-          { subject: "गणित", questions: "60", duration: "80 मिनट" },
-          { subject: "विज्ञान", questions: "60", duration: "80 मिनट" },
-        ],
-      },
-      {
-        class: "9-10",
-        subjects: [
-          { subject: "सामान्य ज्ञान", questions: "60", duration: "80 मिनट" },
-          { subject: "अंग्रेज़ी/हिंदी", questions: "60", duration: "80 मिनट" },
-          { subject: "गणित", questions: "60", duration: "80 मिनट" },
-          { subject: "विज्ञान", questions: "60", duration: "80 मिनट" },
-        ],
-      },
-      {
-        class: "11-12",
-        subjects: [
-          {
-            subject: "इंजीनियरिंग (भौतिकी, रसायन, गणित)",
-            questions: "भौ20 + रा20 + ग20",
-            duration: "2 घंटे",
-          },
-          {
-            subject: "मेडिकल (भौतिकी, रसायन, जीव विज्ञान)",
-            questions: "भौ20 + रा20 + जी20",
-            duration: "2 घंटे",
-          },
-          {
-            subject: "सामान्य अध्ययन (सामान्य ज्ञान, भाषा, सामाजिक विज्ञान)",
-            questions: "40 + 40 + 40",
-            duration: "2 घंटे",
-          },
-        ],
-      },
-      {
-        class: "12वीं उत्तीर्ण",
-        subjects: [
-          {
-            subject: "सामान्य अध्ययन",
-            questions:
-              "सामान्य ज्ञान=20, सामान्य अध्ययन=20, इतिहास=20, भूगोल=20, भाषा=20, विधि=20, गणित=20, तर्कशक्ति=20, कुल=150",
-            duration: "2 घंटे",
-          },
-        ],
-      },
-    ],
-
-    fees: [
-      { type: "कक्षा 1-5", amount: "₹120 (प्रति आवेदन)" },
-      { type: "कक्षा 6-8", amount: "₹130 (प्रति आवेदन)" },
-      { type: "कक्षा 9-10", amount: "₹150 (प्रति आवेदन)" },
-      { type: "कक्षा 11-12", amount: "₹210 (प्रति आवेदन)" },
-      { type: "12 पास", amount: "₹210 (प्रति आवेदन)" },
-    ],
-
-    generalRules: [
-      "1. केवल पंजीकृत छात्र ही परीक्षा में शामिल हो सकते हैं।",
-      "2. प्रवेश पत्र और मूल आधार कार्ड परीक्षा हॉल में लाना अनिवार्य है।",
-      "3. नकल जैसे- कागज़, इलेक्ट्रॉनिक उपकरण, अनुशासनहीन कार्य आदि सख्त वर्जित हैं। यदि ऐसा कुछ पाया गया तो संबंधित छात्र की परीक्षा रद्द कर दी जाएगी।",
-      "4. कोई भी उम्मीदवार अपनी OMR शीट का पुनः परीक्षण हेड ऑफिस में ₹1000/- जमा करवा कर करा सकता है।",
-      "5. प्रवेश पत्र आपके द्वारा दिए गए WhatsApp नंबर/ईमेल या आपके विद्यालय के एचआरओ इंचार्ज को जारी किया जाएगा।",
-      "6. सभी प्रश्न बहुविकल्पीय (MCQs) होंगे।",
-      "7. प्रत्येक श्रेणी में सर्वाधिक अंक प्राप्त करने वाले को रैंक प्रदान की जाएगी।",
-      "8. उत्तीर्णांक 40 है। केवल योग्य छात्र ही उत्कृष्टता प्रमाणपत्र प्राप्त करेंगे, शेष छात्रों को सहभागिता प्रमाणपत्र मिलेगा।",
-      "9. समय पर परीक्षा केंद्र पर उपस्थित हों, देरी होने पर परीक्षा शुरू होने के बाद किसी भी छात्र को प्रवेश नहीं मिलेगा।",
-      "10. उत्तर OMR शीट पर ही लिए जाएंगे जिन्हें नीले/काले बॉल पेन से भरना होगा।",
-    ],
-    scholarshipRules: [
-      "> प्रत्येक कक्षा में प्रथम, द्वितीय और तृतीय स्थान प्राप्त करने वाले सभी विद्यार्थियों को विजेता ट्रॉफी, मेडल और प्रमाणपत्र प्रदान किया जाएगा।",
-      "> प्रत्येक कक्षा में 'गिफ्ट कैटेगरी' में आने वाले 17 विद्यार्थियों को मेडल, प्रमाणपत्र और उपहार दिए जाएंगे।",
-      "> यदि परिणाम में अंकों की समानता होती है, तो अधिक आयु वाले छात्र को प्राथमिकता दी जाएगी और यदि आयु भी समान हो तो नाम के वर्णक्रम (Alphabetical order) के अनुसार पहले आने वाले को प्राथमिकता मिलेगी।",
-    ],
-    scholarship: [
-      {
-        class: "कक्षा 1-5",
-        first: "₹2100",
-        second: "₹1500",
-        third: "₹1100",
-        other: "बाकी को 17 सांत्वना पुरस्कार",
-      },
-      {
-        class: "कक्षा 6-8",
-        first: "₹3500",
-        second: "₹2500",
-        third: "₹1500",
-        other: "बाकी को 17 सांत्वना पुरस्कार",
-      },
-      {
-        class: "कक्षा 9-10",
-        first: "₹5000",
-        second: "₹3500",
-        third: "₹1500",
-        other: "बाकी को 17 सांत्वना पुरस्कार",
-      },
-      {
-        class: "कक्षा 11-12",
-        first: "₹5500",
-        second: "₹4100",
-        third: "₹3100",
-        other: "बाकी को 17 सांत्वना पुरस्कार",
-      },
-      {
-        class: "12वीं उत्तीर्ण",
-        first: "₹5100",
-        second: "₹3500",
-        third: "₹2500",
-        other: "बाकी को 17 सांत्वना पुरस्कार",
-      },
-    ],
-
-    prizes: [
-      { prize: "प्रमाण पत्र", criteria: "सभी प्रतिभागी" },
-      { prize: "मेडल", criteria: "शीर्ष 3" },
-    ],
+    downloadReceipt: "रसीद डाउनलोड करें",
+    Prizes: "पुरस्कार", Prize: "पुरस्कार", Criteria: "मानदंड", Scholarship: "छात्रवृत्ति", Class: "कक्षा", First: "प्रथम", Second: "द्वितीय", Third: "तृतीय", OtherPrizes: "अन्य पुरस्कार", GeneralRules: "सामान्य नियम", ScholarshipRules: "छात्रवृत्ति नियम", Fees: "शुल्क", Amount: "राशि", ExamDesc: "परीक्षा विवरण", Subject: "विषय", Ques: "प्रश्न", Time: "अवधि", ClassWiseSub: "कक्षा-वार विषय",
+    classwise: [ { class: "1-5", subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित" }, { class: "6-8", subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित, विज्ञान", }, { class: "9-10", subject: "सामान्य ज्ञान, अंग्रेज़ी/हिंदी, गणित, विज्ञान", }, { class: "11-12", subject: "इंजीनियरिंग पीसीएम, मेडिकल पीसीबी, सामान्य अध्ययन", }, { class: "12वीं उत्तीर्ण", subject: "सामान्य अध्ययन" }, ],
+    contact_us: [ { label: "नाम", value: "शिवम मिश्रा (पंजीकरण प्रभारी) - 7307605936", }, { label: "फ़ोन/कॉल", value: "9415116540, 7307605936, 9889138039" }, { label: "संदेश", value: "9415116540, 7307605936, 7317775562" }, { label: "पता", value: "बेलवा खुर्द, आईओसीएल पंप, सोनबसरा बाज़ार, एयर फ़ोर्स रोड, गोरखपुर, 273002", }, { label: "ईमेल", value: "hrmsevasamiti@gmail.com" }, ],
+    examData: [ { class: "1-2", subjects: [ { subject: "सामान्य ज्ञान, अंग्रेज़ी, हिंदी, गणित", questions: "40", duration: "80 मिनट", }, ], }, { class: "3-5", subjects: [ { subject: "सामान्य ज्ञान", questions: "50", duration: "80 मिनट" }, { subject: "अंग्रेज़ी/हिंदी", questions: "50", duration: "80 मिनट" }, { subject: "गणित", questions: "50", duration: "80 मिनट" }, ], }, { class: "6-8", subjects: [ { subject: "सामान्य ज्ञान", questions: "60", duration: "80 मिनट" }, { subject: "अंग्रेज़ी/हिंदी", questions: "60", duration: "80 मिनट" }, { subject: "गणित", questions: "60", duration: "80 मिनट" }, { subject: "विज्ञान", questions: "60", duration: "80 मिनट" }, ], }, { class: "9-10", subjects: [ { subject: "सामान्य ज्ञान", questions: "60", duration: "80 मिनट" }, { subject: "अंग्रेज़ी/हिंदी", questions: "60", duration: "80 मिनट" }, { subject: "गणित", questions: "60", duration: "80 मिनट" }, { subject: "विज्ञान", questions: "60", duration: "80 मिनट" }, ], }, { class: "11-12", subjects: [ { subject: "इंजीनियरिंग (भौतिकी, रसायन, गणित)", questions: "भौ20 + रा20 + ग20", duration: "2 घंटे", }, { subject: "मेडिकल (भौतिकी, रसायन, जीव विज्ञान)", questions: "भौ20 + रा20 + जी20", duration: "2 घंटे", }, { subject: "सामान्य अध्ययन (सामान्य ज्ञान, भाषा, सामाजिक विज्ञान)", questions: "40 + 40 + 40", duration: "2 घंटे", }, ], }, { class: "12वीं उत्तीर्ण", subjects: [ { subject: "सामान्य अध्ययन", questions: "सामान्य ज्ञान=20, सामान्य अध्ययन=20, इतिहास=20, भूगोल=20, भाषा=20, विधि=20, गणित=20, तर्कशक्ति=20, कुल=150", duration: "2 घंटे", }, ], }, ],
+    fees: [ { type: "कक्षा 1-5", amount: "₹120 (प्रति आवेदन)" }, { type: "कक्षा 6-8", amount: "₹130 (प्रति आवेदन)" }, { type: "कक्षा 9-10", amount: "₹150 (प्रति आवेदन)" }, { type: "कक्षा 11-12", amount: "₹210 (प्रति आवेदन)" }, { type: "12 पास", amount: "₹210 (प्रति आवेदन)" }, ],
+    generalRules: [ "1. केवल पंजीकृत छात्र ही परीक्षा में शामिल हो सकते हैं।", "2. प्रवेश पत्र और मूल आधार कार्ड परीक्षा हॉल में लाना अनिवार्य है।", "3. नकल जैसे- कागज़, इलेक्ट्रॉनिक उपकरण, अनुशासनहीन कार्य आदि सख्त वर्जित हैं। यदि ऐसा कुछ पाया गया तो संबंधित छात्र की परीक्षा रद्द कर दी जाएगी।", "4. कोई भी उम्मीदवार अपनी OMR शीट का पुनः परीक्षण हेड ऑफिस में ₹1000/- जमा करवा कर करा सकता है।", "5. प्रवेश पत्र आपके द्वारा दिए गए WhatsApp नंबर/ईमेल या आपके विद्यालय के एचआरओ इंचार्ज को जारी किया जाएगा।", "6. सभी प्रश्न बहुविकल्पीय (MCQs) होंगे।", "7. प्रत्येक श्रेणी में सर्वाधिक अंक प्राप्त करने वाले को रैंक प्रदान की जाएगी।", "8. उत्तीर्णांक 40 है। केवल योग्य छात्र ही उत्कृष्टता प्रमाणपत्र प्राप्त करेंगे, शेष छात्रों को सहभागिता प्रमाणपत्र मिलेगा।", "9. समय पर परीक्षा केंद्र पर उपस्थित हों, देरी होने पर परीक्षा शुरू होने के बाद किसी भी छात्र को प्रवेश नहीं मिलेगा।", "10. उत्तर OMR शीट पर ही लिए जाएंगे जिन्हें नीले/काले बॉल पेन से भरना होगा।", ],
+    scholarshipRules: [ "> प्रत्येक कक्षा में प्रथम, द्वितीय और तृतीय स्थान प्राप्त करने वाले सभी विद्यार्थियों को विजेता ट्रॉफी, मेडल और प्रमाणपत्र प्रदान किया जाएगा।", "> प्रत्येक कक्षा में 'गिफ्ट कैटेगरी' में आने वाले 17 विद्यार्थियों को मेडल, प्रमाणपत्र और उपहार दिए जाएंगे।", "> यदि परिणाम में अंकों की समानता होती है, तो अधिक आयु वाले छात्र को प्राथमिकता दी जाएगी और यदि आयु भी समान हो तो नाम के वर्णक्रम (Alphabetical order) के अनुसार पहले आने वाले को प्राथमिकता मिलेगी।", ],
+    scholarship: [ { class: "कक्षा 1-5", first: "₹2100", second: "₹1500", third: "₹1100", other: "बाकी को 17 सांत्वना पुरस्कार", }, { class: "कक्षा 6-8", first: "₹3500", second: "₹2500", third: "₹1500", other: "बाकी को 17 सांत्वना पुरस्कार", }, { class: "कक्षा 9-10", first: "₹5000", second: "₹3500", third: "₹1500", other: "बाकी को 17 सांत्वना पुरस्कार", }, { class: "कक्षा 11-12", first: "₹5500", second: "₹4100", third: "₹3100", other: "बाकी को 17 सांत्वना पुरस्कार", }, { class: "12वीं उत्तीर्ण", first: "₹5100", second: "₹3500", third: "₹2500", other: "बाकी को 17 सांत्वना पुरस्कार", }, ],
+    prizes: [ { prize: "प्रमाण पत्र", criteria: "सभी प्रतिभागी" }, { prize: "मेडल", criteria: "शीर्ष 3" }, ],
   },
 };
+
 
 const Olympiad = ({ languageType }) => {
   const selectedContent = content[languageType] || content.en;
   const navigate = useNavigate();
-  const contactRef = useRef(null);
-  const handleRegisterClick = () => {
-    navigate("/registration");
-  };
+
+  // State for modal and receipt fetching
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [studentCode, setStudentCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [receipt, setReceiptData] = useState(null);
+
+  const handleRegisterClick = () => navigate("/registration");
+
   const handleContactClick = () => {
-    const section = document.getElementById("Contact");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("Contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+  
+  const resetModalState = () => {
+      setStudentCode("");
+      setLoading(false);
+      setError("");
+      setReceiptData(null);
+  };
+
+  const handleOpenModal = () => {
+      resetModalState();
+      setIsModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+      setIsModalOpen(false);
+      resetModalState();
+  };
+
+  const fetchReceipt = async () => {
+    if (!studentCode.trim()) {
+      setError("Please enter a valid Student Code.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(`http://localhost:5000/api/students/receipt/${encodeURIComponent(studentCode)}`);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || `Student not found.`);
+      }
+      const data = await res.json();
+      setReceiptData(data);
+    } catch (err) {
+      setError(err.message);
+      setReceiptData(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -408,7 +107,6 @@ const Olympiad = ({ languageType }) => {
     <div className="olympiad-container-img">
       <ImageCarousel images={images} />
 
-      {/* Intro Section */}
       <div className="olympiad-container">
         <div className="olympiad-intro">
           <h2>{selectedContent.title}</h2>
@@ -420,16 +118,15 @@ const Olympiad = ({ languageType }) => {
             <button className="btn" onClick={handleContactClick}>
               {selectedContent.contact}
             </button>
+            <button className="btn btn-secondary" onClick={handleOpenModal}>
+              {selectedContent.downloadReceipt}
+            </button>
           </div>
-
-          <section className="receipt-section mt-10">
-            <h3>Get Student Receipt</h3>
-            <ReceiptLookup />
-          </section>
-
         </div>
 
-        {/* Class-wise Section */}
+        {/* All other sections like ClassWiseSub, Exam, Fees, Rules, Scholarship, Contact etc. should be placed here */}
+        {/* For brevity, they are omitted but are part of the full component */}
+ {/* Class-wise Section */}
         <section className="classWiseSection">
           <h3>{selectedContent.ClassWiseSub}</h3>
           <table>
@@ -581,6 +278,80 @@ const Olympiad = ({ languageType }) => {
         </section>
 
       </div>
+
+      {/* Modal for fetching and displaying the receipt */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button onClick={handleCloseModal} className="modal-close-btn">&times;</button>
+            
+            {receipt ? (
+              // View 2: Display Receipt
+              <div>
+                <RegistrationReceipt
+                  languageType={languageType}
+                  ngo={{
+              name: "HILL RIDER MANAV SEWA SAMITI",
+              logo: "/logo.png",
+              tagline: "Serving Humanity with Dedication",
+              address: "123 NGO Lane, Bhopal, MP",
+              phone: "+91-9876543210",
+              email: "contact@hillriderngo.org",
+            }}
+                   student={{
+              firstName: receipt.firstName,
+              lastName: receipt.lastName,
+              dob: receipt.dateOfBirth,
+              class: receipt.class,
+              amount: receipt.amount,
+              phone: receipt.phone,
+              school: receipt.schoolName || "Unknown",
+              subject: receipt.subject,
+              transactionId: receipt.transactionId || "N/A",
+              aadharNumber: receipt.aadharNumber,
+              gender: receipt.gender,
+              category: receipt.category,
+              competitionCategory: receipt.competitionCategory,
+              village: receipt.village,
+              post: receipt.post,
+              district: receipt.district,
+              pinCode: receipt.pinCode,
+              state: receipt.state,
+              paymentStatus: receipt.paymentStatus || "Unverified",
+              studentCode: receipt.studentCode,
+            }}
+            registrationId={receipt.studentCode}
+            issuedAt={receipt.createdAt}
+                />
+                 <button onClick={resetModalState} className="btn modal-search-again">
+                    Search for Another Receipt
+                </button>
+              </div>
+            ) : (
+              // View 1: Input Form
+              <div className="receipt-lookup-modal">
+                <h3>Find Your Registration Receipt</h3>
+                <p>Please enter your student code to download your receipt.</p>
+                <div className="receipt-lookup-form">
+                  <input
+                    type="text"
+                    value={studentCode}
+                    onChange={(e) => setStudentCode(e.target.value.toUpperCase())}
+                    placeholder="Enter Student Code (e.g., HR2025001)"
+                    className="receipt-input"
+                    disabled={loading}
+                    onKeyPress={(e) => e.key === 'Enter' && fetchReceipt()}
+                  />
+                  <button onClick={fetchReceipt} disabled={loading} className="btn">
+                    {loading ? "Searching..." : "Submit"}
+                  </button>
+                </div>
+                {error && <p className="error-message">{error}</p>}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

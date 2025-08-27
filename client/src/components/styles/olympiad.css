@@ -212,3 +212,125 @@ table tr:nth-child(even) {
   }
 }
 
+/* This is the styling for the "Download Receipt" button itself */
+.btn {
+  background-color: #0A3153;
+  border-color: #0A3153;
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  color: #FFF;
+}
+.btn.btn-secondary{
+  background-color: #0A3153;
+  border-color: #0A3153;
+}
+
+.btn.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+/* This creates the dark, semi-transparent background behind the modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* This is the main white container for the modal content */
+.modal-content {
+  background: #ffffff;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Styling for the '×' close button in the top-right corner */
+.modal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  z-index: 1010;
+  line-height: 1;
+}
+
+/* Styles the container for the initial search form view */
+.receipt-lookup-modal {
+    padding: 20px;
+    text-align: center;
+}
+
+.receipt-lookup-modal h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #0A3153; /* Match theme */
+}
+
+/* Flex container for the input field and submit button */
+.receipt-lookup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+
+/* Switches the form to a row layout on larger screens */
+@media (min-width: 600px) {
+  .receipt-lookup-form {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Styles the text input field for the student code */
+.receipt-input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+  transition: border-color 0.3s;
+}
+
+.receipt-input:focus {
+  outline: none;
+  border-color: #0A3153; /* Match theme */
+}
+
+/* Styles the red error message text */
+.error-message {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Styles the "Search for Another Receipt" button */
+.modal-search-again {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #28a745; /* Green color for positive action */
+}
+
+.modal-search-again:hover {
+    background-color: #218838;
+}
