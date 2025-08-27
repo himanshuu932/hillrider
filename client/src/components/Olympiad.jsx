@@ -88,7 +88,7 @@ const Olympiad = ({ languageType }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://localhost:5000/api/students/receipt/${encodeURIComponent(studentCode)}`);
+      const res = await fetch(`https://hillrider.onrender.com/api/students/receipt/${encodeURIComponent(studentCode)}`);
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || `Student not found.`);
