@@ -81,13 +81,43 @@ const AdminPanel = () => {
     }
   };
 
- 
+  const stats = useMemo(() => {
+    const totalRegistrations = registrations.length;
+    const paid = registrations.filter(r => r.paymentStatus === 'Paid');
+    const unverified = registrations.filter(r => r.paymentStatus === 'Unverified');
+    const failed = registrations.filter(r => r.paymentStatus === 'Failed');
+    const offlinePaid = registrations.filter(r => r.paymentStatus === 'Offline Paid');
 
+    const totalRevenue = paid.reduce((sum, r) => sum + (r.amount || 120), 0) +
+                        offlinePaid.reduce((sum, r) => sum + (r.amount || 120), 0);
+
+    return {
+      totalRegistrations,
+      paidCount: paid.length,
+      unverifiedCount: unverified.length,
+      failedCount: failed.length,
+      offlinePaidCount: offlinePaid.length,
+      totalRevenue
+    };
+  }, [registrations]);
+
+  const StatCard = ({ title, value, icon: Icon, color }) => (
+    <div className="bg-white rounded-lg shadow-md p-6 border-l-4" style={{ borderLeftColor: color }}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-gray-600 text-sm font-medium">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+        </div>
+        <Icon className="h-8 w-8" style={{ color }} />
+      </div>
+    </div>
+  );
   const navLinks = [
     { id: 'registrations', label: 'Registrations', icon: Users },
     { id: 'verify', label: 'Verify Registrations', icon: Users },
     { id: 'addSchool', label: 'Add School', icon: School },
     { id: 'registerStudent', label: 'Register Student', icon: UserPlus },
+    { id: 'statistics', label: 'Statistics', icon: BarChart2 },
     { id: 'AddAdmin', label: 'Add Admin', icon: UserPlus },
     { id: 'results', label: 'Results', icon: Award },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
@@ -114,7 +144,53 @@ const AdminPanel = () => {
         return <AddSchool />;
       case 'registerStudent':
         return <AdminStudentRegistration />;
-     case 'AddAdmin':
+      case 'statistics':
+        return (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-900">Statistics Dashboard</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <StatCard title="Total Registrations" value={stats.totalRegistrations} icon={Users} color="#3B82F6" />
+                <StatCard title="Paid" value={stats.paidCount} icon={DollarSign} color="#10B981" />
+                <StatCard title="Offline Paid" value={stats.offlinePaidCount} icon={DollarSign} color="#8B5CF6" />
+                <StatCard title="Unverified" value={stats.unverifiedCount} icon={Users} color="#F59E0B" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Subject</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between"><span>Mathematics</span><span className="font-semibold">{registrations.filter(r => r.subject === 'Mathematics').length}</span></div>
+                    <div className="flex justify-between"><span>Science</span><span className="font-semibold">{registrations.filter(r => r.subject === 'Science').length}</span></div>
+                    <div className="flex justify-between"><span>English</span><span className="font-semibold">{registrations.filter(r => r.subject === 'English').length}</span></div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Class</h3>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'].map(cls => {
+                      const count = registrations.filter(r => String(r.class) === cls).length;
+                      return count > 0 ? (<div key={cls} className="flex justify-between"><span>Class {cls}</span><span className="px-4 font-semibold">{count}</span></div>) : null;
+                    })}
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-green-600"><span>Total Collected</span><span className="font-semibold">₹{stats.totalRevenue.toLocaleString()}</span></div>
+                    <div className="flex justify-between text-yellow-600"><span>Unverified Amount</span><span className="font-semibold">₹{(stats.unverifiedCount * 500).toLocaleString()}</span></div>
+                    <div className="flex justify-between text-red-600"><span>Failed Payments</span><span className="font-semibold">₹{(stats.failedCount * 500).toLocaleString()}</span></div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration by Gender</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between"><span>Male</span><span className="font-semibold">{registrations.filter(r => r.gender === 'Male').length}</span></div>
+                    <div className="flex justify-between"><span>Female</span><span className="font-semibold">{registrations.filter(r => r.gender === 'Female').length}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        );
+      case 'AddAdmin':
          case 'AddAdmin':
         return (
             <div className="register-container">
