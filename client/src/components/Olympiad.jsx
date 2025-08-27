@@ -6,6 +6,7 @@ import olympiad1 from "../components/images/olympiad1.webp";
 import olympiad2 from "../components/images/olympiad2.webp";
 import olympiad3 from "../components/images/olympiad3.webp";
 import olympiad4 from "../components/images/olympiad4.webp";
+import ReceiptLookup from "./ReceiptLookup";
 
 const images = [olympiad1, olympiad2, olympiad3, olympiad4];
 
@@ -420,6 +421,12 @@ const Olympiad = ({ languageType }) => {
               {selectedContent.contact}
             </button>
           </div>
+
+          <section className="receipt-section mt-10">
+            <h3>Get Student Receipt</h3>
+            <ReceiptLookup />
+          </section>
+
         </div>
 
         {/* Class-wise Section */}

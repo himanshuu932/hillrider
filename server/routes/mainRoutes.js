@@ -12,7 +12,8 @@ const {
     verifyStudentPayment,
     getFeeConfig,
     addFeeConfig,
-    updateFeeConfig
+    updateFeeConfig,
+    getReceipt
 } = require('../controllers/mainController');
 
 // In a real-world application, you would protect admin-only routes
@@ -67,6 +68,8 @@ router.get('/students/fee', getFeeConfig);
 router.post('/students/fee', addFeeConfig);
 
 router.put('/students/fee', updateFeeConfig);
+
+router.get('/students/receipt/:studentCode', getReceipt);
 
 
 module.exports = router;
