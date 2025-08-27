@@ -1,13 +1,11 @@
-
 .olympiad-container-img {
   width: 100%;
   margin: 0;
   font-family: 'Arial', sans-serif;
   color: #333;
   line-height: 1.6;
-  padding:0;
+  padding: 0;
 }
-
 
 .olympiad-container {
   width: 100%;
@@ -17,9 +15,8 @@
   padding: 30px 20px;
   background: linear-gradient(150deg, #fefaee, #ffffff);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 
 .olympiad-intro {
   text-align: center;
@@ -36,11 +33,12 @@
 .olympiad-intro p {
   font-size: 1.1rem;
   font-weight: 545;
-  margin: 10 px, auto;
+  margin: 10px auto; /* Corrected syntax */
   text-align: justify;
   padding-bottom: 15px;
   padding-left: 10px;
   padding-right: 10px;
+  word-wrap: break-word; /* Added to prevent overflow */
 }
 
 .olympiad-intro .buttons {
@@ -52,21 +50,21 @@
 .olympiad-intro .btn {
   padding: 12px 25px;
   border: none;
-  font-weight:bold;
+  font-weight: bold;
   background-color: #0A3153;
   color: white;
   font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .olympiad-intro .btn:hover {
   background-color: #1e4d63;
   transform: translateY(-3px);
 }
-
 
 section h3 {
   font-size: 1.8rem;
@@ -80,7 +78,6 @@ section h3 {
   letter-spacing: 1px;
 }
 
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -90,7 +87,8 @@ table {
   overflow: hidden;
 }
 
-table th, table td {
+table th,
+table td {
   border: 1px solid #613b3b;
   padding: 12px 15px;
   text-align: center;
@@ -165,7 +163,6 @@ table tr:nth-child(even) {
   transition: 0.2s ease;
 }
 
-
 .rules {
   background: #e6f3f7;
   border-left: 6px solid #0A3153;
@@ -174,7 +171,7 @@ table tr:nth-child(even) {
   font-weight: 550;
   border-radius: 8px;
   margin-bottom: 30px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 .rules ul {
@@ -196,32 +193,43 @@ table tr:nth-child(even) {
   transform: translateX(5px);
 }
 
-
 @media (max-width: 768px) {
-  /* .olympiad-intro .buttons {
-    flex-direction: column;
-  } */
+  .olympiad-intro .buttons {
+    flex-direction: column; /* This is the fix for button responsiveness */
+  }
 
   .olympiad-intro .btn {
     width: 100%;
   }
 
-  table th, table td {
+  table th,
+  table td {
     font-size: 0.9rem;
     padding: 8px 10px;
   }
 }
 
 /* This is the styling for the "Download Receipt" button itself */
+/* File: olympiad.css
+*/
+
+/* This is the styling for the "Download Receipt" button itself */
 .btn {
+  /* Added Flexbox properties for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background-color: #0A3153;
   border-color: #0A3153;
   height: 40px;
   width: 200px;
   border-radius: 10px;
   color: #FFF;
+  /* Ensure padding is consistent if needed, otherwise flex handles it */
+  padding: 0 15px;
 }
-.btn.btn-secondary{
+.btn.btn-secondary {
   background-color: #0A3153;
   border-color: #0A3153;
 }
@@ -275,14 +283,14 @@ table tr:nth-child(even) {
 
 /* Styles the container for the initial search form view */
 .receipt-lookup-modal {
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 }
 
 .receipt-lookup-modal h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: #0A3153; /* Match theme */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #0A3153; /* Match theme */
 }
 
 /* Flex container for the input field and submit button */
@@ -326,11 +334,11 @@ table tr:nth-child(even) {
 
 /* Styles the "Search for Another Receipt" button */
 .modal-search-again {
-    display: block;
-    margin: 20px auto 0;
-    background-color: #28a745; /* Green color for positive action */
+  display: block;
+  margin: 20px auto 0;
+  background-color: #28a745; /* Green color for positive action */
 }
 
 .modal-search-again:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
