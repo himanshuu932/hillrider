@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/Activities.css";
-import Carousel from "../Carousal";
+import Carousel from "../helpers/Carousal";
 import activity1 from "../../assets/activity1.webp";
 import activity2 from "../../assets/activity2.webp";
 import activity3 from "../../assets/activity3.webp";

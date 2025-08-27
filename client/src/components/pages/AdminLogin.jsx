@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// Accept setIsAdmin as a prop to update the parent state
+
 export default function AdminLogin({ setIsAdmin }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -15,27 +15,32 @@ export default function AdminLogin({ setIsAdmin }) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Clear previous errors
+        setError("");
         try {
-            const res = await axios.post(
+            // The API call now includes `withCredentials: true`
+            await axios.post(
                 "https://hillrider.onrender.com/api/admin/login",
                 formData,
-                { headers: { "Content-Type": "application/json" } }
+                { 
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true // This is crucial for sending/receiving cookies
+                }
             );
 
-            // On successful login:
-            localStorage.setItem('adminToken', res.data.token);
+            // 🚫 We no longer save the token to localStorage
+            // localStorage.setItem('adminToken', res.data.token);
+
             setIsAdmin(true);
             navigate("/admin");
 
-        } catch (err)
- {
+        } catch (err) {
             setError(err.response?.data?.message || "Invalid credentials");
             console.error(err);
         }
     };
+
 
     return (
         <div className="flex min-w-[600px ] items-center justify-center min-h-[60vh] bg-gray-100 p-4">

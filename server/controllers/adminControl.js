@@ -64,11 +64,11 @@ const loginAdmin = async (req, res) => {
 
         const token = jwt.sign({ id: admin._id, email: admin.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.cookie('token', token, {
+      res.cookie('adminToken', token, { // Changed cookie name for clarity
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: 'none',
+            maxAge: 120 *60 * 1000 //
         });
 
         res.json({
@@ -85,6 +85,14 @@ const loginAdmin = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: error.message });
     }
+};
+const verifyToken = (req, res) => {
+    res.status(200).json({ message: "Authenticated" });
+};
+
+const logoutAdmin = (req, res) => {
+    res.clearCookie('adminToken');
+    res.status(200).json({ message: "Logout successful" });
 };
 
 const getAdminProfile = async (req, res) => {
@@ -137,5 +145,7 @@ module.exports = {
     getAdminProfile,
     editRegistraion,
     deleteRegistration,
-    getStudentById
+    getStudentById,
+    verifyToken,
+    logoutAdmin
 };

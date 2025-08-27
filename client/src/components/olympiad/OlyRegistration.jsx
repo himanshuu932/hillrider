@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import RegistrationPrint from "./RegistrationPrint"; // Assuming this component exists and is styled
+import RegistrationPrint from "../helpers/RegistrationPrint"; // Assuming this component exists and is styled
 
 // Helper component to reduce repetition in form fields
 const FormField = ({ id, label, error, children }) => (

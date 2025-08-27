@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import RegistrationReceipt from '../RegistrationPrint';
+import RegistrationReceipt from '../helpers/RegistrationPrint';
 
 // This function is no longer needed as fees are fetched from the API.
 // function calculateFee(classValue, subjects) { ... }
@@ -463,14 +463,7 @@ const AdminStudentRegistration = () => {
                 <div className="my-10">
                     <RegistrationReceipt
                         languageType="en"
-                        ngo={{
-                            name: "HILL RIDER MANAV SEWA SAMITI",
-                            logo: "/logo.png",
-                            tagline: "Serving Humanity with Dedication",
-                            address: "123 NGO Lane, Bhopal, MP",
-                            phone: "+91-9876543210",
-                            email: "contact@hillriderngo.org",
-                        }}
+                        
                         student={{
                             ...registeredStudent,
                             school: schools.find(s => s._id === registeredStudent.school)?.name || "Unknown",

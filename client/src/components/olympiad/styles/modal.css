@@ -1,0 +1,117 @@
+/* ============================================= */
+/* MODAL STYLES                      */
+/* ============================================= */
+
+/* This creates the dark, semi-transparent background behind the modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* This is the main white container for the modal content */
+.modal-content {
+  background: #ffffff;
+  position: relative;
+  width: 100%;
+  max-width: 500px; /* Adjusted for a cleaner form layout */
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Styling for the '×' close button in the top-right corner */
+.modal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  z-index: 1010;
+  line-height: 1;
+}
+
+/* Styles the container for the initial search form view */
+.receipt-lookup-modal {
+  text-align: center;
+  padding: 1rem;
+}
+
+.receipt-lookup-modal h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.receipt-lookup-modal p {
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+/* Flexbox for better form alignment */
+.receipt-lookup-form {
+  display: flex;
+  flex-direction: column; /* Stack input and button vertically */
+  align-items: center;   /* Center them horizontally */
+  gap: 1rem;             /* Space between input and button */
+}
+
+/* Styles the text input field for the student code */
+.receipt-input {
+  width: 100%;
+  max-width: 320px; /* Prevent it from becoming too wide */
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Important for consistent sizing */
+  transition: border-color 0.3s;
+}
+
+.receipt-input:focus {
+  outline: none;
+  border-color: #0A3153; /* Match theme */
+}
+
+/* Style adjustments for the button inside the form */
+.receipt-lookup-form .btn {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px;
+}
+
+/* Styles the red error message text */
+.error-message {
+  margin-top: 1rem;
+  color: #e74c3c; /* A standard error color */
+  font-weight: 500;
+}
+
+/* Styles the "Search for Another Receipt" button */
+.modal-search-again {
+  display: block;
+  width: 100%;
+  margin: 20px auto 0;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.modal-search-again:hover {
+  background-color: #e0e0e0;
+}

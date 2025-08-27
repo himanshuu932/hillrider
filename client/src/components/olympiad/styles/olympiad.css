@@ -1,0 +1,310 @@
+.olympiad-container-img {
+  width: 100%;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  padding: 0;
+}
+
+.olympiad-container {
+  width: 100%;
+  margin: 0;
+  color: #333;
+  line-height: 1.7;
+  padding: 30px 20px;
+  background: linear-gradient(150deg, #fefaee, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.olympiad-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.olympiad-intro h2 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #0A3153;
+  margin-bottom: 15px;
+}
+
+.olympiad-intro p {
+  font-size: 1.1rem;
+  font-weight: 545;
+  margin: 10px auto; /* Corrected syntax */
+  text-align: justify;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  word-wrap: break-word; /* Added to prevent overflow */
+}
+
+.olympiad-intro .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.olympiad-intro .btn {
+  padding: 12px 25px;
+  border: none;
+  font-weight: bold;
+  background-color: #0A3153;
+  color: white;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.olympiad-intro .btn:hover {
+  background-color: #1e4d63;
+  transform: translateY(-3px);
+}
+
+section h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0A3153;
+  margin: 30px 0 15px;
+  border-bottom: 3px solid #0A3153;
+  display: inline-block;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  border: 1px solid #613b3b;
+  padding: 12px 15px;
+  text-align: center;
+}
+
+table th {
+  background-color: #0A3153;
+  color: white;
+}
+
+.class-heading {
+  background-color: #2a6f8f;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+
+table tr:nth-child(even) {
+  background-color: #e6f3f7;
+}
+
+.contact {
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+  border-radius: 15px;
+  border: 2px solid #0A3153;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+}
+
+.contact h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1f4e5f;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #0A3153;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact li {
+  margin: 12px 0;
+  font-size: 1.1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.contact li strong {
+  color: #2a6f8f;
+  margin-right: 8px;
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.contact li:hover {
+  color: #0A3153;
+  transform: translateX(5px);
+  transition: 0.2s ease;
+}
+
+.rules {
+  background: #e6f3f7;
+  border-left: 6px solid #0A3153;
+  padding: 20px;
+  font-size: 1.1rem;
+  font-weight: 550;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.rules ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.rules ul li {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-left: 4px solid #0A3153;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.rules ul li:hover {
+  background: #d6ecf1;
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .olympiad-intro .buttons {
+    flex-direction: column; /* This is the fix for button responsiveness */
+  }
+
+  .olympiad-intro .btn {
+    width: 100%;
+  }
+
+  table th,
+  table td {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}
+
+/* This is the styling for the "Download Receipt" button itself */
+/* File: olympiad.css
+*/
+
+/* This is the styling for the "Download Receipt" button itself */
+.btn {
+  /* Added Flexbox properties for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #0A3153;
+  border-color: #0A3153;
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  color: #FFF;
+  /* Ensure padding is consistent if needed, otherwise flex handles it */
+  padding: 0 15px;
+}
+.btn.btn-secondary {
+  background-color: #0A3153;
+  border-color: #0A3153;
+}
+
+.btn.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+/* This creates the dark, semi-transparent background behind the modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* This is the main white container for the modal content */
+.modal-content {
+  background: #ffffff;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Styling for the '×' close button in the top-right corner */
+.modal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  z-index: 1010;
+  line-height: 1;
+}
+
+/* Styles the container for the initial search form view */
+.receipt-lookup-modal {
+  padding: 20px;
+  text-align: center;
+}
+
+.receipt-lookup-modal h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #0A3153; /* Match theme */
+}
+
+/* Flex container for the input field and submit button */
+.receipt-lookup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+
+/* Switches the form to a row layout on larger screens */
+@media (min-width: 600px) {
+  .receipt-lookup-form {
+    flex-direction: row;
+    align-items: center;
+  }
+}

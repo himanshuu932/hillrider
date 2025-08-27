@@ -52,6 +52,7 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
                         <thead className="bg-white-50">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-white-500 uppercase">Student</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-white-500 uppercase">ID</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-white-500 uppercase">School</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-white-500 uppercase">Transaction ID</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-white-500 uppercase">Action</th>
@@ -63,7 +64,9 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-medium text-white-900">{reg.firstName} {reg.lastName}</div>
                                         <div className="text-sm text-white-500">{reg.phone}</div>
+                                    
                                     </td>
+                                    <td className="px-6 py-4 text-sm text-white-700">{reg.studentCode || 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm text-white-700">{reg.school?.name || 'N/A'}</td>
                                     <td className="px-6 py-4 text-sm font-mono text-white-600">{reg.transactionId}</td>
                                     <td className="px-6 py-4">

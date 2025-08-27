@@ -6,12 +6,12 @@ export default function RegistrationReceipt({
    showControls = true,
   languageType = "en",
   ngo = {
-    name: "HILL RIDER MANAV SEWA SAMITI",
-    logo: "/logo.webp",
-    tagline: "Serving Humanity with Dedication",
-    address: "123 NGO Lane, Bhopal, MP",
-    phone: "+91-9876543210",
-    email: "contact@hillriderngo.org",
+    name: "HILL RIDERS OLYMPIAD",
+    logo: "/logo.png",
+    tagline: "Give your best,To rise above the rest",
+    address: "Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002",
+    phone: "+91 7307605936",
+    email: "hrmsewasamiti@gmail.com",
   },
   student = {
     firstName: "Aditi",

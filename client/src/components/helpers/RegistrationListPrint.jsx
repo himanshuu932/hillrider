@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 
+import { ArrowLeft, Printer } from 'lucide-react';
 const RegistrationListPrint = ({
     registrations,
     title = "Student Registration List",
@@ -12,6 +13,7 @@ const RegistrationListPrint = ({
         email: "contact@hillriderngo.org",
     },
     filters = {},
+    onClose,
     generatedAt = new Date()
 }) => {
     const getSchoolName = (school) => {
@@ -30,15 +32,39 @@ const RegistrationListPrint = ({
             'Unverified': 'bg-yellow-100 text-yellow-800',
             'Offline Paid': 'bg-blue-100 text-blue-800'
         };
-        return statusStyles[status] || 'bg-gray-100 text-gray-800';
+        return statusStyles[status] || 'bg-white-100 text-white-800';
     };
 
     const printRef = useRef(null);
 
     return (
         <div>
+            <div className="p-4 bg-white shadow-md sticky top-0 z-10 no-print">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800 hidden sm:block">
+  Registration List Preview
+</h2>
+
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={onClose}
+                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-white-700 bg-white border border-white-300 rounded-lg hover:bg-white-100"
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Dashboard
+                        </button>
+                        <button
+                            onClick={() => window.print()}
+                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-lg hover:bg-blue-200"
+                        >
+                            <Printer className="w-4 h-4 mr-2" />
+                            Print List
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div id="receipt" ref={printRef}>
-                <div className="bg-gray-200 print-container print:bg-white">
+                <div className="bg-white-200 print-container print:bg-white">
                     <style>{`
                 @media print {
                     @page { size: A4; margin: 0; }
@@ -57,70 +83,70 @@ const RegistrationListPrint = ({
                                 <header className="flex items-start justify-between pb-6 border-b">
                                     <div className="flex items-center gap-4">
                                         <div className="w-20 h-20 shrink-0">
-                                            {ngo.logo ? <img src={ngo.logo} alt="NGO Logo" className="w-full h-full object-contain" /> : <div className="w-full h-full bg-gray-200 rounded-md"></div>}
+                                            {ngo.logo ? <img src={ngo.logo} alt="NGO Logo" className="w-full h-full object-contain" /> : <div className="w-full h-full bg-white-200 rounded-md"></div>}
                                         </div>
                                         <div className="text-left">
-                                            <h1 className="text-2xl font-bold text-gray-800">{ngo.name}</h1>
-                                            <p className="text-sm text-gray-600">{ngo.tagline}</p>
-                                            <p className="text-xs text-gray-500 mt-1">{ngo.address}</p>
-                                            <p className="text-xs text-gray-500">Ph: {ngo.phone} | Email: {ngo.email}</p>
+                                            <h1 className="text-2xl font-bold text-white-800">{ngo.name}</h1>
+                                            <p className="text-sm text-white-600">{ngo.tagline}</p>
+                                            <p className="text-xs text-white-500 mt-1">{ngo.address}</p>
+                                            <p className="text-xs text-white-500">Ph: {ngo.phone} | Email: {ngo.email}</p>
                                         </div>
                                     </div>
                                     <div className="text-right my-8">
-                                        <p className="text-xs text-gray-500">Generated On</p>
-                                        <p className="text-base font-bold text-gray-900">{formatDate(generatedAt)}</p>
+                                        <p className="text-xs text-white-500">Generated On</p>
+                                        <p className="text-base font-bold text-white-900">{formatDate(generatedAt)}</p>
                                     </div>
                                 </header>
                                 <main className="flex-grow">
-                                    <h2 className="text-xl font-semibold text-gray-800 tracking-wide uppercase mb-0 text-center">{title}</h2>
+                                    <h2 className="text-xl font-semibold text-white-800 tracking-wide uppercase mb-0 text-center">{title}</h2>
                                     <div className="overflow-x-auto mt-6">
-                                        <table className="min-w-full border-collapse border border-gray-300">
+                                        <table className="min-w-full border-collapse border border-white-300">
                                             <thead>
-                                                <tr className="bg-gray-100">
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">#</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student Name</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Phone</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">School</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Class</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Subject</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Registered On</th>
+                                                <tr className="bg-white-100">
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">#</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Student Name</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Phone</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">School</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Class</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Subject</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Status</th>
+                                                    <th className="border border-white-300 px-4 py-2 text-left text-xs font-medium text-white-700 uppercase tracking-wider">Registered On</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {registrations.map((registration, index) => (
-                                                    <tr key={registration._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">{index + 1}</td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                    <tr key={registration._id} className={index % 2 === 0 ? 'bg-white' : 'bg-white-50'}>
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">{index + 1}</td>
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             <div>
-                                                                <div className="font-medium text-gray-900">
+                                                                <div className="font-medium text-white-900">
                                                                     {registration.firstName} {registration.lastName}
                                                                 </div>
                                                                 {registration.gender && (
-                                                                    <div className="text-xs text-gray-500">
+                                                                    <div className="text-xs text-white-500">
                                                                         {registration.gender}
                                                                     </div>
                                                                 )}
                                                             </div>
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             {registration.phone || 'N/A'}
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             {getSchoolName(registration.school)}
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             {registration.class || 'N/A'}
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             {registration.subject || 'N/A'}
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             <span className={`px-2 py-1 text-xs font-semibold rounded-full`}>
                                                                 {registration.paymentStatus}
                                                             </span>
                                                         </td>
-                                                        <td className="border border-gray-300 px-4 py-2 text-sm">
+                                                        <td className="border border-white-300 px-4 py-2 text-sm">
                                                             {formatDate(registration.createdAt)}
                                                         </td>
                                                     </tr>
@@ -134,14 +160,7 @@ const RegistrationListPrint = ({
                     </div>
                 </div>
             </div>
-            <div className="no-print fixed bottom-4 right-4 space-x-2">
-                <button
-                    onClick={() => window.print()}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition shadow-lg"
-                >
-                    Print List
-                </button>
-            </div>
+           
         </div>
     );
 };

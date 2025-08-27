@@ -6,9 +6,9 @@ import { Users, Search, CheckCircle, Clock, Printer, Edit, Trash2, FileText, Sav
 import ReactPaginate from 'react-paginate';
 
 // Import the components for different views
-import RegistrationReceipt from '../RegistrationPrint';
-import RegistrationListPrint from '../RegistrationListPrint';
-import BulkReceiptPrint from '../BulkReceiptPrint';
+import RegistrationReceipt from '../helpers/RegistrationPrint';
+import RegistrationListPrint from '../helpers/RegistrationListPrint';
+import BulkReceiptPrint from '../helpers/BulkReceiptPrint';
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
@@ -250,8 +250,12 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
                             <div className="p-4 md:p-6 border-b flex flex-wrap justify-between items-center gap-4">
                                 <h3 className="text-xl font-semibold text-white-800">All Student Entries</h3>
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => setShowBulkReceipts(true)} className="flex items-center space-x-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50" disabled={filteredRegistrationsForTable.length === 0} title={filteredRegistrationsForTable.length > 0 ? "Print all filtered receipts" : "No receipts to print"}><FileText className="h-5 w-5" /><span>Print Receipts</span></button>
-                                    <button onClick={() => setShowPrintList(true)} className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"><Printer className="h-5 w-5" /><span>Print List</span></button>
+                                    <button onClick={() => {
+                                         window.scrollTo(0, 0);setShowBulkReceipts(true)}} className="flex items-center space-x-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50" disabled={filteredRegistrationsForTable.length === 0} title={filteredRegistrationsForTable.length > 0 ? "Print all filtered receipts" : "No receipts to print"}><FileText className="h-5 w-5" /><span>Print Receipts</span></button>
+                                    <button onClick={() => {
+                                         window.scrollTo(0, 0);
+                                        setShowPrintList(true)
+                                        }} className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"><Printer className="h-5 w-5" /><span>Print List</span></button>
                                 </div>
                             </div>
                             

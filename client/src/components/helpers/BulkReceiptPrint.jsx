@@ -31,7 +31,7 @@ const BulkReceiptPrint = ({ registrations, ngo, onClose }) => {
       {/* CONTROLS - These will not be in the PDF */}
       <div className="p-4 bg-white shadow-md sticky top-0 z-10 no-print">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h2 className="text-xl font-bold text-gray-800">
+          <h2 className="text-xl font-bold text-gray-800 hidden sm:block">
             Bulk Receipt Preview ({registrations.length} Receipts)
           </h2>
           <div className="flex items-center gap-4">
@@ -47,8 +47,8 @@ const BulkReceiptPrint = ({ registrations, ngo, onClose }) => {
               disabled={isDownloading}
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-lg hover:bg-blue-200 disabled:opacity-50 disabled:cursor-wait"
             >
-              <Download className="w-4 h-4 mr-2" />
-              {isDownloading ? 'Generating PDF...' : 'Download All as PDF'}
+              <Download className="w-8 h-4 mr-2" />
+              {isDownloading ? 'Generating PDF...' : 'Download All '}
             </button>
           </div>
         </div>
