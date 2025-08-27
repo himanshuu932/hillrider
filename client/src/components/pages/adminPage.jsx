@@ -81,17 +81,13 @@ const AdminPanel = () => {
     }
   };
 
-  // Memoized stats will automatically update when 'registrations' state changes
-  const stats = useMemo(() => {
-    // ... (stats calculation code remains the same)
-  }, [registrations]);
+ 
 
   const navLinks = [
     { id: 'registrations', label: 'Registrations', icon: Users },
     { id: 'verify', label: 'Verify Registrations', icon: Users },
     { id: 'addSchool', label: 'Add School', icon: School },
     { id: 'registerStudent', label: 'Register Student', icon: UserPlus },
-    { id: 'statistics', label: 'Statistics', icon: BarChart2 },
     { id: 'AddAdmin', label: 'Add Admin', icon: UserPlus },
     { id: 'results', label: 'Results', icon: Award },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
@@ -118,15 +114,34 @@ const AdminPanel = () => {
         return <AddSchool />;
       case 'registerStudent':
         return <AdminStudentRegistration />;
-      case 'statistics':
-        // ... (statistics JSX content remains the same)
-        return <div>Statistics Content...</div>;
-      case 'AddAdmin':
-        // ... (AddAdmin JSX content remains the same)
-        return <div>Add Admin Form...</div>;
-      case 'results':
-        return <div>Results Content...</div>;
-      case 'settings':
+     case 'AddAdmin':
+         case 'AddAdmin':
+        return (
+            <div className="register-container">
+              <form className="register-form" onSubmit={handleSubmit}>
+                <h2>Admin Registration</h2>
+                <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
+                <input name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} />
+                <input name="password" placeholder="Password" type="password" value={formData.password} onChange={handleChange} />
+                <button type="submit">Register</button>
+              </form>
+            </div>
+        );
+     case 'results':
+        return (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-gray-900">Results Management</h2>
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <p className="text-gray-600 mb-4">Publish and manage Olympiad results for different subjects and classes.</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">Publish Mathematics Results</button>
+                  <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">Publish Science Results</button>
+                  <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">Publish English Results</button>
+                </div>
+              </div>
+            </div>
+        );
+       case 'settings':
         return <Settings />;
       default:
         return <RegistrationDashboard 
