@@ -14,10 +14,41 @@ const FormField = ({ id, label, error, children }) => (
 );
 
 export default function OlyRegistration({ languageType }) {
-  const content = {
-    en: { /* ... your language content ... */ },
-    hi: { /* ... your language content ... */ },
+    const content = {
+    en: {
+      title: "HR Olympiad Registration",
+      firstName: "First Name",
+      lastName: "Last Name",
+      dob: "Date of Birth",
+      class: "Class",
+      phone: "Phone Number",
+      school: "School",
+      subject: "Subject",
+      transactionId: "Transaction ID",
+      register: "Register Now",
+      selectSchool: "-- Select Your School --",
+      loadingSchools: "Loading...",
+      successMsg: "Registration submitted for verification!",
+      errorMsg: "Registration failed. Please try again."
+    },
+    hi: {
+      title: "ओलंपियाड पंजीकरण",
+      firstName: "पहला नाम",
+      lastName: "उपनाम",
+      dob: "जन्म तिथि",
+      class: "कक्षा",
+      phone: "फ़ोन नंबर",
+      school: "विद्यालय",
+      subject: "विषय",
+      transactionId: "लेन-देन आईडी",
+      register: "पंजीकरण करें",
+      selectSchool: "-- अपना विद्यालय चुनें --",
+      loadingSchools: "लोड हो रहा है...",
+      successMsg: "पंजीकरण सत्यापन के लिए जमा किया गया!",
+      errorMsg: "पंजीकरण विफल रहा। कृपया पुनः प्रयास करें।"
+    },
   };
+
   const selectedContent = content[languageType] || content.en;
 
   const [formData, setFormData] = useState({
@@ -50,13 +81,13 @@ export default function OlyRegistration({ languageType }) {
   const [errors, setErrors] = useState({});
   const [step, setStep] = useState(1);
   
-  // --- All your logic hooks and functions remain unchanged here ---
-  // (useEffect for fetching schools, fee config, calculating fee, validateForm, etc.)
-  // Fetch schools on component mount
+  
   useEffect(() => {
     const fetchSchools = async () => {
       try {
+        console.log("Fetching schools...");
         const res = await axios.get('https://hillrider.onrender.com/api/schools');
+        console.log("Fetched schools:", res.data);
         setSchools(res.data);
       } catch (err) {
         console.error("Failed to fetch schools", err);
@@ -155,14 +186,11 @@ export default function OlyRegistration({ languageType }) {
       <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 my-8">
         {successMessage && (
           <div className="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md" role="alert">
-            <p className="font-bold">Success</p>
+            <p className="font-bold">Success, You can now download receipt.</p>
             <p>{successMessage}</p>
           </div>
         )}
-        <div className="bg-white rounded-lg shadow-xl overflow-x-auto p-4 sm:p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">Registration Receipt</h3>
-          <RegistrationPrint student={registeredStudent} schools={schools} /* other props */ />
-        </div>
+        
       </div>
     );
   }
