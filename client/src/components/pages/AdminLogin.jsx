@@ -1,13 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import "./AdminLogin.css";
 import { useNavigate } from "react-router-dom";
 
 // Accept setIsAdmin as a prop to update the parent state
-export default function AdminLogin({ setIsAdmin }) { 
+export default function AdminLogin({ setIsAdmin }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        identifier: "", // Changed from 'email' to 'identifier' to match input
+        identifier: "",
         password: ""
     });
     const [error, setError] = useState("");
@@ -25,49 +24,77 @@ export default function AdminLogin({ setIsAdmin }) {
                 formData,
                 { headers: { "Content-Type": "application/json" } }
             );
-            
+
             // On successful login:
-            // 1. Store the token to keep the user logged in
-            localStorage.setItem('adminToken', res.data.token); 
-            
-            // 2. Update the application's authentication state
+            localStorage.setItem('adminToken', res.data.token);
             setIsAdmin(true);
-            
-            // 3. Navigate to the admin panel
             navigate("/admin");
 
-        } catch (err) {
+        } catch (err)
+ {
             setError(err.response?.data?.message || "Invalid credentials");
             console.error(err);
         }
     };
 
     return (
-        <div className="login-container">
-            <form className="login-form" onSubmit={handleSubmit}>
-                <h2>Admin Login</h2>
+        <div className="flex min-w-[600px ] items-center justify-center min-h-[60vh] bg-gray-100 p-4">
+            
+            <form 
+                className="w-[500px]  bg-white p-6 sm:p-8 rounded-xl shadow-xl"
+                onSubmit={handleSubmit}
+            >
+                {/* Header: Always a row, now centered */}
+                <div className="flex items-center justify-center gap-3 sm:gap-4 mb-8">
+                    {/* Logo */}
+                    <img
+                        src="/logo.png"
+                        alt="Logo"
+                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-gray-200 shadow flex-shrink-0"
+                    />
 
-                {error && <p className="error-message">{error}</p>}
+                    {/* Title */}
+                    <h1 className="text-lg sm:text-xl font-semibold text-slate-800">
+                        Hill Riders Manva Sewa Samiti
+                    </h1>
+                </div>
 
-                <input
-                    type="text"
-                    name="identifier"
-                    placeholder="Email or Phone"
-                    value={formData.identifier}
-                    onChange={handleChange}
-                    required
-                />
+                {error && (
+                    <p className="bg-red-100 border border-red-300 text-red-700 text-sm rounded-md p-3 mb-4">
+                        {error}
+                    </p>
+                )}
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
+                <div>
+                    <input
+                        type="text"
+                        name="identifier"
+                        placeholder="Email or Phone"
+                        value={formData.identifier}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
-                <button type="submit">Login</button>
+                <div>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <button 
+                    type="submit"
+                    className="w-full py-3 bg-blue-500 text-white font-bold text-lg rounded-md hover:bg-blue-600 transition-colors duration-300"
+                >
+                    Login
+                </button>
             </form>
         </div>
     );

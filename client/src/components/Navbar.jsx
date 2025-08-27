@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/nobgmainlogo.png";
 import "../components/styles/navbar.css";
@@ -15,7 +15,6 @@ const content = {
     donate: "DONATE",
     // pressrelease: "PRESS RELEASE",
     // volunteer: "VOLUNTEER",
-    
   },
   hi: {
     logo: "हिल राइडर्स",
@@ -24,10 +23,9 @@ const content = {
     aboutus: "हमारे बारे में",
     olympiad: "ओलंपियाड",
     activity: "गतिविधियाँ",
-     donate: "दान करें",
+    donate: "दान करें",
     // pressrelease: "प्रेस विज्ञप्ति",
     // volunteer: "स्वयंसेवक",
-    
   },
 };
 
@@ -36,14 +34,43 @@ const Navbar = ({ languageType, setLanguageType }) => {
   const location = useLocation();
   const selectedContent = content[languageType] || content.en;
 
+  // Refs for the menu and hamburger to detect outside clicks
+  const menuRef = useRef(null);
+  const hamburgerRef = useRef(null);
+
+  useEffect(() => {
+    // Function to handle clicks outside the menu
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the menu and the hamburger icon
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        hamburgerRef.current &&
+        !hamburgerRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    // Add event listener only when the menu is open
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup function to remove the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]); // This effect depends on the isMenuOpen state
+
   const getLinkClass = (path) => {
     return location.pathname === path ? "navbar__link active" : "navbar__link";
   };
 
   return (
     <nav className="navbar">
-      {/* Hamburger for mobile view */}
-      <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      {/* Hamburger for mobile view, with ref attached */}
+      <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} ref={hamburgerRef}>
         <div className="hamburger-icon">
           <span></span>
           <span></span>
@@ -60,8 +87,8 @@ const Navbar = ({ languageType, setLanguageType }) => {
         </div>
       </div>
 
-      {/* Navigation Links */}
-      <ul className={`navbar__menu ${isMenuOpen ? "show" : ""}`}>
+      {/* Navigation Links, with ref attached */}
+      <ul className={`navbar__menu ${isMenuOpen ? "show" : ""}`} ref={menuRef}>
         <li className="navbar__item">
           <Link to="/" className={getLinkClass("/")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.home}
@@ -97,7 +124,6 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.volunteer}
           </Link>
         </li> */}
-       
       </ul>
 
       {/* Language Switch Buttons */}

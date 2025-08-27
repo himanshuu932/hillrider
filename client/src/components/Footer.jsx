@@ -6,6 +6,7 @@ import youtube from "../assets/youtube.png";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { useNavigate } from "react-router-dom";
+
 export default function Footer({ languageType }) {
   const content = {
     en: {
@@ -20,7 +21,7 @@ export default function Footer({ languageType }) {
       privacy: "Privacy Policy",
       terms: "Terms and Conditions",
       rights: "All Rights Reserved",
-      made: "Made With Love By - XYZ",
+      made: "Made With Love By - Bludgers",
       home: "HOME",
       about: "ABOUT US",
       mission: "MISSION",
@@ -52,7 +53,7 @@ export default function Footer({ languageType }) {
       privacy: "गोपनीयता नीति",
       terms: "नियम और शर्तें",
       rights: "सर्वाधिकार सुरक्षित",
-      made: "प्यार से बनाया गया - XYZ",
+      made: "प्यार से बनाया गया - ब्लडजर्स",
       home: "मुख्य पृष्ठ",
       about: "हमारे बारे में",
       mission: "मिशन",
@@ -76,6 +77,13 @@ export default function Footer({ languageType }) {
 
   const t = content[languageType] || content.en;
   const navigate = useNavigate();
+
+  // Helper function to scroll to top then navigate
+  const handleNavigateAndScroll = (path) => {
+    window.scrollTo(0, 0);
+    navigate(path);
+  };
+
   return (
     <footer className="bg-[#0A3153] text-white font-robotoSlab">
       <div className="max-w-7xl mx-auto px-6 pt-8 flex flex-col lg:flex-row lg:gap-20 gap-8">
@@ -95,13 +103,13 @@ export default function Footer({ languageType }) {
           <div className="py-3 space-y-3 text-sm sm:text-base">
             <p className="flex gap-2 ml-0 sm:ml-2">
               <FaMapMarkerAlt className="mt-1" />
-              {t.add}
+              Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002
             </p>
             <p className="flex gap-2 ml-0 sm:ml-2">
-              <FaPhoneAlt className="mt-1" /> +91 541351845121, +91 5656662595
+              <FaPhoneAlt className="mt-1" /> 9415116540, 7307605936, 9889138039
             </p>
             <p className="flex gap-2 ml-0 sm:ml-2">
-              <FaEnvelope className="mt-1" /> kjhfgd@gmail.com
+              <FaEnvelope className="mt-1" /> hrmsewasamiti@gmail.com
             </p>
           </div>
         </div>
@@ -111,34 +119,34 @@ export default function Footer({ languageType }) {
           {/* Column 1 */}
           <div>
             <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.nav}</h4>
-            <ul className="space-y-1 text-sm cursor-pointer">
-              <li><HashLink smooth to="/#hero">{t.home}</HashLink></li>
-              <li><HashLink smooth to="/#about">{t.about}</HashLink></li>
-              <li><HashLink smooth to="/#sectors">{t.sectors}</HashLink></li>
-              <li><HashLink smooth to="/#activities">{t.activities}</HashLink></li>
-              <li><HashLink smooth to="/#donate">{t.donateUs}</HashLink></li>
+            <ul className="space-y-1 text-sm">
+              <li><HashLink smooth to="/#hero" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.home}</HashLink></li>
+              <li><HashLink smooth to="/#about" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.about}</HashLink></li>
+              <li><HashLink smooth to="/#sectors" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.sectors}</HashLink></li>
+              <li><HashLink smooth to="/#activities" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.activities}</HashLink></li>
+              <li><HashLink smooth to="/#donate" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.donateUs}</HashLink></li>
             </ul>
           </div>
 
           {/* Column 2 */}
           <div>
             <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.initiatives}</h4>
-            <ul className="space-y-1 text-sm cursor-pointer">
-              <li><HashLink smooth to="/#education">{t.education}</HashLink></li>
-              <li><HashLink smooth to="/#social">{t.social}</HashLink></li>
-              <li><HashLink smooth to="/#upliftment">{t.upliftment}</HashLink></li>
-              <li><HashLink smooth to="/#environment">{t.environment}</HashLink></li>
+            <ul className="space-y-1 text-sm">
+              <li><HashLink smooth to="/#education" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.education}</HashLink></li>
+              <li><HashLink smooth to="/#social" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.social}</HashLink></li>
+              <li><HashLink smooth to="/#upliftment" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.upliftment}</HashLink></li>
+              <li><HashLink smooth to="/#environment" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.environment}</HashLink></li>
             </ul>
           </div>
 
           {/* Column 3 */}
           <div>
             <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.donate}</h4>
-            <ul className="space-y-1 text-sm cursor-pointer">
-              <Link to="/donate"><li>{t.clothes}</li></Link>
-              <Link to="/donate"><li>{t.books}</li></Link>
-              <Link to="/donate"><li>{t.stationary}</li></Link>
-              <Link to="/donate"><li>{t.donateFunds}</li></Link>
+            <ul className="space-y-1 text-sm">
+              <li><Link to="/donate" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.clothes}</Link></li>
+              <li><Link to="/donate" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.books}</Link></li>
+              <li><Link to="/donate" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.stationary}</Link></li>
+              <li><Link to="/donate" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.donateFunds}</Link></li>
             </ul>
           </div>
 
@@ -148,8 +156,8 @@ export default function Footer({ languageType }) {
             <div>
               <h4 className="font-bold mb-3 text-lg sm:text-xl">{t.links}</h4>
               <ul className="space-y-1 text-sm">
-                <li><HashLink smooth to="/#home" className="cursor-pointer">{t.privacy}</HashLink></li>
-                <li><HashLink smooth to="/#home" className="cursor-pointer">{t.terms}</HashLink></li>
+                <li><HashLink smooth to="/#home" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.privacy}</HashLink></li>
+                <li><HashLink smooth to="/#home" onClick={() => window.scrollTo(0, 0)} className="cursor-pointer">{t.terms}</HashLink></li>
               </ul>
             </div>
             <div className="mt-0 sm:mt-5">
@@ -164,14 +172,14 @@ export default function Footer({ languageType }) {
           
           {/* Copyright for mobile grid view only */}
           <div className="text-sm sm:hidden">
-            <p onClick={()=>navigate('/login')}>© 2025 Hill Riders Manav Seva Samiti</p>
+            <p onClick={() => handleNavigateAndScroll('/login')} className="cursor-pointer">© 2025 Hill Riders Manav Seva Samiti</p>
             <p>{t.rights}</p>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-2 text-center sm:text-left hidden sm:block">
-        <p onClick={()=>navigate('/login')} className="text-sm">
+        <p onClick={() => handleNavigateAndScroll('/login')} className="text-sm cursor-pointer">
           © 2025 Hill Riders Manav Seva Samiti {" "} {t.rights}
         </p>
       </div>
