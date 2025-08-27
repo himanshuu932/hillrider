@@ -1,5 +1,8 @@
+// Navbar.jsx
+
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios"; // Import axios
 import logo from "../assets/nobgmainlogo.png";
 import "../components/styles/navbar.css";
 import { HashLink } from "react-router-hash-link";
@@ -13,6 +16,7 @@ const content = {
     olympiad: "OLYMPIAD",
     activity: "ACTIVITY",
     donate: "DONATE",
+    logout: "LOGOUT",
     // pressrelease: "PRESS RELEASE",
     // volunteer: "VOLUNTEER",
   },
@@ -24,24 +28,24 @@ const content = {
     olympiad: "ओलंपियाड",
     activity: "गतिविधियाँ",
     donate: "दान करें",
+    logout: "लॉग आउट",
     // pressrelease: "प्रेस विज्ञप्ति",
     // volunteer: "स्वयंसेवक",
   },
 };
 
-const Navbar = ({ languageType, setLanguageType }) => {
+// Accept isAdmin and setIsAdmin as props
+const Navbar = ({ languageType, setLanguageType, isAdmin, setIsAdmin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const selectedContent = content[languageType] || content.en;
+  const navigate = useNavigate(); // Hook for navigation
 
-  // Refs for the menu and hamburger to detect outside clicks
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
 
   useEffect(() => {
-    // Function to handle clicks outside the menu
     const handleClickOutside = (event) => {
-      // Check if the click is outside the menu and the hamburger icon
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target) &&
@@ -51,25 +55,37 @@ const Navbar = ({ languageType, setLanguageType }) => {
         setIsMenuOpen(false);
       }
     };
-
-    // Add event listener only when the menu is open
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
-    // Cleanup function to remove the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isMenuOpen]); // This effect depends on the isMenuOpen state
+  }, [isMenuOpen]);
 
   const getLinkClass = (path) => {
     return location.pathname === path ? "navbar__link active" : "navbar__link";
   };
 
+  // Function to handle the logout API call and state update
+  const handleLogout = async () => {
+    try {
+      await axios.post('https://hillrider.onrender.com/api/admin/logout', {}, {
+        withCredentials: true,
+      });
+      setIsAdmin(false); // Update the state in App.js
+      setIsMenuOpen(false); // Close the mobile menu
+      navigate('/login'); // Redirect to the login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // You can add user feedback here, e.g., an alert
+    }
+  };
+
+
   return (
     <nav className="navbar">
-      {/* Hamburger for mobile view, with ref attached */}
+      {/* Hamburger for mobile view */}
       <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} ref={hamburgerRef}>
         <div className="hamburger-icon">
           <span></span>
@@ -87,7 +103,7 @@ const Navbar = ({ languageType, setLanguageType }) => {
         </div>
       </div>
 
-      {/* Navigation Links, with ref attached */}
+      {/* Navigation Links */}
       <ul className={`navbar__menu ${isMenuOpen ? "show" : ""}`} ref={menuRef}>
         <li className="navbar__item">
           <Link to="/" className={getLinkClass("/")} onClick={() => setIsMenuOpen(false)}>
@@ -114,7 +130,7 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.donate}
           </Link>
         </li>
-        {/* <li className="navbar__item">
+         {/* <li className="navbar__item">
           <Link to="/pressrelease" className={getLinkClass("/pressrelease")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.pressrelease}
           </Link>
@@ -124,6 +140,15 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.volunteer}
           </Link>
         </li> */}
+        
+        {/* Conditionally rendered Logout button */}
+        {isAdmin && (
+          <li className="navbar__item">
+            <button onClick={handleLogout} className="navbar__link logout-button">
+              {selectedContent.logout}
+            </button>
+          </li>
+        )}
       </ul>
 
       {/* Language Switch Buttons */}

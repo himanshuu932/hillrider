@@ -72,6 +72,7 @@ const AdminPanel = () => {
         "https://hillrider.onrender.com/api/admin/register",
         formData
       );
+      console.log(res);
       alert("Registration successful!");
       navigate("/login");
       console.log(res.data);

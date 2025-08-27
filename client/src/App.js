@@ -1,3 +1,5 @@
+// App.js
+
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
@@ -47,11 +49,22 @@ function App() {
 
   return (
     <Router>
-      <Navbar languageType={languageType} setLanguageType={setLanguageType} />
+      <Navbar 
+        languageType={languageType} 
+        setLanguageType={setLanguageType}
+        isAdmin={isAdmin}
+        setIsAdmin={setIsAdmin} 
+      />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage languageType={languageType} />} />
-        <Route path="/login" element={<AdminLogin setIsAdmin={setIsAdmin} />} />
+        
+        {/* If admin is logged in, redirect from /login to /admin */}
+        <Route 
+          path="/login" 
+          element={isAdmin ? <Navigate to="/admin" /> : <AdminLogin setIsAdmin={setIsAdmin} />} 
+        />
+
         <Route path="/olympiad" element={<Olympiad languageType={languageType} />} />
         <Route path="/pressrelease" element={<PressRelease languageType={languageType} />} />
         <Route path="/registration" element={<Registration languageType={languageType} />} />

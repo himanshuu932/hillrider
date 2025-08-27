@@ -10,5 +10,13 @@ router.get('/profile', authMiddleware, getAdminProfile);
 router.put('/edit/:editingID',editRegistraion);
 router.delete('/delete/:deleteID',deleteRegistration);
 router.get('/verify-token',authMiddleware, verifyToken);
-router.post('/logout', authMiddleware, logoutAdmin);
+router.post("/logout", (req, res) => {
+  res
+    .clearCookie("adminToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none"
+    })
+    .json({ message: "Logged out" });
+});
 module.exports = router;
