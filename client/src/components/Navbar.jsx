@@ -87,7 +87,7 @@ const Navbar = ({ languageType, setLanguageType }) => {
             {selectedContent.donate}
           </Link>
         </li>
-        <li className="navbar__item">
+        {/* <li className="navbar__item">
           <Link to="/pressrelease" className={getLinkClass("/pressrelease")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.pressrelease}
           </Link>
@@ -96,7 +96,7 @@ const Navbar = ({ languageType, setLanguageType }) => {
           <Link to="/volunteer" className={getLinkClass("/volunteer")} onClick={() => setIsMenuOpen(false)}>
             {selectedContent.volunteer}
           </Link>
-        </li>
+        </li> */}
        
       </ul>
 
