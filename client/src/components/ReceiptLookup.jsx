@@ -101,7 +101,7 @@ export default function ReceiptLookup() {
         />
         <button
           onClick={handleSubmit}
-          className="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="px-5 py-2 bg-[#333] text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           Get Receipt
         </button>
