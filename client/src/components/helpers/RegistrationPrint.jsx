@@ -98,7 +98,7 @@ export default function RegistrationReceipt({
             <header className="flex items-start justify-between pb-6 border-b">
               <div className="flex items-center gap-4">
                 <div className="w-20 h-20 shrink-0">
-                   {ngo.logo ? <img src={ngo.logo} alt="NGO Logo" className="w-full h-full object-contain" /> : <div className="w-full h-full bg-gray-200 rounded-md"></div> }
+                   {ngo.logo ? <img src='/o.jpg' alt="NGO Logo" className="w-full h-full object-contain" /> : <div className="w-full h-full bg-gray-200 rounded-md"></div> }
                 </div>
                 <div className="text-left">
                   <h1 className="text-2xl font-bold text-gray-800">{ngo.name}</h1>
