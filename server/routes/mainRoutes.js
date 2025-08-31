@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer'); // ADDED
+
+// Setup multer for temporary file storage
+// Make sure you have an 'uploads' directory in your project root
+const upload = multer({ dest: 'uploads/' }); // ADDED
 
 // Import all the controller functions
 const { 
@@ -13,7 +18,8 @@ const {
     getFeeConfig,
     addFeeConfig,
     updateFeeConfig,
-    getReceipt
+    getReceipt,
+    uploadStudentPhoto // ADDED
 } = require('../controllers/mainController');
 
 // In a real-world application, you would protect admin-only routes
@@ -36,6 +42,13 @@ router.get('/schools', getSchools);
 
 
 // --- Student Routes ---
+
+// @route   POST /api/students/upload-photo
+// @desc    Upload student photo
+// @access  Private
+// ADDED NEW ROUTE: This uses multer middleware to handle a single file upload from a form field named 'photo'
+router.post('/students/upload-photo', upload.single('photo'), uploadStudentPhoto);
+
 
 // @route   POST /api/students/register-payment
 // @desc    Register a student with a transaction ID (pending verification)
@@ -69,7 +82,6 @@ router.post('/students/fee', addFeeConfig);
 
 router.put('/students/fee', updateFeeConfig);
 
-router.get('/students/receipt/:studentCode', getReceipt);
-
+router.post('/students/receipt', getReceipt);
 
 module.exports = router;

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RegistrationReceipt from '../helpers/RegistrationPrint';
-
-// This function is no longer needed as fees are fetched from the API.
-// function calculateFee(classValue, subjects) { ... }
+import { UploadCloud } from 'lucide-react'; // ADDED for icon
 
 const AdminStudentRegistration = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        fatherName: '', // ADDED
         dateOfBirth: '',
         class: '',
         phone: '',
@@ -25,6 +24,12 @@ const AdminStudentRegistration = () => {
         pinCode: '',
         aadharNumber: ''
     });
+
+    // --- ADDED state for photo handling ---
+    const [photo, setPhoto] = useState(null);
+    const [photoPreview, setPhotoPreview] = useState(null);
+    // ---
+
     const [schools, setSchools] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -88,12 +93,23 @@ const AdminStudentRegistration = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // --- ADDED handler for photo input changes ---
+    const handlePhotoChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhoto(file);
+            setPhotoPreview(URL.createObjectURL(file));
+        }
+    };
+
     const validateForm = () => {
         const newErrors = {};
 
         if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
         if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+        if (!formData.fatherName.trim()) newErrors.fatherName = "Father's name is required"; // ADDED
         if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required";
+        if (!photo) newErrors.photo = "Student photo is required"; // ADDED
 
         if (!formData.phone) newErrors.phone = "Phone number is required";
         else if (!/^[0-9]{10}$/.test(formData.phone)) newErrors.phone = "Enter a valid 10-digit phone number";
@@ -123,6 +139,7 @@ const AdminStudentRegistration = () => {
     };
 
 
+    // --- COMPLETELY REWRITTEN handleSubmit function for 2-step process ---
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
@@ -131,25 +148,40 @@ const AdminStudentRegistration = () => {
         setSuccessMessage('');
         setRegisteredStudent(null);
 
-        if (!formData.school) {
-            setError('Please select a school.');
-            setIsLoading(false);
-            return;
-        }
         try {
-            const res = await axios.post('https://hillrider.onrender.com/api/students/register-admin', formData);
+            // Step 1: Upload the photo to YOUR backend server
+            const photoFormData = new FormData();
+            photoFormData.append('photo', photo);
+
+            const uploadRes = await axios.post('https://hillrider.onrender.com/api/students/upload-photo', photoFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            const photoUrl = uploadRes.data.photoUrl;
+
+            // Step 2: Submit the student registration data with the photo URL from your server
+            const studentData = { ...formData, photoUrl };
+            const res = await axios.post('https://hillrider.onrender.com/api/students/register-admin', studentData);
+
             setSuccessMessage(res.data.message);
             setRegisteredStudent(res.data.student);
-            // Reset form
+            
+            // Reset form completely
             setFormData({
-                firstName: '', lastName: '', dateOfBirth: '', class: '',
+                firstName: '', lastName: '', fatherName: '', dateOfBirth: '', class: '',
                 phone: '', school: '', subject: 'Mathematics', gender: '', category: '', competitionCategory: '',
                 village: '', post: '', district: '', state: '', pinCode: '',
                 aadharNumber: '', amount: ''
             });
-            setFee(0); // Reset fee display
+            setPhoto(null);
+            setPhotoPreview(null);
+            setFee(0);
+
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -168,6 +200,27 @@ const AdminStudentRegistration = () => {
                     {/* LEFT: PERSONAL DETAILS */}
                     <fieldset className="border p-4 rounded-lg space-y-4">
                         <legend className="text-lg font-semibold text-gray-700">Personal Details</legend>
+                        
+                        {/* --- ADDED Photo Upload UI --- */}
+                        <div className="flex items-center gap-4">
+                            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border">
+                                {photoPreview ? (
+                                    <img src={photoPreview} alt="Student" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="text-xs text-gray-500 text-center">Photo</span>
+                                )}
+                            </div>
+                            <div>
+                                <label htmlFor="photo-upload" className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <UploadCloud className="w-4 h-4 mr-2"/>
+                                    Upload Photo
+                                </label>
+                                <input id="photo-upload" type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+                                {errors.photo && <p className="text-red-500 text-sm mt-1">{errors.photo}</p>}
+                            </div>
+                        </div>
+                        {/* --- END Photo Upload UI --- */}
+
                         <div className="space-y-4">
                             {/* First & Last Name */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -194,6 +247,20 @@ const AdminStudentRegistration = () => {
                                     {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
                                 </div>
                             </div>
+
+                            {/* --- ADDED Father's Name Input --- */}
+                            <div>
+                                <input
+                                    type="text"
+                                    name="fatherName"
+                                    placeholder="Father's Name"
+                                    value={formData.fatherName}
+                                    onChange={handleChange}
+                                    className="p-3 border rounded-md w-full"
+                                />
+                                {errors.fatherName && <p className="text-red-500 text-sm">{errors.fatherName}</p>}
+                            </div>
+                            {/* --- END Father's Name Input --- */}
 
                             {/* DOB & Phone */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

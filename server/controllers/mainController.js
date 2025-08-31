@@ -2,6 +2,45 @@ const School = require('../models/schoolModel');
 const Student = require('../models/studentModel');
 const FeeConfig = require('../models/feeModel');
 const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2; // ADDED
+const fs = require('fs'); // ADDED
+
+// --- NEW: Controller for handling photo uploads ---
+/**
+ * @desc    Upload student photo to Cloudinary
+ * @route   POST /api/students/upload-photo
+ * @access  Private (Admin)
+ */
+exports.uploadStudentPhoto = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded.' });
+        }
+
+        // Upload the image to Cloudinary
+        const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'student_photos', // Optional: saves to a specific folder in Cloudinary
+            resource_type: 'image',
+        });
+
+        // Clean up the temporarily stored file on the server
+        fs.unlinkSync(req.file.path);
+
+        // Send the secure URL back to the client
+        res.status(200).json({
+            message: 'Photo uploaded successfully!',
+            photoUrl: uploadResult.secure_url,
+        });
+
+    } catch (error) {
+        console.error('Error uploading photo to Cloudinary:', error);
+        // If a file was uploaded but Cloudinary failed, try to clean it up
+        if (req.file && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+        res.status(500).json({ message: 'Server error while uploading photo.' });
+    }
+};
 
 // --- School Controller Functions ---
 
@@ -146,7 +185,7 @@ exports.registerStudentByAdmin = async (req, res) => {
         const newStudent = new Student({
             ...req.body,
             studentCode,
-            paymentStatus: 'Offline Paid', // <-- UPDATED STATUS
+            paymentStatus: 'Offline Paid', 
             transactionId: null
         });
         await newStudent.save();
@@ -254,16 +293,29 @@ exports.updateFeeConfig = async (req, res) => {
 };
 
 
+// mainController.js
+
+// ... (other controller functions)
+
 exports.getReceipt = async(req, res)=>{
     try{
-        const student = await Student.findOne({ studentCode: req.params.studentCode});
+        const { studentCode, phone } = req.body; // Read from request body
+
+        if (!studentCode || !phone) {
+            return res.status(400).json({ message: "Student Code and Phone Number are required." });
+        }
+
+        // Find the student only if both studentCode and phone number match
+        const student = await Student.findOne({ studentCode, phone });
+
         if(!student){
-            return res.status(404).json({ message: "Student not found" });
+            // Provide a more helpful error message
+            return res.status(404).json({ message: "No matching record found. Please check your Student Code and Phone Number." });
         }
         res.status(200).json(student);
     }
     catch(error){
         console.error("error in getting receipt:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "An unexpected server error occurred." });
     }
 }

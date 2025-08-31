@@ -115,3 +115,114 @@
 .modal-search-again:hover {
   background-color: #e0e0e0;
 }
+/* styles/modal.css */
+
+.admit-card-notice {
+  margin: 2rem 1rem;
+  padding: 1.5rem;
+  border: 1px solid #ffca28; /* Amber color */
+  background-color: #fff8e1; /* Light amber background */
+  border-radius: 8px;
+  text-align: center;
+}
+
+.admit-card-notice h4 {
+  margin-top: 0;
+  color: #c08009;
+}
+
+.admit-card-notice p {
+  color: #5c400a;
+  margin-bottom: 0;
+}
+/* Add these styles to styles/modal.css */
+
+.document-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.document-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 1rem 0 2rem 0;
+}
+
+.admit-card-notice {
+  padding: 1.5rem;
+  border: 1px solid #ffca28; /* Amber color */
+  background-color: #fff8e1; /* Light amber background */
+  border-radius: 8px;
+  text-align: center;
+}
+
+.admit-card-notice h4 {
+  margin-top: 0;
+  color: #c08009;
+}
+
+.admit-card-notice p {
+  color: #5c400a;
+  margin-bottom: 0;
+}
+
+.modal-search-again {
+  display: block;
+  margin: 1.5rem auto 0;
+}
+/* ============================================= */
+/* STYLES FOR DOCUMENT DISPLAY VIEW              */
+/* ============================================= */
+
+/* Creates a flex container for the section title and the hide/show button */
+/* This will place them on the same line and align them vertically. */
+.document-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem; /* Adds space below the header */
+}
+
+/* Removes the default margin from the h3 inside the header */
+/* to prevent alignment issues within the flex container. */
+.document-header h3 {
+  margin: 0;
+}
+
+/* Styles for the "Hide" / "Show" toggle button */
+.btn-toggle-view {
+  background-color: #f0f0f0; /* Light grey background */
+  border: 1px solid #ddd;   /* Subtle border */
+  color: #333;
+  padding: 4px 12px;      /* Smaller padding for a more compact button */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;       /* Slightly smaller font size */
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-toggle-view:hover {
+  background-color: #e0e0e0; /* Darker grey on hover */
+}
+
+/* Overrides the default margin on the divider for more consistent spacing */
+.section-divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 1.5rem 0; /* Adjusted margin for better visual separation */
+}
+
+/* Ensure the main h3 in the lookup form has consistent color */
+.receipt-lookup-modal h3 {
+    color: #2c3e50;
+}

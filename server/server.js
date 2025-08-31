@@ -4,14 +4,24 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const adminRoutes = require('./routes/adminRoutes');
+const cloudinary = require('cloudinary').v2; // Import Cloudinary
 
 require('dotenv').config();
 const app = express();
 connectDB();
 
+// --- NEW: Cloudinary Configuration ---
+// It's recommended to place this configuration here in the main server file.
+// Ensure you have these variables in your .env file.
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+// --- END NEW ---
+
 app.use(cors({
   origin: ['http://localhost:3000','https://hillridersmanavsewasamiti.vercel.app'], 
-
   credentials: true 
 }));
 app.use(express.json());
