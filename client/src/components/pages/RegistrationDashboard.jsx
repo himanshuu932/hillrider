@@ -20,8 +20,8 @@ const StatCard = ({ title, value, icon: Icon, bgColor, iconColor }) => (
             <Icon className={`h-6 w-6 ${iconColor}`} />
         </div>
         <div>
-            <p className="text-sm font-medium text-gray-500">{title}</p>
-            <p className="text-2xl font-bold text-gray-800">{value}</p>
+            <p className="text-sm font-medium text-white-500">{title}</p>
+            <p className="text-2xl font-bold text-white-800">{value}</p>
         </div>
     </div>
 );
@@ -237,8 +237,8 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
                     <>
                         {/* Charts and KPI Cards remain the same */}
                         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-gray-800">Valid Registration Types</h3></div><div className="p-4 h-80"><Pie data={pieChartData} options={chartOptions} /></div></div>
-                            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-gray-800">Valid Registrations by School</h3></div><div className="p-4 h-80"><Bar data={barChartData} options={chartOptions} /></div></div>
+                            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-white-800">Valid Registration Types</h3></div><div className="p-4 h-80"><Pie data={pieChartData} options={chartOptions} /></div></div>
+                            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm"><div className="p-4 border-b"><h3 className="text-lg font-semibold text-white-800">Valid Registrations by School</h3></div><div className="p-4 h-80"><Bar data={barChartData} options={chartOptions} /></div></div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <StatCard title="Total Valid Registrations" value={kpis.totalValid} icon={Users} bgColor="bg-blue-100" iconColor="text-blue-600" />
@@ -248,7 +248,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
                         </div>
                         <div className="bg-white rounded-xl shadow-sm">
                             <div className="p-4 md:p-6 border-b flex flex-wrap justify-between items-center gap-4">
-                                <h3 className="text-xl font-semibold text-gray-800">All Student Entries</h3>
+                                <h3 className="text-xl font-semibold text-white-800">All Student Entries</h3>
                                 {/* --- UPDATED: Added Admit Card Print Button --- */}
                                 <div className="flex items-center gap-2">
                                     <button onClick={() => { window.scrollTo(0, 0); setBulkPrintType('Receipt'); setShowBulkReceipts(true); }} className="flex items-center space-x-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50" disabled={filteredRegistrationsForTable.length === 0} title={filteredRegistrationsForTable.length > 0 ? "Print all filtered receipts" : "No receipts to print"}><FileText className="h-5 w-5" /><span>Print Receipts</span></button>
@@ -260,42 +260,42 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
                             {/* Filters and Table remain the same */}
                             <div className="p-4 md:p-6 space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" /><input type="text" placeholder="Search..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 w-full p-2.5 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-300" /></div>
-                                    <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="p-2.5 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-300"><option value="All">All Statuses</option><option value="Paid">Online (Paid)</option><option value="Unverified">Unverified</option><option value="Offline Paid">Offline (Paid)</option></select>
-                                    <select value={filterSchool} onChange={e => setFilterSchool(e.target.value)} className="p-2.5 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-300"><option value="All">All Schools</option>{uniqueSchools.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}</select>
+                                    <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white-400 h-5 w-5" /><input type="text" placeholder="Search..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 w-full p-2.5 border rounded-lg bg-white-50 focus:ring-2 focus:ring-blue-300" /></div>
+                                    <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="p-2.5 border rounded-lg bg-white-50 focus:ring-2 focus:ring-blue-300"><option value="All">All Statuses</option><option value="Paid">Online (Paid)</option><option value="Unverified">Unverified</option><option value="Offline Paid">Offline (Paid)</option></select>
+                                    <select value={filterSchool} onChange={e => setFilterSchool(e.target.value)} className="p-2.5 border rounded-lg bg-white-50 focus:ring-2 focus:ring-blue-300"><option value="All">All Schools</option>{uniqueSchools.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}</select>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <select value={dateFilter} onChange={e => setDateFilter(e.target.value)} className="p-2.5 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-300"><option value="all">All Time</option><option value="today">Today</option><option value="custom">Custom Range</option></select>
-                                    {dateFilter === 'custom' && (<><input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-2.5 border rounded-lg bg-gray-50" /><input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-2.5 border rounded-lg bg-gray-50" /></>)}
+                                    <select value={dateFilter} onChange={e => setDateFilter(e.target.value)} className="p-2.5 border rounded-lg bg-white-50 focus:ring-2 focus:ring-blue-300"><option value="all">All Time</option><option value="today">Today</option><option value="custom">Custom Range</option></select>
+                                    {dateFilter === 'custom' && (<><input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-2.5 border rounded-lg bg-white-50" /><input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-2.5 border rounded-lg bg-white-50" /></>)}
                                 </div>
                             </div>
                             
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y">
                                     <thead className="bg-slate-100"><tr>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Student</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">School</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Registered On</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th></tr></thead>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Student</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">School</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Registered On</th>
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-white-600 uppercase tracking-wider">Actions</th></tr></thead>
                                     <tbody className="bg-white divide-y">
                                         {paginatedRegistrations.length > 0 ? paginatedRegistrations.map(reg => (
                                             <tr key={reg._id} className="hover:bg-slate-50">
-                                                <td className="px-6 py-4 whitespace-nowrap">{editingId === reg._id ? <div className="flex flex-col gap-2"><input type="text" value={editData.firstName || ''} onChange={e => setEditData({ ...editData, firstName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.lastName || ''} onChange={e => setEditData({ ...editData, lastName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.phone || ''} onChange={e => setEditData({ ...editData, phone: e.target.value })} className="text-sm p-1.5 border rounded-md" /></div> : <div><div className="text-sm font-semibold text-gray-900">{reg.firstName} {reg.lastName}</div><div className="text-sm text-gray-500">{reg.phone}</div></div>}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">{editingId === reg._id ? <div className="flex flex-col gap-2"><input type="text" value={editData.firstName || ''} onChange={e => setEditData({ ...editData, firstName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.lastName || ''} onChange={e => setEditData({ ...editData, lastName: e.target.value })} className="text-sm p-1.5 border rounded-md" /><input type="text" value={editData.phone || ''} onChange={e => setEditData({ ...editData, phone: e.target.value })} className="text-sm p-1.5 border rounded-md" /></div> : <div><div className="text-sm font-semibold text-white-900">{reg.firstName} {reg.lastName}</div><div className="text-sm text-white-500">{reg.phone}</div></div>}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{reg.studentCode}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{editingId === reg._id ? <select value={editData.school || ''} onChange={e => setEditData({ ...editData, school: e.target.value })} className="text-sm p-1.5 border rounded-md w-full"><option value="" disabled>-- Select School --</option>{schools.map(s => (<option key={s._id} value={s._id}>{s.name} ({s.code})</option>))}</select> : (reg.school?.name || 'N/A')}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-white-700">{editingId === reg._id ? <select value={editData.school || ''} onChange={e => setEditData({ ...editData, school: e.target.value })} className="text-sm p-1.5 border rounded-md w-full"><option value="" disabled>-- Select School --</option>{schools.map(s => (<option key={s._id} value={s._id}>{s.name} ({s.code})</option>))}</select> : (reg.school?.name || 'N/A')}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{editingId === reg._id ? <select value={editData.paymentStatus || ''} onChange={e => setEditData({ ...editData, paymentStatus: e.target.value })} className="text-sm p-1.5 border rounded-md w-full"><option value="Paid">Paid</option><option value="Unverified">Unverified</option><option value="Offline Paid">Offline Paid</option></select> : <span className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${reg.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' : reg.paymentStatus === 'Unverified' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}>{reg.paymentStatus}</span>}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{editingId === reg._id ? <input type="date" value={editData.createdAt ? new Date(editData.createdAt).toISOString().slice(0, 10) : ''} onChange={e => setEditData({ ...editData, createdAt: e.target.value })} className="text-sm p-1.5 border rounded-md" /> : new Date(reg.createdAt).toLocaleDateString()}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{editingId === reg._id ? <div className="flex items-center space-x-3"><button onClick={() => handleSave(reg._id)} className="text-green-600 hover:text-green-800 p-1"><Save size={20} /></button><button onClick={handleCancel} className="text-gray-500 hover:text-gray-800 p-1"><X size={20} /></button></div> : <div className="flex items-center space-x-3"><button onClick={() => handleEdit(reg._id)} className="text-blue-600 hover:text-blue-800" title="Edit"><Edit size={18} /></button><button onClick={() => handleDelete(reg._id)} className="text-red-600 hover:text-red-800" title="Delete"><Trash2 size={18} /></button><button onClick={() => handleReceipt(reg._id)} className="text-teal-600 hover:text-teal-800" title="View Receipt"><FileText size={18} /></button></div>}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-white-500">{editingId === reg._id ? <input type="date" value={editData.createdAt ? new Date(editData.createdAt).toISOString().slice(0, 10) : ''} onChange={e => setEditData({ ...editData, createdAt: e.target.value })} className="text-sm p-1.5 border rounded-md" /> : new Date(reg.createdAt).toLocaleDateString()}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{editingId === reg._id ? <div className="flex items-center space-x-3"><button onClick={() => handleSave(reg._id)} className="text-green-600 hover:text-green-800 p-1"><Save size={20} /></button><button onClick={handleCancel} className="text-white-500 hover:text-white-800 p-1"><X size={20} /></button></div> : <div className="flex items-center space-x-3"><button onClick={() => handleEdit(reg._id)} className="text-blue-600 hover:text-blue-800" title="Edit"><Edit size={18} /></button><button onClick={() => handleDelete(reg._id)} className="text-red-600 hover:text-red-800" title="Delete"><Trash2 size={18} /></button><button onClick={() => handleReceipt(reg._id)} className="text-teal-600 hover:text-teal-800" title="View Receipt"><FileText size={18} /></button></div>}</td>
                                             </tr>
-                                        )) : (<tr><td colSpan="6" className="text-center py-10 text-gray-500">No matching registrations found.</td></tr>)}
+                                        )) : (<tr><td colSpan="6" className="text-center py-10 text-white-500">No matching registrations found.</td></tr>)}
                                     </tbody>
                                 </table>
                             </div>
                             {pageCount > 1 && (
                                 <div className="flex justify-center p-6 border-t">
-                                    <ReactPaginate previousLabel={"← Prev"} nextLabel={"Next →"} breakLabel={"..."} pageCount={pageCount} marginPagesDisplayed={1} pageRangeDisplayed={3} onPageChange={handlePageClick} containerClassName={"flex items-center space-x-1"} pageLinkClassName={"px-4 py-2 block"} previousLinkClassName={"px-4 py-2 block"} nextLinkClassName={"px-4 py-2 block"} pageClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} previousClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} nextClassName={"rounded-md border bg-white text-gray-600 hover:bg-gray-100"} activeClassName={"!bg-blue-600 !border-blue-600 !text-white hover:!bg-blue-700"} disabledClassName={"opacity-50 cursor-not-allowed"} forcePage={currentPage} />
+                                    <ReactPaginate previousLabel={"← Prev"} nextLabel={"Next →"} breakLabel={"..."} pageCount={pageCount} marginPagesDisplayed={1} pageRangeDisplayed={3} onPageChange={handlePageClick} containerClassName={"flex items-center space-x-1"} pageLinkClassName={"px-4 py-2 block"} previousLinkClassName={"px-4 py-2 block"} nextLinkClassName={"px-4 py-2 block"} pageClassName={"rounded-md border bg-white text-white-600 hover:bg-white-100"} previousClassName={"rounded-md border bg-white text-white-600 hover:bg-white-100"} nextClassName={"rounded-md border bg-white text-white-600 hover:bg-white-100"} activeClassName={"!bg-blue-600 !border-blue-600 !text-white hover:!bg-blue-700"} disabledClassName={"opacity-50 cursor-not-allowed"} forcePage={currentPage} />
                                 </div>
                             )}
                         </div>
@@ -304,7 +304,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
                     registeredStudent && (
                         <div className="flex flex-col items-center justify-center min-h-screen">
                             <div className="p-4 bg-white rounded-xl shadow-lg w-full max-w-3xl my-10">
-                                <div className="flex justify-between items-center mb-4 p-2 border-b"><h3 className="text-xl font-bold text-gray-800">Registration Receipt</h3><button onClick={() => setShowReceipt(false)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Close</button></div>
+                                <div className="flex justify-between items-center mb-4 p-2 border-b"><h3 className="text-xl font-bold text-white-800">Registration Receipt</h3><button onClick={() => setShowReceipt(false)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Close</button></div>
                                 <RegistrationReceipt languageType="en" ngo={ngoDetails} student={{ ...registeredStudent, school: getSchoolName(registeredStudent.school, schools) }} registrationId={registeredStudent.studentCode} issuedAt={registeredStudent.createdAt} documentTitle="Admin Registration" />
                             </div>
                         </div>
