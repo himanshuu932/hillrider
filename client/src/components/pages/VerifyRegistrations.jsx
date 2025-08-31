@@ -49,6 +49,7 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
 
     const mapRegToStudentData = (reg) => {
         if (!reg) return {};
+        console.log("Mapping registration data:", reg.subject); // Debugging line
         return {
             firstName: reg.firstName || '',
             lastName: reg.lastName || '',
@@ -58,7 +59,7 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
             class: reg.class?.name || reg.class || 'N/A',
             phone: reg.phone || 'N/A',
             school: reg.school?.name || 'N/A',
-            subject: reg.subject?.name || 'N/A',
+            subject: reg.subject || 'N/A',
             transactionId: reg.transactionId || 'N/A',
             aadharNumber: reg.aadharNumber || 'N/A',
             gender: reg.gender || 'N/A',
@@ -158,7 +159,7 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
                            <RegistrationReceipt
                                 key={viewingReceipt._id}
                                 student={mapRegToStudentData(viewingReceipt)}
-                                registrationId={viewingReceipt.registrationId || `HR-${viewingReceipt.studentCode}`}
+                                registrationId={viewingReceipt.registrationId || `${viewingReceipt.studentCode}`}
                                 showControls={false}
                                 isVisible={true}
                             />

@@ -158,7 +158,7 @@ exports.registerStudentWithPayment = async (req, res) => {
             studentCode,
             paymentStatus: 'Unverified'
         });
-
+        console.log("New Student Data:", newStudent); // Debugging line
         await newStudent.save();
         res.status(201).json({
             message: `Registration submitted! Your unique code is ${studentCode}. Please save it for future reference.`,

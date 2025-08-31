@@ -25,7 +25,7 @@ const initialFormData = {
     phone: "",
     school: "",
     amount: "",
-    subject: "Mathematics",
+    subject: "", // Changed to empty for dropdown selection
     transactionId: "",
     aadharNumber: '',
     gender: '',
@@ -117,6 +117,18 @@ const StudentDetailsStep = ({ formData, errors, schools, photoPreview, handleCha
              <option value="13">10+2 / Diploma</option>
           </select>
         </FormField>
+        {/* --- ADDED SUBJECT SELECTOR --- */}
+        <FormField id="subject" label="Subject" error={errors.subject}>
+            <select id="subject" name="subject" value={formData.subject} onChange={handleChange} className={selectBaseClasses}>
+                <option value="">Select Subject</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="GS/GK">GS/GK</option>
+                <option value="PCM">PCM</option>
+                <option value="PCB">PCB</option>
+                <option value="Science">Science</option>
+                <option value="English">English</option>
+            </select>
+        </FormField>
         <div className="md:col-span-2">
            <FormField id="school" label="School" error={errors.school}>
             <select id="school" name="school" value={formData.school} onChange={handleChange} className={selectBaseClasses}>
@@ -134,7 +146,6 @@ const StudentDetailsStep = ({ formData, errors, schools, photoPreview, handleCha
       </div>
     </fieldset>
     
-    {/* --- Address Section --- */}
     <fieldset>
       <legend className="text-lg font-semibold text-gray-800 mb-4">Address Details</legend>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
@@ -347,6 +358,7 @@ export default function OlyRegistration({ languageType }) {
       if (!formData.fatherName.trim()) newErrors.fatherName = "Father's name is required";
       if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
       if (!formData.class) newErrors.class = "Class is required";
+      if (!formData.subject) newErrors.subject = "Subject is required"; // Added validation
       if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = "Phone number must be 10 digits";
       if (!/^\d{12}$/.test(formData.aadharNumber)) newErrors.aadharNumber = "Aadhar must be 12 digits";
       if (!/^\d{6}$/.test(formData.pinCode)) newErrors.pinCode = "Pincode must be 6 digits";
@@ -389,6 +401,7 @@ export default function OlyRegistration({ languageType }) {
     setIsLoading(true);
     setError('');
     setSuccessMessage('');
+    console.log("Form Data to submit", formData);
     try {
       let photoUrl = '';
       if (photo) {

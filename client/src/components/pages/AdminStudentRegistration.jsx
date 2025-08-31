@@ -383,6 +383,9 @@ const AdminStudentRegistration = () => {
                                     >
                                         <option value="">Select Subject</option>
                                         <option value="Mathematics">Mathematics</option>
+                                        <option value="Mathematics">GS/GK</option>
+                                        <option value="Mathematics">PCM</option>
+                                        <option value="Mathematics">PCB</option>
                                         <option value="Science">Science</option>
                                         <option value="English">English</option>
                                     </select>
