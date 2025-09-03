@@ -220,7 +220,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
     if (showBulkReceipts) {
         return <BulkReceiptPrint 
             registrations={filteredRegistrationsForTable} 
-            ngo={ngoDetails} 
+          
             onClose={() => setShowBulkReceipts(false)} 
             type={bulkPrintType} 
         />;

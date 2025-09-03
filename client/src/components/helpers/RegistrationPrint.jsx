@@ -7,10 +7,10 @@ export default function RegistrationReceipt({
   languageType = "en",
   isVisible = true,
   ngo = {
-    name: "HILL RIDERS OLYMPIAD",
+    name: "HILL RIDERS OLYMPIAD 2025",
     logo: "/logo.png",
-    tagline: "Give your best,To rise above the rest",
-    address: "Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002",
+    tagline: "Give your best to rise above the rest",
+    address: "Belwa Khurd,Sonbrsa Bazar NH28,Gorakhpur 273002",
     phone: "+91 7307605936",
     email: "hrmsewasamiti@gmail.com",
   },
