@@ -164,7 +164,8 @@ const AdminStudentRegistration = () => {
             // Step 2: Submit the student registration data with the photo URL from your server
             const studentData = { ...formData, photoUrl };
             const res = await axios.post('https://hillrider.onrender.com/api/students/register-admin', studentData);
-
+             console.log("Response from server:");
+             console.log(res.data);
             setSuccessMessage(res.data.message);
             setRegisteredStudent(res.data.student);
             

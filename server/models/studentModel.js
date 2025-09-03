@@ -10,7 +10,7 @@ const StudentSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true },
     subject: { type: String, required: true },
-    transactionId: { type: String, unique: true, sparse: true },
+    transactionId: { type: String, unique: true, sparse: true, default: null },
     aadharNumber: { type: String, unique: true },
     gender: {type:String, required:true, enum: ['Male', 'Female']},
     category: {type: String, require: true, enum: ['GN', 'OBC', 'ST', 'SC']},
