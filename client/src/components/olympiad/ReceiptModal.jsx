@@ -91,7 +91,6 @@ const ReceiptModal = ({ isOpen, onClose, languageType }) => {
                 student={receipt}
                 registrationId={receipt.studentCode}
                 issuedAt={receipt.createdAt}
-                // ✨ CHANGE: Pass the visibility state as a prop
                 isVisible={showReceipt} 
               />
             </div>
@@ -109,12 +108,12 @@ const ReceiptModal = ({ isOpen, onClose, languageType }) => {
                     </button>
                 )}
               </div>
-              {isPaymentConfirmed ? (
+              {(1==0) ? (
                 <AdmitCard
                   student={receipt}
                   registrationId={receipt.studentCode}
                   issuedAt={receipt.createdAt}
-                  // ✨ CHANGE: Pass the visibility state as a prop
+                  
                   isVisible={showAdmitCard}
                 />
               ) : (
