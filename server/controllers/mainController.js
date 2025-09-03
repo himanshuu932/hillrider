@@ -186,7 +186,7 @@ exports.registerStudentByAdmin = async (req, res) => {
             ...req.body,
             studentCode,
             paymentStatus: 'Offline Paid', 
-            transactionId: null
+        
         });
         await newStudent.save();
         res.status(201).json({
