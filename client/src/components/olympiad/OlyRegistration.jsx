@@ -311,7 +311,6 @@ export default function OlyRegistration({ languageType }) {
         const res = await axios.get('https://hillrider.onrender.com/api/schools');
         setSchools(res.data);
       } catch (err) {
-        console.error("Failed to fetch schools", err);
         setError('Could not load school list.');
       }
     };
@@ -324,7 +323,6 @@ export default function OlyRegistration({ languageType }) {
         const res = await axios.get("https://hillrider.onrender.com/api/students/fee");
         setFeeConfig(res.data);
       } catch (err) {
-        console.error("Failed to fetch fee config", err);
         setError("Could not load fee configuration.");
       }
     };
@@ -401,7 +399,6 @@ export default function OlyRegistration({ languageType }) {
     setIsLoading(true);
     setError('');
     setSuccessMessage('');
-    console.log("Form Data to submit", formData);
     try {
       let photoUrl = '';
       if (photo) {
