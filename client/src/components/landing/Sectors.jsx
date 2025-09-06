@@ -4,6 +4,17 @@ import hillrider2 from '../../assets/social.webp';
 import hillrider3 from '../../assets/upliftment.webp';
 import hillrider4 from '../../assets/environment.webp';
 
+const headingContent = {
+  en: {
+    title: 'OUR SECTORS',
+    subtitle: 'Dedicated to holistic community development through targeted initiatives in key areas of society.'
+  },
+  hi: {
+    title: 'हमारे क्षेत्र',
+    subtitle: 'समाज के प्रमुख क्षेत्रों में लक्षित पहलों के माध्यम से समग्र सामुदायिक विकास के लिए समर्पित।'
+  }
+};
+
 const sectorsData = [
   {
     id: "education",
@@ -117,24 +128,25 @@ const sectorsData = [
 
 const Sectors = ({ languageType = 'en' }) => {
   return (
-    <div className="bg-white sm:py-12" id="sectors">
+    <div className="bg-slate-50 py-16 sm:py-24" id="sectors">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-[#003366] sm:text-4xl">
-            OUR SECTORS
+            {headingContent[languageType].title}
           </h2>
+          
         </div>
 
-        <div className="mt-16 space-y-16">
+        <div className="mt-16 sm:mt-20 space-y-16">
           {sectorsData.map((sector, index) => (
             <div
               key={sector.id}
-              className={`flex flex-col items-center gap-8 md:gap-12 lg:gap-16 ${
+              className={`bg-white rounded-2xl shadow-lg border border-gray-200 p-8 lg:p-12 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] flex flex-col items-center gap-8 md:gap-12 lg:gap-16 ${
                 index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}
             >
               {/* Image Column */}
-              <div className="w-full md:w-1/2">
+              <div className="w-full md:w-1/2 flex-shrink-0">
                 <img
                   src={sector.images[0].src}
                   alt={sector.images[0].alt}
@@ -144,13 +156,13 @@ const Sectors = ({ languageType = 'en' }) => {
 
               {/* Text Content Column */}
               <div className="w-full md:w-1/2">
-                <p className="text-center text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-left">
+                <p className="text-center text-2xl font-bold tracking-tight text-[#003366] sm:text-3xl md:text-left pb-2 border-b-2 border-blue-100">
                   {sector.content[languageType].title}
                 </p>
-                <p className="mt-4 text-base leading-7 text-gray-700">
+                <p className="mt-4 text-base leading-7 text-gray-600">
                   {sector.content[languageType].description}
                 </p>
-                <ul className="mt-6 space-y-2 list-disc list-inside text-gray-700">
+                <ul className="mt-6 space-y-2 list-disc list-inside text-gray-600 marker:text-[#003366]">
                   {sector.content[languageType].points.map((point, i) => (
                     <li key={i}>{point}</li>
                   ))}
