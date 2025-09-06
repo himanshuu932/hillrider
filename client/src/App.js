@@ -16,6 +16,7 @@ import Registration from './components/olympiad/OlyRegistration';
 import AdminStudentRegistration from './components/pages/AdminStudentRegistration';
 import DonationPage from './components/DonationPage';
 import PressRelease from './components/PressRelease';
+import Loader from './Loader';
 
 const PrivateRoute = ({ children, isAdmin }) => {
   return isAdmin ? children : <Navigate to="/login" />;
@@ -44,7 +45,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading session...</div>;
+    return <Loader />;
   }
 
   return (
