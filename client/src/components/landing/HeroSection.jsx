@@ -282,9 +282,9 @@ const HeroSection = ({ languageType }) => {
       <div className="hs-text-content">
        
         <div className="hs-slider-nav">
-          <button className="hs-slider-prev" onClick={goToPrevSlide} aria-label="Previous slide">
+          {/* <button className="hs-slider-prev" onClick={goToPrevSlide} aria-label="Previous slide">
             &lt;
-          </button>
+          </button> */}
           <div className="hs-slider-indicators">
             {slides.map((_, index) => (
               <button
@@ -295,9 +295,9 @@ const HeroSection = ({ languageType }) => {
               />
             ))}
           </div>
-          <button className="hs-slider-next" onClick={goToNextSlide} aria-label="Next slide">
+          {/* <button className="hs-slider-next" onClick={goToNextSlide} aria-label="Next slide">
             &gt;
-          </button>
+          </button> */}
         </div>
     
       </div>
