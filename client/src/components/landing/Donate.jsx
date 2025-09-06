@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/Donate.css";
-
+import { useNavigate } from "react-router-dom";
 const Donate = ({ languageType = 'en' }) => {
   const content = {
     en: {
@@ -22,12 +22,13 @@ const Donate = ({ languageType = 'en' }) => {
       button: "अभी दान करें"
     }
   };
-
+  const navigate = useNavigate();
   return (
     <div className="donate-container">
       <h2>{content[languageType].heading}</h2>
       <p>{content[languageType].message}</p>
-      <button className="donate-btn" onClick={() => alert("Thank you for your interest in donating!")}>
+      <button className="donate-btn" onClick={() =>{window.scrollTo(0, 0);
+         navigate('/donate')}}>
         {content[languageType].button}
       </button>
     </div>
