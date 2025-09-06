@@ -26,6 +26,7 @@ function App() {
   const [languageType, setLanguageType] = useState("en");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [minimumDelayElapsed, setMinimumDelayElapsed] = useState(false);
 
   useEffect(() => {
     const checkAdminSession = async () => {
@@ -41,10 +42,19 @@ function App() {
         setIsLoading(false);
       }
     };
+
     checkAdminSession();
+
+    // Start a timer to ensure loader stays at least 5 seconds
+    const timer = setTimeout(() => {
+      setMinimumDelayElapsed(true);
+    }, 3000); // 5000 ms = 5 seconds
+
+    return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  // Loader stays while either isLoading or minimumDelayElapsed is false
+  if (isLoading || !minimumDelayElapsed) {
     return <Loader />;
   }
 
@@ -57,21 +67,15 @@ function App() {
         setIsAdmin={setIsAdmin} 
       />
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<LandingPage languageType={languageType} />} />
-        
-        {/* If admin is logged in, redirect from /login to /admin */}
         <Route 
           path="/login" 
           element={isAdmin ? <Navigate to="/admin" /> : <AdminLogin setIsAdmin={setIsAdmin} />} 
         />
-
         <Route path="/olympiad" element={<Olympiad languageType={languageType} />} />
         <Route path="/pressrelease" element={<PressRelease languageType={languageType} />} />
         <Route path="/registration" element={<Registration languageType={languageType} />} />
         <Route path="/donate" element={<DonationPage languageType={languageType} />} />
-        
-        {/* Private Admin Routes */}
         <Route 
           path="/admin" 
           element={
