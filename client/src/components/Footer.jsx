@@ -106,7 +106,7 @@ export default function Footer({ languageType }) {
               Belawa Khurd, IOCL pump, Sonbasra Bazar, Air Force Road, Gorakhpur, 273002
             </p>
             <p className="flex gap-2 ml-0 sm:ml-2">
-              <FaPhoneAlt className="mt-1" /> 9415116540, 7307605936, 9889138039
+              <FaPhoneAlt className="mt-1" /> 6394438400, 7307605936, 9889138039
             </p>
             <p className="flex gap-2 ml-0 sm:ml-2">
               <FaEnvelope className="mt-1" /> hrmsewasamiti@gmail.com

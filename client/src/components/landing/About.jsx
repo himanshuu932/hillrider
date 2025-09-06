@@ -27,21 +27,25 @@ const teamMembers = [
   {
     name: "Mr. Shatrughna Rao",
     role: "President",
+    qualification: "[M.Sc- Mathematics, Diploma + Bachelor in Chemical Engineering]",
     imageUrl: "/s.webp"
   },
   {
     name: "Mr. Vinay Kumar Gupta",
     role: "Vice-President",
+    qualification: "[M.Sc - Chemistry, B•Ed, NET 2023,CTET,PET Qualified]",
     imageUrl: "/vp.webp"
   },
   {
     name: "Dr. Rahul Singh",
     role: "Coordinator",
+    qualification: "[PhD, BEd ,MA- Hindi, Diploma in Engg*]",
     imageUrl: "/cor.webp"
   },
   {
     name: "Mr. Avinash Kr Tripathi",
     role: "Chief Counsellor",
+    qualification: "[ MEd, NET MA- Sociology,  Assistant Professor- KDRT college, Gorakhpur]",
     imageUrl: "/cou.webp"
   }
 ];
@@ -80,6 +84,8 @@ const AboutUs = ({ languageType }) => {
               <div className="p-4 bg-gray-50 border-t border-gray-100 min-h-[6rem] flex flex-col items-center justify-center">
                 <p className="text-md text-gray-900 font-bold text-center leading-tight">{member.name}</p>
                 <p className="text-sm text-green-700 font-medium text-center">{member.role}</p>
+                <p className="text-sm text-gray-700 font-medium text-center">{member.qualification}</p>
+                
               </div>
             </div>
           ))}
