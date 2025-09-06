@@ -221,13 +221,22 @@ const PaymentStep = ({ fee, formData, errors, handleChange, prevStep, isLoading 
     <h2 className="text-xl font-semibold text-gray-800 text-center">Payment Details</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 p-4 border rounded-lg bg-gray-50">
       <div className="flex justify-center">
-        <img src="/images/qrcode.png" alt="QR Code for payment" className="w-36 h-36 md:w-48 md:h-48 rounded-lg shadow-md border" />
+        <img src="/qr.webp" alt="QR Code for payment" className="w-36 h-36 md:w-48 md:h-48 rounded-lg shadow-md border" />
       </div>
       <div className="text-sm text-gray-700 space-y-2">
-        <p><span className="font-semibold">Bank Name:</span> State Bank of India</p>
-        <p><span className="font-semibold">Account Name:</span> Hill Rider Manav Sewa Samiti</p>
-        <p><span className="font-semibold">Account Number:</span> 123456789012</p>
-        <p><span className="font-semibold">IFSC Code:</span> SBIN0001234</p>
+      
+         <p>
+              <span className="font-semibold">Bank Name:</span> Beauty
+            </p>
+            <p>
+             <span className="font-semibold">Account Name:</span>Union Bank 
+            </p>
+            <p>
+              <span className="font-semibold">Account Number:</span> 209312010003410
+            </p>
+            <p>
+             <span className="font-semibold">IFSC Code:</span> UBIN0820938
+            </p>
       </div>
     </div>
 

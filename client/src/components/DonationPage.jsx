@@ -60,27 +60,25 @@ export default function DonationPage({languageType}) {
         <div className="flex flex-col md:flex-row items-center justify-center gap-12">
           <div className="flex flex-col items-center">
             <img
-              src="/images/qrcode.png"
+              src="/qr.webp"
               alt="QR Code for Donation"
               className="w-52 h-52 rounded-lg shadow-md border border-gray-200"
             />
           </div>
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 shadow-sm text-left w-full md:w-1/2">
             <p>
-              <strong>{t.accountName}:</strong> Your NGO Name
+              <strong>{t.accountName}:</strong> Beauty
             </p>
             <p>
-              <strong>{t.bank}:</strong> State Bank of India
+              <strong>{t.bank}:</strong>Union Bank 
             </p>
             <p>
-              <strong>{t.accNo}:</strong> 123456789012
+              <strong>{t.accNo}:</strong> 209312010003410
             </p>
             <p>
-              <strong>{t.ifsc}:</strong> SBIN0001234
+              <strong>{t.ifsc}:</strong> UBIN0820938
             </p>
-            <p>
-              <strong>{t.branch}:</strong> City Branch, Lucknow
-            </p>
+            
 
             <button
               onClick={copyAccountNumber}
