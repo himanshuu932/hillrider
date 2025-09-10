@@ -383,12 +383,12 @@ const AdminStudentRegistration = () => {
                                         className="p-3 border rounded-md bg-white w-full"
                                     >
                                         <option value="">Select Subject</option>
-                                        <option value="Mathematics">Mathematics</option>
-                                        <option value="Mathematics">GS/GK</option>
-                                        <option value="Mathematics">PCM</option>
-                                        <option value="Mathematics">PCB</option>
-                                        <option value="Science">Science</option>
-                                        <option value="English">English</option>
+    <option value="Mathematics">Mathematics</option>
+    <option value="GS/GK">GS/GK</option>
+    <option value="PCM">PCM</option>
+    <option value="PCB">PCB</option>
+    <option value="Science">Science</option>
+    <option value="English">English</option>
                                     </select>
                                     {errors.subject && <p className="text-red-500 text-sm">{errors.subject}</p>}
                                 </div>
