@@ -24,7 +24,7 @@ const AdminPanel = () => {
   const fetchRegistrations = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get('https://hillrider.onrender.com/api/students');
+      const res = await axios.get('http://localhost:5000/api/students');
       setRegistrations(res.data);
       setError(''); // Clear previous errors
     } catch (err) {
@@ -69,7 +69,7 @@ const AdminPanel = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://hillrider.onrender.com/api/admin/register",
+        "http://localhost:5000/api/admin/register",
         formData
       );
       console.log(res);

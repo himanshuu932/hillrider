@@ -20,7 +20,7 @@ const AddSchool = () => {
   const fetchSchools = async () => {
     try {
       setLoadingSchools(true);
-      const res = await axios.get('https://hillrider.onrender.com/api/schools');
+      const res = await axios.get('http://localhost:5000/api/schools');
       setSchools(res.data);
     } catch (err) {
       setError('Failed to load the list of schools.');
@@ -42,7 +42,7 @@ const AddSchool = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://hillrider.onrender.com/api/schools/add', { name });
+      const response = await axios.post('http://localhost:5000/api/schools/add', { name });
       const newSchool = response.data.school;
       setMessage(`School added! Code: ${newSchool.code}, Password: ${newSchool.password}`);
       setName('');

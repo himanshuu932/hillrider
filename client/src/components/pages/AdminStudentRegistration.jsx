@@ -44,7 +44,7 @@ const AdminStudentRegistration = () => {
     useEffect(() => {
         const fetchSchools = async () => {
             try {
-                const res = await axios.get('https://hillrider.onrender.com/api/schools');
+                const res = await axios.get('http://localhost:5000/api/schools');
                 setSchools(res.data);
             } catch (err) {
                 console.error("Failed to fetch schools", err);
@@ -58,7 +58,7 @@ const AdminStudentRegistration = () => {
     useEffect(() => {
         const fetchFeeConfig = async () => {
             try {
-                const res = await axios.get("https://hillrider.onrender.com/api/students/fee");
+                const res = await axios.get("http://localhost:5000/api/students/fee");
                 setFeeConfig(res.data);
             } catch (err) {
                 console.error("Failed to fetch fee config", err);
@@ -153,7 +153,7 @@ const AdminStudentRegistration = () => {
             const photoFormData = new FormData();
             photoFormData.append('photo', photo);
 
-            const uploadRes = await axios.post('https://hillrider.onrender.com/api/students/upload-photo', photoFormData, {
+            const uploadRes = await axios.post('http://localhost:5000/api/students/upload-photo', photoFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -163,7 +163,7 @@ const AdminStudentRegistration = () => {
 
             // Step 2: Submit the student registration data with the photo URL from your server
             const studentData = { ...formData, photoUrl };
-            const res = await axios.post('https://hillrider.onrender.com/api/students/register-admin', studentData);
+            const res = await axios.post('http://localhost:5000/api/students/register-admin', studentData);
              console.log("Response from server:");
              console.log(res.data);
             setSuccessMessage(res.data.message);
@@ -394,7 +394,6 @@ const AdminStudentRegistration = () => {
                                 </div>
                             </div>
 
-                            {/* Fee + Competition Category */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-3 border rounded-md bg-gray-50 flex items-center justify-between">
                                     <span className="text-sm text-gray-600">Fee</span>

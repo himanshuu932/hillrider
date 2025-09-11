@@ -39,7 +39,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
       setInterval(() => {
-  fetch('https://hillrider.onrender.com/ping')
+  fetch('http://localhost:5000/ping')
     .then(() => console.log('Pinged self!'))
     .catch(() => console.log('Self ping failed.'));
 }, 1000 * 60 * 10);

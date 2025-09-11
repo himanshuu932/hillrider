@@ -14,7 +14,7 @@ export default function Settings() {
     try {
       setLoading(true);
       setError("");
-      const res = await axios.get("https://hillrider.onrender.com/api/students/fee");
+      const res = await axios.get("http://localhost:5000/api/students/fee");
       setFees(res.data);
     } catch (err) {
       console.error(err);
@@ -48,7 +48,7 @@ export default function Settings() {
     try {
       setSaving(true);
       setError("");
-      await axios.put("https://hillrider.onrender.com/api/students/fee", {
+      await axios.put("http://localhost:5000/api/students/fee", {
         className: editClass,
         amount: parseInt(editValue),
       });

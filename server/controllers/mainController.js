@@ -116,24 +116,42 @@ exports.getSchools = async (req, res) => {
 
 // --- Helper Function to Generate Student Code (UPDATED) ---
 const generateStudentCode = async () => {
-    // Get the last two digits of the current year (e.g., 2025 -> '25')
     const year = new Date().getFullYear().toString().slice(-2);
     const prefix = `HR/${year}/`;
 
-    // Find the last student registered this year, regardless of school
-    const lastStudent = await Student.findOne({ studentCode: new RegExp(`^${prefix}`) })
-        .sort({ studentCode: -1 });
+    // Use an aggregation pipeline for correct numerical sorting
+    const lastStudentArr = await Student.aggregate([
+        // 1. Match only students from the current year
+        { $match: { studentCode: { $regex: `^${prefix}` } } },
+
+        // 2. Create a new field 'sequenceNumber' by converting the numeric part to an integer
+        {
+            $addFields: {
+                sequenceNumber: {
+                    $toInt: { $arrayElemAt: [{ $split: ["$studentCode", "/"] }, 2] }
+                }
+            }
+        },
+
+        // 3. Sort by the new numeric field in descending order
+        { $sort: { sequenceNumber: -1 } },
+
+        // 4. Get only the top result
+        { $limit: 1 }
+    ]);
+
+    const lastStudent = lastStudentArr.length > 0 ? lastStudentArr[0] : null;
+    console.log("Last Student Found:", lastStudent); // Debugging line
 
     let nextSequence = 1;
     if (lastStudent) {
-        // Extract the sequence number from the code (e.g., "HR/25/12" -> 12)
-        const lastSequence = parseInt(lastStudent.studentCode.split('/')[2], 10);
-        nextSequence = lastSequence + 1;
+        // The last sequence number is already in the 'sequenceNumber' field
+        nextSequence = lastStudent.sequenceNumber + 1;
     }
 
-    // Return the new code, e.g., "HR/25/13"
     return `${prefix}${nextSequence}`;
 };
+
 
 
 // --- Student Registration & Verification Controller Functions ---
@@ -179,23 +197,49 @@ exports.registerStudentWithPayment = async (req, res) => {
  * @route   POST /api/students/register-admin
  * @access  Private (Admin)
  */
+/**
+ * @desc    Register a student by an admin
+ * @route   POST /api/students/register-admin
+ * @access  Private (Admin)
+ */
 exports.registerStudentByAdmin = async (req, res) => {
-    try {
-        const studentCode = await generateStudentCode();
-        const newStudent = new Student({
-            ...req.body,
-            studentCode,
-            paymentStatus: 'Offline Paid', 
-        
-        });
-        await newStudent.save();
-        res.status(201).json({
-            message: `Student registered! Their unique code is ${studentCode}.`,
-            student: newStudent
-        });
-    } catch (error) {
-        console.error('Error in student registration by admin:', error);
-        res.status(500).json({ message: 'Server error during registration.' });
+    let studentSaved = false;
+    let attempts = 0;
+    const maxAttempts = 5; // Prevent an infinite loop
+
+    while (!studentSaved && attempts < maxAttempts) {
+        try {
+            const studentCode = await generateStudentCode();
+            const newStudent = new Student({
+                ...req.body,
+                studentCode,
+                paymentStatus: 'Offline Paid',
+            });
+            await newStudent.save();
+            studentSaved = true; // Mark as saved to exit the loop
+            
+            // Send success response only after successful save
+            return res.status(201).json({
+                message: `Student registered! Their unique code is ${studentCode}.`,
+                student: newStudent
+            });
+
+        } catch (error) {
+            // Check if it's the specific duplicate key error
+            if (error.code === 11000 && error.keyPattern.studentCode) {
+                console.log(`Duplicate studentCode generated. Retrying... Attempt ${attempts + 1}`);
+                attempts++; // Increment attempts and loop again
+            } else {
+                // For any other error, break the loop and send an error response
+                console.error('Error in student registration by admin:', error);
+                return res.status(500).json({ message: 'Server error during registration.' });
+            }
+        }
+    }
+
+    // If the loop finishes without saving (e.g., too many failed attempts)
+    if (!studentSaved) {
+        return res.status(500).json({ message: 'Failed to register student after multiple attempts. Please try again later.' });
     }
 };
 

@@ -63,7 +63,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
     useEffect(() => {
         const fetchSchools = async () => {
             try {
-                const res = await axios.get('https://hillrider.onrender.com/api/schools');
+                const res = await axios.get('http://localhost:5000/api/schools');
                 setSchools(res.data);
             } catch (err) {
                 console.error("Failed to fetch schools", err);
@@ -153,7 +153,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
 
     const handleSave = async (id) => {
         try {
-            await axios.put(`https://hillrider.onrender.com/api/admin/edit/${id}`, { ...editData });
+            await axios.put(`http://localhost:5000/api/admin/edit/${id}`, { ...editData });
             setEditingId(null);
             setEditData({});
             onDataChange(); 
@@ -170,7 +170,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this registration? This action cannot be undone.')) {
             try {
-                await axios.delete(`https://hillrider.onrender.com/api/admin/delete/${id}`);
+                await axios.delete(`http://localhost:5000/api/admin/delete/${id}`);
                 onDataChange();
             } catch (err) {
                 alert('Failed to delete registration.');
@@ -180,7 +180,7 @@ const RegistrationDashboard = ({ registrationsData, onDataChange }) => {
 
     const handleReceipt = async (id) => {
         try {
-            const res = await axios.get(`https://hillrider.onrender.com/api/admin/get/${id}`);
+            const res = await axios.get(`http://localhost:5000/api/admin/get/${id}`);
             if (res.data) {
                 setRegisteredStudent(res.data);
                 setShowReceipt(true);

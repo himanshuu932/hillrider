@@ -19,7 +19,7 @@ export default function Register() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://hillrider.onrender.com/api/admin/register",
+        "http://localhost:5000/api/admin/register",
         formData
       );
      

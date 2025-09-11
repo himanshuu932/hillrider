@@ -21,7 +21,7 @@ export default function AdminLogin({ setIsAdmin }) {
         try {
             // The API call now includes `withCredentials: true`
             await axios.post(
-                "https://hillrider.onrender.com/api/admin/login",
+                "http://localhost:5000/api/admin/login",
                 formData,
                 { 
                     headers: { "Content-Type": "application/json" },

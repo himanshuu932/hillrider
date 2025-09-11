@@ -70,7 +70,7 @@ const Navbar = ({ languageType, setLanguageType, isAdmin, setIsAdmin }) => {
   // Function to handle the logout API call and state update
   const handleLogout = async () => {
     try {
-      await axios.post('https://hillrider.onrender.com/api/admin/logout', {}, {
+      await axios.post('http://localhost:5000/api/admin/logout', {}, {
         withCredentials: true,
       });
       setIsAdmin(false); // Update the state in App.js

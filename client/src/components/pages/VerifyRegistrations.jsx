@@ -28,7 +28,7 @@ const VerifyRegistrations = ({ unverifiedRegistrations, onVerificationSuccess })
     const handleVerify = async (studentId) => {
         setVerifyingId(studentId);
         try {
-            await axios.patch(`https://hillrider.onrender.com/api/students/verify/${studentId}`);
+            await axios.patch(`http://localhost:5000/api/students/verify/${studentId}`);
             if (onVerificationSuccess) {
                 onVerificationSuccess();
             }
