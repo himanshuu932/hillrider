@@ -317,7 +317,7 @@ export default function OlyRegistration({ languageType }) {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/schools');
+        const res = await axios.get('https://hillrider.onrender.com/api/schools');
         setSchools(res.data);
       } catch (err) {
         setError('Could not load school list.');
@@ -329,7 +329,7 @@ export default function OlyRegistration({ languageType }) {
   useEffect(() => {
     const fetchFeeConfig = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/students/fee");
+        const res = await axios.get("https://hillrider.onrender.com/api/students/fee");
         setFeeConfig(res.data);
       } catch (err) {
         setError("Could not load fee configuration.");
@@ -413,12 +413,12 @@ export default function OlyRegistration({ languageType }) {
       if (photo) {
         const photoFormData = new FormData();
         photoFormData.append('photo', photo);
-        const uploadRes = await axios.post('http://localhost:5000/api/students/upload-photo', photoFormData);
+        const uploadRes = await axios.post('https://hillrider.onrender.com/api/students/upload-photo', photoFormData);
         photoUrl = uploadRes.data.photoUrl;
       }
 
       const finalStudentData = { ...formData, photoUrl };
-      const res = await axios.post("http://localhost:5000/api/students/register-payment", finalStudentData);
+      const res = await axios.post("https://hillrider.onrender.com/api/students/register-payment", finalStudentData);
       
       setSuccessMessage(res.data.message || selectedContent.successMsg);
       setRegisteredStudent(res.data.student);

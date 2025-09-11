@@ -31,7 +31,7 @@ function App() {
   useEffect(() => {
     const checkAdminSession = async () => {
       try {
-        await axios.get('http://localhost:5000/api/admin/verify-token', {
+        await axios.get('https://hillrider.onrender.com/api/admin/verify-token', {
           withCredentials: true 
         });
         setIsAdmin(true);

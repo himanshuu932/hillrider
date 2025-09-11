@@ -50,7 +50,7 @@ const ReceiptModal = ({ isOpen, onClose, languageType }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://localhost:5000/api/students/receipt`, {
+      const res = await fetch(`https://hillrider.onrender.com/api/students/receipt`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ studentCode, phone }),
